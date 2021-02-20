@@ -1,0 +1,4 @@
+-postgresql
+-Spring boot
+-Spring JPA
+-Spring web
