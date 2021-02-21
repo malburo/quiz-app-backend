@@ -63,5 +63,6 @@ CREATE TABLE user_quiz
     quiz_id  integer REFERENCES quiz (quiz_id),
     is_finished boolean DEFAULT FALSE,
     current_question_id integer NULL,
+    rating integer NULL,
     PRIMARY KEY(user_id,quiz_id)
 );
