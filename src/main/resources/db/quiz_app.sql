@@ -12,18 +12,18 @@ CREATE TABLE user_info
 
 CREATE TABLE account
 (
-  account  SERIAL PRIMARY KEY,
+    account_id  SERIAL PRIMARY KEY,
     user_name  varchar(24) NOT NULL,
     password   varchar(24) NOT NULL,
     role       varchar(10) NOT NULL,
-    user_id  integer REFERENCES user_info (user_id)
+    user_id  bigint REFERENCES user_info (user_id)
 );
 CREATE TABLE topic
 (
     topic_id SERIAL PRIMARY KEY,
     topic_name varchar(50) NOT NULL,
     topic_description varchar NULL,
-    user_id  integer REFERENCES user_info (user_id)
+    user_id  bigint REFERENCES user_info (user_id)
 );
 
 CREATE TABLE sub_topic
@@ -31,7 +31,7 @@ CREATE TABLE sub_topic
     sub_topic_id SERIAL PRIMARY KEY,
     sub_topic_name varchar(50) NOT NULL,
     sub_topic_description varchar NULL,
-    topic_id  integer REFERENCES topic (topic_id)
+    topic_id  bigint REFERENCES topic (topic_id)
 );
 
 CREATE TABLE quiz
@@ -39,7 +39,7 @@ CREATE TABLE quiz
    quiz_id SERIAL PRIMARY KEY,
    quiz_name    varchar(50) NOT NULL,
    quiz_description VARCHAR NULL,
-   sub_topic_id  integer REFERENCES sub_topic(sub_topic_id)
+   sub_topic_id  bigint REFERENCES sub_topic(sub_topic_id)
 );
 CREATE TABLE question
 (
@@ -53,14 +53,14 @@ CREATE TABLE question
     question_answer_C varchar(50) NOT NULL,
     question_answer_D varchar(50) NOT NULL,
     question_answer_correct varchar(50) NOT NULL,
-    quiz_id  integer REFERENCES quiz(quiz_id)
+    quiz_id  bigint REFERENCES quiz(quiz_id)
 
 );
 CREATE TABLE user_quiz
 (
 
-    user_id  integer REFERENCES user_info (user_id),
-    quiz_id  integer REFERENCES quiz (quiz_id),
+    user_id  bigint REFERENCES user_info (user_id),
+    quiz_id  bigint REFERENCES quiz (quiz_id),
     is_finished boolean DEFAULT FALSE,
     current_question_id integer NULL,
     rating integer NULL,

@@ -1,26 +1,41 @@
 package com.example.Quiz.Models;
 import javax.persistence.*;
 
-@Entity(name = "accounts")
+@Entity()
+@Table(name = "account")
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int accountID;
+    private long account_id;
 
+    @Column(name = "user_name")
     private String userName;
 
+    @Column(name = "password")
     private String password;
-    @OneToOne(mappedBy = "User")
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "role")
+    private String role;
 
-    public int getAccountID() {
-        return accountID;
+    public String getRole() {
+        return role;
     }
 
-    public void setAccountID(int accountID) {
-        this.accountID = accountID;
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public long getAccount_id() {
+        return account_id;
+    }
+
+    public void setAccount_id(long account_id) {
+        this.account_id = account_id;
     }
 
     public String getUserName() {

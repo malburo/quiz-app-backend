@@ -1,35 +1,33 @@
 package com.example.Quiz.API;
 
-import com.example.Quiz.Models.User;
-import com.example.Quiz.Repository.UserRepository;
+import com.example.Quiz.Models.Account;
+import com.example.Quiz.Repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @Service
-public class UserService {
+public class AccountService {
     @Autowired
-    UserRepository repository;
+    AccountRepository repository;
 
-    public List<User> findAll(){
+    public List<Account> findAll(){
         return repository.findAll();
     }
 
-    public User findByID(Long id){
-        return repository.getOne(id);
+    public Account findByID(Long id){
+        return  repository.getOne(id);
     }
 
-    public User create(User user){
+    public Account create(Account user){
         return repository.saveAndFlush(user);
     }
 
-    public User update(User user){
+    public Account update(Account user){
         return repository.saveAndFlush(user);
     }
 
     public void delete(int id){
         repository.deleteById((long) id);
     }
-
 }

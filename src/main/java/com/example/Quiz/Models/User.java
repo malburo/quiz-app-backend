@@ -3,24 +3,43 @@ package com.example.Quiz.Models;
 import javax.persistence.*;
 
 @Entity
-@Table(name ="user_info")
+@Table(name = "user_info")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userId;
+    private long userId;
+    @Column(name = "user_full_name")
     private String fullName;
+    @Column(name = "user_email")
     private String email;
+    @Column(name = "phone_number")
     private String phoneNumber;
+    @Column(name = "user_level")
     private int level;
+    @Column(name = "user_point")
     private double point;
+    @Column(name = "user_image_url")
     private String imageUrl;
+    @Column(name = "learning_streaks")
     private int learningStreaks;
 
-    public int getUserId() {
+
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Account account ;
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
