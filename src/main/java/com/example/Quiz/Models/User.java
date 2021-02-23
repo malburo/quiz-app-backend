@@ -1,13 +1,18 @@
 package com.example.Quiz.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "user_info")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long user_id;
+    @Column(name = "user_id")
+    private long userId;
     @Column(name = "user_full_name")
     private String fullName;
     @Column(name = "user_email")
@@ -27,6 +32,17 @@ public class User {
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Account account ;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Topic> topics;
+
+    public List<Topic> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<Topic> topics) {
+        this.topics = topics;
+    }
+
     public Account getAccount() {
         return account;
     }
@@ -36,11 +52,11 @@ public class User {
     }
 
     public long getUserId() {
-        return user_id;
+        return userId;
     }
 
     public void setUserId(long userId) {
-        this.user_id = userId;
+        this.userId = userId;
     }
 
     public String getFullName() {
