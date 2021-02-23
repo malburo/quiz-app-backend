@@ -1,22 +1,17 @@
 package com.example.Quiz.Models;
 
 import com.example.Quiz.API.AccountService;
-import com.example.Quiz.Repository.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 //@RunWith(SpringRunner.class)
 @SpringBootTest
 public class AccountTest {
-    @MockBean
-    private AccountRepository repository;
 
     @Autowired
     private AccountService accountService;
@@ -38,9 +33,12 @@ public class AccountTest {
         Account account = new Account();
         account.setUserName("abc");
         account.setPassword("abc");
-
+        account.setRole("admin");
         accountService.create(account);
 
+        Account account1 = accountService.findByID((long)account.getAccountId());
+        assertEquals("abc",account.getUserName());
 
+        accountService.delete((int) account1.getAccountId());
     }
 }

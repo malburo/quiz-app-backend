@@ -1,6 +1,7 @@
 package com.example.Quiz.Models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "topic")
@@ -19,6 +20,12 @@ public class Topic {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id",foreignKey = @ForeignKey(name = "user_id_fk"))
     private User user;
+
+
+    @OneToMany(mappedBy = "topic",cascade = CascadeType.ALL)
+    private List<SubTopic> subTopics;
+
+
     public String getTopicId() {
         return topicId;
     }
@@ -51,4 +58,11 @@ public class Topic {
         this.user = user;
     }
 
+    public List<SubTopic> getSubTopics() {
+        return subTopics;
+    }
+
+    public void setSubTopics(List<SubTopic> subTopics) {
+        this.subTopics = subTopics;
+    }
 }
