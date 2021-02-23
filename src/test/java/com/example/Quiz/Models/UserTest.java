@@ -1,11 +1,9 @@
 package com.example.Quiz.Models;
 
 import com.example.Quiz.API.UserService;
-import com.example.Quiz.Repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
@@ -14,12 +12,9 @@ import static org.junit.jupiter.api.Assertions.*;
 //@RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserTest {
-    @MockBean
-    private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
-
 
     @Test
     public void testFind() throws Exception {
@@ -42,11 +37,11 @@ public class UserTest {
         user.setLearningStreaks(0);
         user.setPoint(0);
 
-        userRepository.saveAndFlush(user);
+        userService.create(user);
 
-        User testUser = userRepository.getOne((long)user.getUserId());
+        User testUser = userService.findByID((long)user.getUserId());
         assertEquals("test",user.getFullName());
 
-        userRepository.deleteById(4L);
+        userService.delete((int) testUser.getUserId());
     }
 }
