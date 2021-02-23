@@ -1,13 +1,18 @@
 package com.example.Quiz.Models;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity()
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "account")
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long account_id;
+    @Column(name = "account_id")
+    private long accountId;
 
     @Column(name = "user_name")
     private String userName;
@@ -16,7 +21,7 @@ public class Account {
     private String password;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", foreignKey = @ForeignKey(name = "user_id_fk"))
     private User user;
 
     @Column(name = "role")
@@ -30,12 +35,12 @@ public class Account {
         this.role = role;
     }
 
-    public long getAccount_id() {
-        return account_id;
+    public long getAccountId() {
+        return accountId;
     }
 
-    public void setAccount_id(long account_id) {
-        this.account_id = account_id;
+    public void setAccountId(long accountId) {
+        this.accountId = accountId;
     }
 
     public String getUserName() {
