@@ -22,6 +22,8 @@ public class Quiz {
    @OneToMany(mappedBy = "quiz",cascade = CascadeType.ALL)
    private List<Question> questions;
 
+   @OneToMany(mappedBy = "quiz",cascade =CascadeType.ALL)
+   private List<UserQuiz> participantQuizzes;
 
    @ManyToOne
    @JoinColumn(name = "sub_topic_id",referencedColumnName = "sub_topic_id",foreignKey = @ForeignKey(name = "sub_topic_id"))
@@ -67,4 +69,11 @@ public class Quiz {
       this.subTopic = subTopic;
    }
 
+   public List<UserQuiz> getParticipantQuizzes() {
+      return participantQuizzes;
+   }
+
+   public void setParticipantQuizzes(List<UserQuiz> participantQuizzes) {
+      this.participantQuizzes = participantQuizzes;
+   }
 }

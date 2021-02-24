@@ -35,6 +35,11 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Topic> topics;
 
+
+
+    @OneToMany(mappedBy = "user",cascade =CascadeType.ALL)
+    private List<UserQuiz> quizzesFinished;
+
     public List<Topic> getTopics() {
         return topics;
     }
@@ -115,5 +120,12 @@ public class User {
         this.learningStreaks = learningStreaks;
     }
 
+    public List<UserQuiz> getQuizzesFinished() {
+        return quizzesFinished;
+    }
+
+    public void setQuizzesFinished(List<UserQuiz> quizzesFinished) {
+        this.quizzesFinished = quizzesFinished;
+    }
 
 }

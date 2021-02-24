@@ -10,7 +10,7 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Topic {
 
-    @Id
+    @Id()
     @GeneratedValue(strategy =GenerationType.IDENTITY)
     @Column(name = "topic_id")
     private  Long topicId;
