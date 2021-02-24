@@ -1,16 +1,19 @@
 package com.example.Quiz.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "topic")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Topic {
 
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY)
     @Column(name = "topic_id")
-    private  String topicId;
+    private  Long topicId;
 
     @Column(name = "topic_name")
     private  String topicName;
@@ -26,11 +29,11 @@ public class Topic {
     private List<SubTopic> subTopics;
 
 
-    public String getTopicId() {
+    public Long getTopicId() {
         return topicId;
     }
 
-    public void setTopicId(String topicId) {
+    public void setTopicId(Long topicId) {
         this.topicId = topicId;
     }
 

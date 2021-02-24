@@ -1,36 +1,36 @@
 package com.example.Quiz.API;
 
-import com.example.Quiz.Models.Topic;
-import com.example.Quiz.Repository.TopicRepository;
+
+import com.example.Quiz.Models.SubTopic;
+import com.example.Quiz.Repository.SubTopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TopicService {
+public class SubTopicService {
 
     @Autowired
-    TopicRepository repository;
+    SubTopicRepository repository;
 
-    public List<Topic> findAll(){
+    public List<SubTopic> findAll(){
         return repository.findAll();
     }
 
-    public Topic findByID(Long id){
+    public SubTopic findByID(Long id){
         return  repository.getOne(id);
     }
 
-    public Topic create(Topic user){
+    public SubTopic create(SubTopic user){
         return repository.saveAndFlush(user);
     }
 
-    public Topic update(Topic user){
+    public SubTopic update(SubTopic user){
         return repository.saveAndFlush(user);
     }
 
     public void delete(int id){
         repository.deleteById((long) id);
     }
-
 }
