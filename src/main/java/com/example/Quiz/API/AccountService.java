@@ -26,6 +26,12 @@ public class AccountService {
     public Account update(Account user){
         return repository.saveAndFlush(user);
     }
+    public boolean register( String Username, String Password)
+    {
+
+        return  true;
+
+    }
 
     public void delete(int id){
         repository.deleteById((long) id);
