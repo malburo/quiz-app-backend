@@ -20,8 +20,10 @@ public class Account {
     @Column(name = "password")
     private String password;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", foreignKey = @ForeignKey(name = "user_id_fk"))
+    @OneToOne(mappedBy = "Account",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    //@JoinColumn(name = "user_id", referencedColumnName = "user_id", foreignKey = @ForeignKey(name = "user_id_fk"))
+
+
     private User user;
 
     @Column(name = "role")
