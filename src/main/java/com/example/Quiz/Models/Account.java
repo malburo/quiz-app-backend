@@ -26,6 +26,8 @@ public class Account {
 
     @Column(name = "role")
     private String role;
+    @Column(name = "blocked")
+    private boolean blocked;
 
     public String getRole() {
         return role;
@@ -65,6 +67,14 @@ public class Account {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 
 }

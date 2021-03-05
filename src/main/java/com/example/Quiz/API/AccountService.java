@@ -3,6 +3,7 @@ package com.example.Quiz.API;
 import com.example.Quiz.Models.Account;
 import com.example.Quiz.Repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
