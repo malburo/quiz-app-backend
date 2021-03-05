@@ -14,6 +14,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 @EnableJpaRepositories("com.example.Quiz.Repository")
@@ -34,30 +35,34 @@ public class QuizApplication {
 	@Bean
 	public CommandLineRunner deme(){
 		return (args) -> {
-			User user =new User();
+
 			Topic topic = new Topic();
 			Topic topic1 = new Topic();
 			Account account = new Account();
 			account.setUserName("username");
 			account.setPassword("password");
-			user.setFullName("Test user");
-			account.setUser(user);
+			//user.setFullName("Test user");
+			//account.setUser();
 			account.setRole("user");
-			topic.setTopicName("topictest");
-			topic.setUser(user);
-			topic.setTopicDescription("desc of topic ");
-			topic1.setTopicName("topictest1");
-			topic1.setUser(user);
-			topic1.setTopicDescription("desc of topic1");
+			account.setBlocked(false);
+
+			//topic.setTopicName("topictest");
+			//topic.setUser(user);
+			//topic.setTopicDescription("desc of topic ");
+			//topic1.setTopicName("topictest1");
+			//topic1.setUser(user);
+			//topic1.setTopicDescription("desc of topic1");
 
 
-			userRepository.saveAndFlush(user);
+			//userRepository.saveAndFlush(user);
 			repository.saveAndFlush(account);
-			topicRepository.saveAndFlush(topic);
-			topicRepository.saveAndFlush(topic1);
+			//topicRepository.saveAndFlush(topic);
+			//topicRepository.saveAndFlush(topic1);
+			// tam thoi an may cai kia de test register
 
 
 		};
+
 
 	}
 

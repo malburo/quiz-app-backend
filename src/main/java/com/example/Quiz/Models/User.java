@@ -29,7 +29,10 @@ public class User {
     private int learningStreaks;
 
 
-    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+
+    // Swaped , user  hold account
+    @OneToOne
+  @JoinColumn(name = "user_name",referencedColumnName = "user_name",foreignKey = @ForeignKey(name = "user_name_fk"))
     private Account account ;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
