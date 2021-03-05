@@ -44,6 +44,8 @@ public class AccountService {
         String oldpassword = account.getPassword();
         String passwordencoded =bCryptPasswordEncoder.encode(oldpassword);
         account.setPassword(passwordencoded);
+        account.setRole("User");
+        account.setBlocked(false);
         accountRepository.save(account);
         status.put("Status", "Successed");
         return status;

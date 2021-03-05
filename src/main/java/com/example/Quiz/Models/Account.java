@@ -25,9 +25,9 @@ public class Account {
     //@JoinColumn(name = "user_id", referencedColumnName = "user_id", foreignKey = @ForeignKey(name = "user_id_fk"))
 
 
-    @Column(name = "role")
+    @Column(name = "role",nullable = false)
     private String role;
-    @Column(name = "blocked" )
+    @Column(name = "blocked",nullable = false)
     private boolean blocked;
 
     public String getRole() {
