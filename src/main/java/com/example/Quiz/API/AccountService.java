@@ -3,38 +3,56 @@ package com.example.Quiz.API;
 import com.example.Quiz.Models.Account;
 import com.example.Quiz.Repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 @Service
 public class AccountService {
     @Autowired
-    AccountRepository repository;
+    AccountRepository accountRepository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<Account> findAll(){
-        return repository.findAll();
+        return accountRepository.findAll();
     }
 
     public Account findByID(Long id){
-        return  repository.getOne(id);
+        return  accountRepository.getOne(id);
     }
 
     public Account create(Account user){
-        return repository.saveAndFlush(user);
+        return accountRepository.saveAndFlush(user);
     }
 
     public Account update(Account user){
-        return repository.saveAndFlush(user);
+        return accountRepository.saveAndFlush(user);
     }
-    public boolean register( String Username, String Password)
+
+    public HashMap register(Account account)
     {
+        HashMap<String,String> status = new HashMap<>();
 
-        return  true;
-
+        if( accountRepository.findByUserName(account.getUserName()) !=null) {
+            status.put("Status", "Failed");
+            return status;
+        }
+        else {
+        String oldpassword = account.getPassword();
+        String passwordencoded =bCryptPasswordEncoder.encode(oldpassword);
+        account.setPassword(passwordencoded);
+        accountRepository.save(account);
+        status.put("Status", "Successed");
+        return status;
+            // tam thoi return cai nay, dang tim cach return
+           //  http errors
+        }
     }
 
     public void delete(int id){
-        repository.deleteById((long) id);
+        accountRepository.deleteById((long) id);
     }
 }

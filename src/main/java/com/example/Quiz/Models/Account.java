@@ -9,11 +9,11 @@ import javax.persistence.*;
 @Table(name = "account")
 public class Account {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "account_id")
-    private long accountId;
 
+
+    //@Column(name = "account_id")
+    //private long accountId; // bo id vi no ngu vai lon du ma
+    @Id
     @Column(name = "user_name")
     private String userName;
 
@@ -27,7 +27,7 @@ public class Account {
 
     @Column(name = "role")
     private String role;
-    @Column(name = "blocked")
+    @Column(name = "blocked" )
     private boolean blocked;
 
     public String getRole() {
@@ -38,13 +38,13 @@ public class Account {
         this.role = role;
     }
 
-    public long getAccountId() {
-        return accountId;
-    }
+//    public long getAccountId() {
+//        return accountId;
+//    }
 
-    public void setAccountId(long accountId) {
-        this.accountId = accountId;
-    }
+//    public void setAccountId(long accountId) {
+//        this.accountId = accountId;
+//    }
 
     public String getUserName() {
         return userName;

@@ -36,9 +36,9 @@ public class AccountTest {
         account.setRole("admin");
         accountService.create(account);
 
-        Account account1 = accountService.findByID((long)account.getAccountId());
+        //Account account1 = accountService.findByID((long)account.getAccountId());
         assertEquals("abc",account.getUserName());
 
-        accountService.delete((int) account1.getAccountId());
+      //  accountService.delete((int) account1.getAccountId());
     }
 }
