@@ -6,10 +6,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.Entity;
 import java.util.Collection;
 import java.util.Collections;
 
-
+@Entity
 @Data
 @AllArgsConstructor
 public class MyCustomUserDetail implements UserDetails {

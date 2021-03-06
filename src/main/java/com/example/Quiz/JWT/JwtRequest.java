@@ -1,12 +1,13 @@
-package com.example.Quiz.JWTModel;
+package com.example.Quiz.JWT;
 
 
 import lombok.*;
+import org.springframework.stereotype.Component;
 
+@Component
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 public class JwtRequest {
 
     private String username;
