@@ -19,7 +19,8 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
     }
         @Override
         protected void configure(HttpSecurity http) throws Exception{ // tam thoi tat csrf de server respone
-            http.cors().and().csrf().disable(); // tat csrf
+            http.cors().and().csrf().disable().antMatcher("/**").authorizeRequests()
+            .antMatchers("/").permitAll().anyRequest().authenticated().and().oauth2Login(); // tat csrf
         }
 
 }
