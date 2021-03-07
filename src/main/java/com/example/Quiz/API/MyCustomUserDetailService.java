@@ -1,5 +1,6 @@
 package com.example.Quiz.API;
 
+import com.example.Quiz.Models.Account;
 import com.example.Quiz.Models.MyCustomUserDetail;
 import com.example.Quiz.Repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,11 @@ public class MyCustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return new MyCustomUserDetail(repository.findByUserName(s));
+
+        Account account = repository.findByUserName(s);
+        if(account != null)
+            return new MyCustomUserDetail(account);
+        else throw new UsernameNotFoundException("User not found with username: " + account.getUserName());
+
     }
 }

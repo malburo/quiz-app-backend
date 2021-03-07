@@ -9,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
@@ -46,21 +45,22 @@ public class AccountAPI {
     @PostMapping("/authenticate")
     public JwtResponse authenticate (@RequestBody JwtRequest jwtRequest) throws Exception {
 
-            authenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
+            doAuthenticate(jwtRequest.getUsername(),jwtRequest.getPassword());
 
             final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
 
             final String token = jwtUtility.generateToken(userDetails);
 
 
-            return new JwtResponse(token);
+             return new JwtResponse(token);
 
     }
-    private void authenticate(String username, String password) throws Exception {
+
+    private void doAuthenticate(String username, String password) throws Exception {
         try {
-            Authentication authentication = authenticationManager.authenticate
-                    (new UsernamePasswordAuthenticationToken(username, password));
-            // SecurityContextHolder.getContext().setAuthentication(authentication);
+            authenticationManager.authenticate
+                    (new UsernamePasswordAuthenticationToken(username,password));
+             //SecurityContextHolder.getContext().setAuthentication(authentication);
 
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
