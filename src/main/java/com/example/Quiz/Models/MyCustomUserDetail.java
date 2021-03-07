@@ -1,26 +1,26 @@
 package com.example.Quiz.Models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
 import java.util.Collection;
 import java.util.Collections;
 
-@Entity
-@Data
-@AllArgsConstructor
+
+@Component
 public class MyCustomUserDetail implements UserDetails {
 
     Account account;
 
-    private static  final String PREFIX ="ROLE_";
+    private static final String PREFIX ="ROLE_";
 
     public MyCustomUserDetail(Account account) {
         this.account = account;
+    }
+
+    public MyCustomUserDetail() {
     }
 
     @Override

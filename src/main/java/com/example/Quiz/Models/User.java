@@ -32,7 +32,7 @@ public class User {
 
     // Swaped , user  hold account
     @OneToOne
-  @JoinColumn(name = "user_name",referencedColumnName = "user_name",foreignKey = @ForeignKey(name = "user_name_fk"))
+    @JoinColumn(name = "user_name",referencedColumnName = "user_name",foreignKey = @ForeignKey(name = "user_name_fk"))
     private Account account ;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
