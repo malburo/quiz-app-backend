@@ -4,7 +4,6 @@ import com.example.Quiz.Models.Account;
 import com.example.Quiz.Repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -22,6 +21,10 @@ public class AccountService {
 
     public Account findByID(Long id){
         return  accountRepository.getOne(id);
+    }
+
+    public Account findByUserName(String username ){
+        return  accountRepository.findByUserName(username);
     }
 
     public Account create(Account user){
@@ -46,7 +49,7 @@ public class AccountService {
         account.setPassword(passwordencoded);
         account.setRole("User");
         account.setBlocked(false);
-        accountRepository.save(account);
+        accountRepository.saveAndFlush(account);
         status.put("Status", "Successed");
         return status;
             // tam thoi return cai nay, dang tim cach return

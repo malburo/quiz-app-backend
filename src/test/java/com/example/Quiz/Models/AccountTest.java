@@ -19,9 +19,12 @@ public class AccountTest {
 
     @Test
     public void testFind() throws Exception {
-        Account account = accountService.findByID(1L);
+        Account account = accountService.findByUserName("admin");
         assertNotNull(account);
     }
+
+
+
     @Test
     public void testFindAll() throws  Exception {
         List<Account> accounts = accountService.findAll();
@@ -41,4 +44,6 @@ public class AccountTest {
 
       //  accountService.delete((int) account1.getAccountId());
     }
+
+
 }
