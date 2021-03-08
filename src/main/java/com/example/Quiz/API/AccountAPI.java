@@ -29,7 +29,7 @@ public class AccountAPI {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    @PostMapping("/test")
+    @PostMapping("/register")
     public HashMap Register ( @RequestBody Account account )
     {
          return accountService.register(account);
