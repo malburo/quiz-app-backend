@@ -3,9 +3,12 @@ package com.example.Quiz.API;
 import com.example.Quiz.Models.Account;
 import com.example.Quiz.Repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.List;
 @Service
@@ -35,26 +38,29 @@ public class AccountService {
         return accountRepository.saveAndFlush(user);
     }
 
-    public HashMap register(Account account)
+    public ResponseEntity<String> register(Account account)
     {
-        HashMap<String,String> status = new HashMap<>();
-
         if( accountRepository.findByUserName(account.getUserName()) !=null) {
-            status.put("Status", "Failed");
-            return status;
+
+            return new ResponseEntity("Account Exist",HttpStatus.FORBIDDEN); // RESPONE STATUS
         }
         else {
-        String oldpassword = account.getPassword();
-        String passwordencoded =bCryptPasswordEncoder.encode(oldpassword);
-        account.setPassword(passwordencoded);
-        account.setRole("User");
-        account.setBlocked(false);
-        accountRepository.saveAndFlush(account);
-        status.put("Status", "Successed");
-        return status;
-            // tam thoi return cai nay, dang tim cach return
-           //  http errors
+
+            String oldpassword = account.getPassword();
+            String passwordencoded = bCryptPasswordEncoder.encode(oldpassword);
+            account.setPassword(passwordencoded);
+            account.setRole("User");
+            account.setBlocked(false);
+            accountRepository.saveAndFlush(account);
+
+            return new ResponseEntity("Account Created",HttpStatus.OK); // RESPONE STATUS
         }
+
+
+    }
+    protected ResponseEntity<String> Exceptionregister ()
+    {
+        return new ResponseEntity(HttpStatus.FORBIDDEN);
     }
 
     public void delete(int id){
