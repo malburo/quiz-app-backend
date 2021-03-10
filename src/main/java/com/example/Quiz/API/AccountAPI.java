@@ -1,12 +1,10 @@
 package com.example.Quiz.API;
-
+import  com.example.Quiz.Quick_Pojo_Class.changePassword;
 import com.example.Quiz.JWT.JwtRequest;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
-import com.example.Quiz.Quick_Pojo_Class.changePassword;
 import com.example.Quiz.Ultility.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
-import com.example.Quiz.Quick_Pojo_Class.changePassword;
 
 import java.security.Principal;
 
