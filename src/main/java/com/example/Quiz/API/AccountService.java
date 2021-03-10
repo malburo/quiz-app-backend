@@ -1,5 +1,6 @@
 package com.example.Quiz.API;
 
+import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
 import com.example.Quiz.Repository.AccountRepository;
@@ -11,10 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
 import java.util.List;
+import com.example.Quiz.Quick_Pojo_Class.changePassword;
 @Service
 public class AccountService {
     @Autowired
@@ -46,11 +45,11 @@ public class AccountService {
         return accountRepository.saveAndFlush(user);
     }
 
-    public ResponseEntity<JwtResponse> register(Account account)
+    public ResponseEntity register(Account account) // dang ky tai khoan
     {
         if( accountRepository.findByUserName(account.getUserName()) !=null) {
 
-            return new ResponseEntity("Account Exist",HttpStatus.FORBIDDEN); // RESPONE STATUS
+            return new ResponseEntity( new Message("Account exist"),HttpStatus.FORBIDDEN); // RESPONE STATUS
         }
         else {
 
@@ -63,14 +62,34 @@ public class AccountService {
             UserDetails user = userDetailsService.loadUserByUsername(account.getUserName());
 
             JwtResponse jwtResponse = new JwtResponse(jwtUtility.generateToken(user));
-
-
-
             return new ResponseEntity(jwtResponse,HttpStatus.OK); // RESPONE STATUS
         }
 
 
     }
+    public ResponseEntity  changepassword (changePassword changePassword, String Username)
+    {
+
+              Account account = accountRepository.findByUserName(Username);
+
+              if( bCryptPasswordEncoder.matches(changePassword.getOldpassword(),account.getPassword()))
+
+           {
+               account.setPassword(changePassword.getNewpassword());
+               accountRepository.save(account);
+                return  new   ResponseEntity( new Message("change password successed"),HttpStatus.OK);
+
+            }
+           else {
+           return  new ResponseEntity(new Message("password doesn't match"),HttpStatus.BAD_REQUEST); }
+
+
+
+
+
+
+    }
+
     protected ResponseEntity<String> Exceptionregister ()
     {
         return new ResponseEntity(HttpStatus.FORBIDDEN);

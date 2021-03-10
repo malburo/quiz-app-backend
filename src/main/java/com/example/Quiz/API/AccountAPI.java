@@ -3,22 +3,21 @@ package com.example.Quiz.API;
 import com.example.Quiz.JWT.JwtRequest;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
+import com.example.Quiz.Quick_Pojo_Class.changePassword;
 import com.example.Quiz.Ultility.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.web.servlet.oauth2.client.OAuth2ClientSecurityMarker;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
+import com.example.Quiz.Quick_Pojo_Class.changePassword;
 
 import java.security.Principal;
-import java.util.HashMap;
 
 
 @RestController
@@ -35,7 +34,7 @@ public class AccountAPI {
     AuthenticationManager authenticationManager;
 
     @PostMapping("/register") //
-    public ResponseEntity<JwtResponse> Register (@RequestBody Account account )
+    public ResponseEntity Register (@RequestBody Account account )
     {
        return accountService.register(account); // tra ve respone
 
@@ -86,6 +85,11 @@ public class AccountAPI {
     public Principal userhome (Principal principal)
     {
         return principal;
+    }
+    @PostMapping("/user/changepassword")
+    public ResponseEntity changepassword(@RequestBody changePassword change,Principal principal ) {
+        return accountService.changepassword(change,principal.getName());
+
     }
 
 }
