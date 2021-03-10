@@ -1,10 +1,14 @@
 package com.example.Quiz.API;
 
+import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
 import com.example.Quiz.Repository.AccountRepository;
+import com.example.Quiz.Ultility.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +21,10 @@ public class AccountService {
     AccountRepository accountRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    UserDetailsService userDetailsService;
+    @Autowired
+    JWTUtility jwtUtility;
 
     public List<Account> findAll(){
         return accountRepository.findAll();
@@ -38,7 +46,7 @@ public class AccountService {
         return accountRepository.saveAndFlush(user);
     }
 
-    public ResponseEntity<String> register(Account account)
+    public ResponseEntity<JwtResponse> register(Account account)
     {
         if( accountRepository.findByUserName(account.getUserName()) !=null) {
 
@@ -52,8 +60,13 @@ public class AccountService {
             account.setRole("User");
             account.setBlocked(false);
             accountRepository.saveAndFlush(account);
+            UserDetails user = userDetailsService.loadUserByUsername(account.getUserName());
 
-            return new ResponseEntity("Account Created",HttpStatus.OK); // RESPONE STATUS
+            JwtResponse jwtResponse = new JwtResponse(jwtUtility.generateToken(user));
+
+
+
+            return new ResponseEntity(jwtResponse,HttpStatus.OK); // RESPONE STATUS
         }
 
 

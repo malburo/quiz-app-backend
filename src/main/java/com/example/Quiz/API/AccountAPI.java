@@ -35,7 +35,7 @@ public class AccountAPI {
     AuthenticationManager authenticationManager;
 
     @PostMapping("/register") //
-    public ResponseEntity<String> Register (@RequestBody Account account )
+    public ResponseEntity<JwtResponse> Register (@RequestBody Account account )
     {
        return accountService.register(account); // tra ve respone
 
