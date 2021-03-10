@@ -4,6 +4,7 @@ import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
 import com.example.Quiz.Repository.AccountRepository;
+import com.example.Quiz.Quick_Pojo_Class.changePassword;
 import com.example.Quiz.Ultility.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,9 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.stereotype.Service;
 import java.util.List;
-import com.example.Quiz.Quick_Pojo_Class.changePassword;
+
 @Service
 public class AccountService {
     @Autowired
@@ -75,7 +77,7 @@ public class AccountService {
               if( bCryptPasswordEncoder.matches(changePassword.getOldpassword(),account.getPassword()))
 
            {
-               account.setPassword(changePassword.getNewpassword());
+               account.setPassword(bCryptPasswordEncoder.encode(changePassword.getNewpassword())); //
                accountRepository.save(account);
                 return  new   ResponseEntity( new Message("change password successed"),HttpStatus.OK);
 
