@@ -10,6 +10,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.web.servlet.oauth2.client.OAuth2ClientSecurityMarker;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -45,6 +47,13 @@ public class AccountAPI {
     {
     
         return "hello";
+    }
+    @GetMapping("/loginFacebook")
+    public void  facebooklogin(Object object)
+    {
+
+      // info login client send to us
+
     }
 
     @PostMapping("/authenticate")
