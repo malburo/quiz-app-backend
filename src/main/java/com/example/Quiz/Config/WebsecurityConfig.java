@@ -55,6 +55,6 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
             // Add a filter to validate the tokens with every request
             http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // config filter cua rieng minh
-        }
+        } // lop servlet filter xu ly token
 
 }
