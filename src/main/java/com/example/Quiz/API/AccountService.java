@@ -68,24 +68,15 @@ public class AccountService {
             User user_DB = new User();
             user_DB.setPoint(0);
             user_DB.setLevel(0);
+            user_DB.setAccount(account);
             userRepository.save(user_DB);
-
-
-
-
             UserDetails user = userDetailsService.loadUserByUsername(account.getUserName());
-
-
-
             JwtResponse jwtResponse = new JwtResponse(jwtUtility.generateToken(user));
             return new ResponseEntity(jwtResponse,HttpStatus.OK); // RESPONE STATUS
         }
-
-
     }
     public ResponseEntity  changepassword (changePassword changePassword, String Username)
     {
-
               Account account = accountRepository.findByUserName(Username);
 
               if( bCryptPasswordEncoder.matches(changePassword.getOldpassword(),account.getPassword()))
@@ -98,20 +89,12 @@ public class AccountService {
             }
            else {
            return  new ResponseEntity(new Message("password doesn't match"),HttpStatus.BAD_REQUEST); }
-
-
-
-
-
-
     }
-
 
     protected ResponseEntity<String> Exceptionregister ()
     {
         return new ResponseEntity(HttpStatus.FORBIDDEN);
     }
-
     public void delete(int id){
         accountRepository.deleteById((long) id);
     }

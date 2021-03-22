@@ -40,18 +40,12 @@ public class AccountAPI {
     @PostMapping("/register") //
     public ResponseEntity Register (@RequestBody Account account )
     {
-
         return accountService.register(account);
-
-
-
-
-         // regiser
+        // regiser
     }
     @GetMapping ("/test2")
     public String test ()
     {
-    
         return "hello";
     }
     @GetMapping("/loginFacebook")
@@ -70,7 +64,6 @@ public class AccountAPI {
             final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
 
             final String token = jwtUtility.generateToken(userDetails);
-
 
              return new JwtResponse(token);
 

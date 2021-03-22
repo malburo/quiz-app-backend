@@ -27,9 +27,22 @@ public class UserService {
     public User update(User user){
         return repository.saveAndFlush(user);
     }
+//    public User Getuser (String userName)
+//    { User user= repository.findByUsername(userName);
+//        return user ;
+//    }
 
     public void delete(int id){
         repository.deleteById((long) id);
     }
+//    public  boolean checker (String userName,Long userId)
+//    {
+//    User user = repository.checkerQuery(userId,userName);
+//    if (user != null)
+//    return true;
+//    return  false;
+//    }
+
+
 
 }

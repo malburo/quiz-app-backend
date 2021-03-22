@@ -5,8 +5,9 @@ import java.util.Date;
 
 
 public class Message {
-    private String message;
     private final Date date_message = new Date();
+    private String message;
+
     public Message(String message) {
         this.message = message;
     }
