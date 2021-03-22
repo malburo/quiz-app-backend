@@ -10,6 +10,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,7 @@ import java.security.Principal;
 
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/auth")
 public class AccountAPI {
     @Autowired
     AccountService accountService;
@@ -26,6 +28,8 @@ public class AccountAPI {
     UserDetailsService userService;
     @Autowired
     JWTUtility jwtUtility;
+
+
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -52,7 +56,7 @@ public class AccountAPI {
 
     }
 
-    @PostMapping("/authenticate")
+    @PostMapping("/login")
     public JwtResponse authenticate (@RequestBody JwtRequest jwtRequest) throws Exception {
 
             doAuthenticate(jwtRequest.getUsername(),jwtRequest.getPassword());
@@ -83,6 +87,7 @@ public class AccountAPI {
     {
         return principal;
     }
+
     @PostMapping("/user/changepassword")
     public ResponseEntity changepassword(@RequestBody changePassword change,Principal principal ) {
         return accountService.changepassword(change,principal.getName());
