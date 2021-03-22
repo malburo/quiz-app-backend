@@ -35,13 +35,11 @@ public class UserService {
     public void delete(int id){
         repository.deleteById((long) id);
     }
-//    public  boolean checker (String userName,Long userId)
-//    {
-//    User user = repository.checkerQuery(userId,userName);
-//    if (user != null)
-//    return true;
-//    return  false;
-//    }
+    public  User Getuser (String userName)
+    {
+    return  repository.GetUserByUserName(userName);
+
+    }
 
 
 

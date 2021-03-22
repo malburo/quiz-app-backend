@@ -21,6 +21,7 @@ public class Account {
     private String password;
 
     @OneToOne(mappedBy = "account",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+
     private User user;
     //@JoinColumn(name = "user_id", referencedColumnName = "user_id", foreignKey = @ForeignKey(name = "user_id_fk"))
 
