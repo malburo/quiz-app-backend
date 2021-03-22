@@ -1,10 +1,14 @@
 package com.example.Quiz.API;
+import com.example.Quiz.Models.User;
 import  com.example.Quiz.Quick_Pojo_Class.changePassword;
 import com.example.Quiz.JWT.JwtRequest;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
+import com.example.Quiz.Repository.AccountRepository;
+import com.example.Quiz.Repository.UserRepository;
 import com.example.Quiz.Ultility.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,14 +34,16 @@ public class AccountAPI {
     JWTUtility jwtUtility;
 
 
-
     @Autowired
     AuthenticationManager authenticationManager;
 
     @PostMapping("/register") //
     public ResponseEntity Register (@RequestBody Account account )
     {
-       return accountService.register(account); // tra ve respone
+
+        return accountService.register(account);
+
+
 
 
          // regiser

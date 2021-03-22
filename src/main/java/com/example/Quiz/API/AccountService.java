@@ -1,10 +1,12 @@
 package com.example.Quiz.API;
 
+import com.example.Quiz.Models.User;
 import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
 import com.example.Quiz.Repository.AccountRepository;
 import com.example.Quiz.Quick_Pojo_Class.changePassword;
+import com.example.Quiz.Repository.UserRepository;
 import com.example.Quiz.Ultility.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,8 @@ public class AccountService {
     UserDetailsService userDetailsService;
     @Autowired
     JWTUtility jwtUtility;
+    @Autowired
+    UserRepository userRepository;
 
     public List<Account> findAll(){
         return accountRepository.findAll();
@@ -55,13 +59,23 @@ public class AccountService {
         }
         else {
 
-            String oldpassword = account.getPassword();
-            String passwordencoded = bCryptPasswordEncoder.encode(oldpassword);
+            String Password_temp = account.getPassword();
+            String passwordencoded = bCryptPasswordEncoder.encode(Password_temp);
             account.setPassword(passwordencoded);
             account.setRole("User");
             account.setBlocked(false);
             accountRepository.saveAndFlush(account);
+            User user_DB = new User();
+            user_DB.setPoint(0);
+            user_DB.setLevel(0);
+            userRepository.save(user_DB);
+
+
+
+
             UserDetails user = userDetailsService.loadUserByUsername(account.getUserName());
+
+
 
             JwtResponse jwtResponse = new JwtResponse(jwtUtility.generateToken(user));
             return new ResponseEntity(jwtResponse,HttpStatus.OK); // RESPONE STATUS
