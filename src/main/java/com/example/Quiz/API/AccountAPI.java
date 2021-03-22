@@ -1,15 +1,21 @@
 package com.example.Quiz.API;
+import com.example.Quiz.Models.User;
 import  com.example.Quiz.Quick_Pojo_Class.changePassword;
 import com.example.Quiz.JWT.JwtRequest;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
+import com.example.Quiz.Repository.AccountRepository;
+import com.example.Quiz.Repository.UserRepository;
 import com.example.Quiz.Ultility.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +24,7 @@ import java.security.Principal;
 
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/auth")
 public class AccountAPI {
     @Autowired
     AccountService accountService;
@@ -27,21 +33,19 @@ public class AccountAPI {
     @Autowired
     JWTUtility jwtUtility;
 
+
     @Autowired
     AuthenticationManager authenticationManager;
 
     @PostMapping("/register") //
     public ResponseEntity Register (@RequestBody Account account )
     {
-       return accountService.register(account); // tra ve respone
-
-
-         // regiser
+        return accountService.register(account);
+        // regiser
     }
     @GetMapping ("/test2")
     public String test ()
     {
-    
         return "hello";
     }
     @GetMapping("/loginFacebook")
@@ -52,7 +56,7 @@ public class AccountAPI {
 
     }
 
-    @PostMapping("/authenticate")
+    @PostMapping("/login")
     public JwtResponse authenticate (@RequestBody JwtRequest jwtRequest) throws Exception {
 
             doAuthenticate(jwtRequest.getUsername(),jwtRequest.getPassword());
@@ -60,7 +64,6 @@ public class AccountAPI {
             final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
 
             final String token = jwtUtility.generateToken(userDetails);
-
 
              return new JwtResponse(token);
 
@@ -83,6 +86,7 @@ public class AccountAPI {
     {
         return principal;
     }
+
     @PostMapping("/user/changepassword")
     public ResponseEntity changepassword(@RequestBody changePassword change,Principal principal ) {
         return accountService.changepassword(change,principal.getName());

@@ -1,5 +1,6 @@
 package com.example.Quiz.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -13,34 +14,40 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private long userId;
-    @Column(name = "user_full_name")
+    @Column(name = "user_full_name",nullable = true)// cho phep null
     private String fullName;
-    @Column(name = "user_email")
+    @Column(name = "user_email",nullable = true)// cho phep null
     private String email;
-    @Column(name = "phone_number")
+    @Column(name = "phone_number",nullable = true) // cho phep null
     private String phoneNumber;
-    @Column(name = "user_level")
+    @Column(name = "user_level", nullable = false)
     private int level;
-    @Column(name = "user_point")
+    @Column(name = "user_point", nullable = false)
     private double point;
-    @Column(name = "user_image_url")
+    @Column(name = "user_image_url",nullable =true)
     private String imageUrl;
-    @Column(name = "learning_streaks")
+    @Column(name = "learning_streaks",nullable = true)
+    @JsonIgnore
     private int learningStreaks;
 
 
 
     // Swaped , user  hold account
     @OneToOne
+
     @JoinColumn(name = "user_name",referencedColumnName = "user_name",foreignKey = @ForeignKey(name = "user_name_fk"))
+    @JsonIgnoreProperties({"user"}) // oh my lord tranh infinite loop
+    @JsonIgnore
     private Account account ;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Topic> topics;
 
 
 
     @OneToMany(mappedBy = "user",cascade =CascadeType.ALL)
+    @JsonIgnore
     private List<UserQuiz> quizzesFinished;
 
     public List<Topic> getTopics() {
