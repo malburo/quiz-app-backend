@@ -19,7 +19,7 @@ public class UserAPI {
     {
         return  userService.Getuser(principal.getName());
     }
-    @RequestMapping(value="/user", method = {RequestMethod.POST})
+    @PutMapping("/user")
     public Object UserAPI_controler_POST ( @RequestBody User user)
     {
         return  userService.update(user);
