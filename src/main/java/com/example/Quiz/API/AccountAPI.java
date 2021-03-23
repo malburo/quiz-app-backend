@@ -87,11 +87,6 @@ public class AccountAPI {
         return principal;
     }
 
-    @PostMapping("/user/changepassword")
-    public ResponseEntity changepassword(@RequestBody changePassword change,Principal principal ) {
-        return accountService.changepassword(change,principal.getName());
-
-    }
 
 }
 

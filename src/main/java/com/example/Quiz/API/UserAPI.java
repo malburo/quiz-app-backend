@@ -1,34 +1,23 @@
 package com.example.Quiz.API;
 
 import com.example.Quiz.Models.User;
-import com.example.Quiz.Repository.UserRepository;
+import com.example.Quiz.Quick_Pojo_Class.changePassword;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Map;
-
 @RestController
-
 @RequestMapping("/users")
 public class UserAPI {
     @Autowired
     UserService userService;
     @Autowired
-    UserRepository userRepository;
+    AccountService accountService;
     @RequestMapping(value="/user", method = {RequestMethod.GET})
     public Object UserAPI_controler_GET (Principal principal )
     {
-
-
-
-
-            return  userService.Getuser(principal.getName());
+        return  userService.Getuser(principal.getName());
     }
     @RequestMapping(value="/user", method = {RequestMethod.POST})
     public Object UserAPI_controler_POST ( @RequestBody User user)
@@ -42,6 +31,12 @@ public class UserAPI {
 
         return  null;
     }
+    @PostMapping("/user/change_password")
+    public ResponseEntity changepassword(@RequestBody changePassword change, Principal principal ) {
+        return accountService.changepassword(change,principal.getName());
+
+    }
+
 
 
 
