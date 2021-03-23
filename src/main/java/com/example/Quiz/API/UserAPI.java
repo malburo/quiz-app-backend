@@ -21,33 +21,28 @@ public class UserAPI {
     UserService userService;
     @Autowired
     UserRepository userRepository;
-    @RequestMapping(value="/user", method = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.POST,RequestMethod.PUT})
-    public Object UserAPI_controler_vippro (Principal principal , HttpServletRequest httpServletRequest, @RequestBody User user)
+    @RequestMapping(value="/user", method = {RequestMethod.GET})
+    public Object UserAPI_controler_GET (Principal principal )
     {
 
-        String method = httpServletRequest.getMethod();
-        if (method.equals("GET"))
-        {
+
+
+
             return  userService.Getuser(principal.getName());
-        }
-        if (method.equals("POST"))
-        {
-                return userService.PostUser(user);
-        }
-        if (method.equals("DELETE"))
-        {
-
-        }
-        if (method.equals("PUT"))
-        {
-
-        }
-        return  null;
-
-
-
+    }
+    @RequestMapping(value="/user", method = {RequestMethod.POST})
+    public Object UserAPI_controler_POST ( @RequestBody User user)
+    {
+        return  userService.update(user);
 
     }
+    @RequestMapping(value="/user", method = {RequestMethod.DELETE})
+    public Object UserAPI_controler_DELETE (Principal principal )
+    {
+
+        return  null;
+    }
+
 
 
 }
