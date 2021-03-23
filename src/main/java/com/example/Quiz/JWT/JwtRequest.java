@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtRequest {
 
-    private String username;
+    private String userName;
     private String password;
 
     public String getUsername() {

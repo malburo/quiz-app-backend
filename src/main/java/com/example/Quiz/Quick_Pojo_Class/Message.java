@@ -3,7 +3,7 @@ package com.example.Quiz.Quick_Pojo_Class;
 
 import java.util.Date;
 
-
+ // tam thoi chua im ra class massage
 public class Message {
     private final Date date_message = new Date();
     private String message;

@@ -1,8 +1,12 @@
 package com.example.Quiz.API;
 
 import com.example.Quiz.Models.User;
+import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,6 +42,19 @@ public class UserService {
     public  User Getuser (String userName)
     {
     return  repository.GetUserByUserName(userName);
+
+    }
+    public ResponseEntity PostUser ( User user)
+    {
+        try {
+            repository.saveAndFlush(user);
+            return new ResponseEntity(new Message("Update completed"), HttpStatus.OK);
+        }
+        catch (Exception ex)
+        {
+            return new ResponseEntity(new Message("Update Error"), HttpStatus.OK);
+        }
+
 
     }
 
