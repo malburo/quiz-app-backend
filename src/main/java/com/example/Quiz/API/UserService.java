@@ -33,7 +33,7 @@ public class UserService {
         try {
 
             repository.saveAndFlush(user);
-            return new ResponseEntity(new Message("Update completed"), HttpStatus.OK);
+            return new ResponseEntity(new Message("Update completed",""), HttpStatus.OK);
         }
         catch (Exception ex)
         {

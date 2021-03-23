@@ -14,24 +14,24 @@ public class UserAPI {
     UserService userService;
     @Autowired
     AccountService accountService;
-    @RequestMapping(value="/user", method = {RequestMethod.GET})
+    @RequestMapping(value="/user", method = {RequestMethod.GET}) // lay thong tin nguoi dung theo jwt
     public Object UserAPI_controler_GET (Principal principal )
     {
         return  userService.Getuser(principal.getName());
     }
     @PutMapping("/user")
-    public Object UserAPI_controler_POST ( @RequestBody User user)
+    public Object UserAPI_controler_POST ( @RequestBody User user) // doi thong tin nguoi dung
     {
         return  userService.update(user);
 
     }
-    @RequestMapping(value="/user", method = {RequestMethod.DELETE})
+    @RequestMapping(value="/user", method = {RequestMethod.DELETE}) // tam thoi de method phong ho`
     public Object UserAPI_controler_DELETE (Principal principal )
     {
 
         return  null;
     }
-    @PostMapping("/user/change_password")
+    @PostMapping("/user/change_password") // doi mat khau
     public ResponseEntity changepassword(@RequestBody changePassword change, Principal principal ) {
         return accountService.changepassword(change,principal.getName());
 

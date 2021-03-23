@@ -84,7 +84,7 @@ public class AccountService {
            {
                account.setPassword(bCryptPasswordEncoder.encode(changePassword.getNewpassword())); //
                accountRepository.save(account);
-                return  new   ResponseEntity( new Message("change password successed"),HttpStatus.OK);
+                return  new   ResponseEntity( new Message("change password successed",""),HttpStatus.OK);
 
             }
            else {
