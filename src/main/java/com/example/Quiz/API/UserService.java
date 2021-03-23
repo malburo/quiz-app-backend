@@ -1,5 +1,6 @@
 package com.example.Quiz.API;
 
+import com.example.Quiz.Models.Account;
 import com.example.Quiz.Models.User;
 import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Repository.UserRepository;
@@ -28,25 +29,9 @@ public class UserService {
         return repository.saveAndFlush(user);
     }
 
-    public User update(User user){
-        return repository.saveAndFlush(user);
-    }
-//    public User Getuser (String userName)
-//    { User user= repository.findByUsername(userName);
-//        return user ;
-//    }
-
-    public void delete(int id){
-        repository.deleteById((long) id);
-    }
-    public  User Getuser (String userName)
-    {
-    return  repository.GetUserByUserName(userName);
-
-    }
-    public ResponseEntity PostUser ( User user)
-    {
+    public HttpEntity update(User user){ // cap nhap thong tin nguoi dung
         try {
+
             repository.saveAndFlush(user);
             return new ResponseEntity(new Message("Update completed"), HttpStatus.OK);
         }
@@ -54,9 +39,17 @@ public class UserService {
         {
             return new ResponseEntity(new Message("Update Error"), HttpStatus.OK);
         }
-
+//        return repository.saveAndFlush(user);
+    }
+    public void delete(int id){
+        repository.deleteById((long) id);
+    }
+    public  User Getuser (String userName)
+    {
+    return  repository.GetUserByUserName(userName); // lay thong tin nguoi dung
 
     }
+
 
 
 

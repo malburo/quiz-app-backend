@@ -6,15 +6,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtRequest {
 
-    private String userName;
+    private String username;
     private String password;
 
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     public void setUsername(String username) {
-        this.userName = username;
+        this.username = username;
     }
 
     public String getPassword() {

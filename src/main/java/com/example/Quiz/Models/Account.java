@@ -1,6 +1,8 @@
 package com.example.Quiz.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -17,7 +19,8 @@ public class Account {
     @Column(name = "user_name")
     private String userName;
 
-    @Column(name = "password")
+    @Column()
+
     private String password;
 
     @OneToOne(mappedBy = "account",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
@@ -54,8 +57,10 @@ public class Account {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+    @JsonProperty (access = JsonProperty.Access.WRITE_ONLY) // khong hien password khi respone
 
     public String getPassword() {
+
         return password;
     }
 

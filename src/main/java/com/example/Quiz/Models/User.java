@@ -2,6 +2,7 @@ package com.example.Quiz.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,10 +22,14 @@ public class User {
     @Column(name = "phone_number",nullable = true) // cho phep null
     private String phoneNumber;
     @Column(name = "user_level", nullable = false)
+     //finnal level
+    @JsonProperty (access = JsonProperty.Access.READ_ONLY)
     private int level;
     @Column(name = "user_point", nullable = false)
+    @JsonProperty (access = JsonProperty.Access.READ_ONLY)
     private double point;
     @Column(name = "user_image_url",nullable =true)
+    @JsonProperty (access = JsonProperty.Access.READ_ONLY)
     private String imageUrl;
     @Column(name = "learning_streaks",nullable = true)
     @JsonIgnore
@@ -37,7 +42,7 @@ public class User {
 
     @JoinColumn(name = "user_name",referencedColumnName = "user_name",foreignKey = @ForeignKey(name = "user_name_fk"))
     @JsonIgnoreProperties({"user"}) // oh my lord tranh infinite loop
-    @JsonIgnore
+
     private Account account ;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -97,6 +102,7 @@ public class User {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
 
     public int getLevel() {
         return level;
