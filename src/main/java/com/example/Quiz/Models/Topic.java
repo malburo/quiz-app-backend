@@ -24,10 +24,8 @@ public class Topic {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id",foreignKey = @ForeignKey(name = "user_id_fk"))
     private User user;
 
-
-    @OneToMany(mappedBy = "topic",cascade = CascadeType.ALL)
-    private List<SubTopic> subTopics;
-
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
+    private List<Quiz>  quizzes ;
 
     public Long getTopicId() {
         return topicId;
@@ -61,11 +59,5 @@ public class Topic {
         this.user = user;
     }
 
-    public List<SubTopic> getSubTopics() {
-        return subTopics;
-    }
 
-    public void setSubTopics(List<SubTopic> subTopics) {
-        this.subTopics = subTopics;
-    }
 }
