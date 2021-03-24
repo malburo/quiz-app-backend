@@ -52,23 +52,9 @@ public class UserAPI {
 
  }
 
-
-
-
-
-
-
-
-
-
-
     @PostMapping  ("/{userId}/change_password") // doi mat khau
     public HttpEntity changepassword(@PathVariable("userId") long userId ,@RequestBody changePassword password) {
        return accountService.changepassword(password,userId);
 
     }
-
-
-
-
 }
