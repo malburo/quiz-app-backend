@@ -1,5 +1,6 @@
 package com.example.Quiz.API;
 
+import com.example.Quiz.Models.Account;
 import com.example.Quiz.Models.User;
 import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Quick_Pojo_Class.changePassword;
@@ -61,8 +62,8 @@ public class UserAPI {
 
 
 
-    @GetMapping("/{userId}/change_password") // doi mat khau
-    public HttpEntity changepassword(@PathVariable("userId") long userId, @RequestBody changePassword password ) {
+    @PostMapping  ("/{userId}/change_password") // doi mat khau
+    public HttpEntity changepassword(@PathVariable("userId") long userId ,@RequestBody changePassword password) {
        return accountService.changepassword(password,userId);
 
     }

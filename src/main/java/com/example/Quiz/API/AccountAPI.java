@@ -89,7 +89,7 @@ public class AccountAPI {
         return  userService_2.Getuser(principal.getName());
     }
 
-    @GetMapping("/users/{userId}/reset_password")
+    @GetMapping ("/{userId}/reset_password")
     public Object sendEmail( @RequestParam long userId ,@RequestBody   String Jsonrequest) {
        String email=Jsonrequest.substring(10,Jsonrequest.length()-2); // lay email
        Account account = accountService.GenerateMail(email);
@@ -106,7 +106,7 @@ public class AccountAPI {
 
 
     }
-    @GetMapping("/mail")
+    @PostMapping("/mail")
     public Object mail( ) throws IOException,MessagingException
 
     {

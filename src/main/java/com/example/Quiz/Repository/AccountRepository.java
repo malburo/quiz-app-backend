@@ -13,7 +13,8 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
         Account GetAccountByUser (User user); // kiem tra co ton tai account thoa man request ko
         @Query("select A from Account A where A.user.email = ?1")
         Account  GetAccountByEmail(String email);
-        Account findById (long id);
+        @Query ( "select A from Account A where A.user.userId = ?1")
+        Account findByUserId (long id);
 
 
 

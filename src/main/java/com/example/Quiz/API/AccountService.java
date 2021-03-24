@@ -83,7 +83,7 @@ public class AccountService {
 
     public ResponseEntity  changepassword (changePassword changePassword, long userId)
     {
-              Account account = accountRepository.findById(userId);
+              Account account = accountRepository.findByUserId(userId);
               if( bCryptPasswordEncoder.matches(changePassword.getOldpassword(),account.getPassword()))
            {
                account.setPassword(bCryptPasswordEncoder.encode(changePassword.getNewpassword())); //
