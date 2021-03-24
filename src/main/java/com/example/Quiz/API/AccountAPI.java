@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-
+import java.security.Principal;
 
 
 @RestController
@@ -31,6 +31,8 @@ public class AccountAPI {
     UserDetailsService userService;
     @Autowired
     JWTUtility jwtUtility;
+    @Autowired
+    UserService userService_2 ;
 
 
     @Autowired
@@ -80,8 +82,14 @@ public class AccountAPI {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
+    // user get user info by using jwt
+    @RequestMapping(value="/getme", method = {RequestMethod.GET}) // lay thong tin nguoi dung theo jwt
+    public Object UserinfoByJwt_GET (Principal principal )
+    {
+        return  userService_2.Getuser(principal.getName());
+    }
 
-    @GetMapping("/Authenticate_email")
+    @GetMapping("/users/{userId}/reset_password")
     public Object sendEmail( @RequestBody   String Jsonrequest) {
        String email=Jsonrequest.substring(10,Jsonrequest.length()-2); // lay email
        Account account = accountService.GenerateMail(email);

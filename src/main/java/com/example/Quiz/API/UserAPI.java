@@ -38,6 +38,7 @@ public class UserAPI {
 
     {
         userService.delete(userId);
+        accountService.delete(userId);
         return  new ResponseEntity(new Message("Delete completed"), HttpStatus.OK);
 
     }
@@ -54,12 +55,7 @@ public class UserAPI {
 
 
 
- // user get user info by using jwt
-    @RequestMapping(value="/getme", method = {RequestMethod.GET}) // lay thong tin nguoi dung theo jwt
-    public Object UserinfoByJwt_GET (Principal principal )
-    {
-        return  userService.Getuser(principal.getName());
-    }
+
 
 
 

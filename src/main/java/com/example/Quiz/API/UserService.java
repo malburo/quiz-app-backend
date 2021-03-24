@@ -23,14 +23,14 @@ public class UserService {
     }
 
     public User findByID(Long id){
-        return repository.getOne(id);
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("No User with id:" + id));
     }
 
     public User create(User user){
         return repository.saveAndFlush(user);
     }
 
-    public HttpEntity update(User user) throws EntityNotFoundException { // cap nhap thong tin nguoi dung
+    public HttpEntity update(User user)  { // cap nhap thong tin nguoi dung
         try {
 
             repository.saveAndFlush(user);
@@ -42,14 +42,15 @@ public class UserService {
         }
 //        return repository.saveAndFlush(user);
     }
-    public void delete(long id) throws EntityNotFoundException{
-        repository.deleteById((long) id) ;
-    }
-    public  User Getuser (String userName) throws EntityNotFoundException
+    public  User Getuser (String userName)
     {
-    return  repository.GetUserByUserName(userName); // lay thong tin nguoi dung
+        return  repository.GetUserByUserName(userName); // lay thong tin nguoi dung
 
     }
+    public void delete(long id) {
+        repository.deleteById((long) id) ;
+    }
+
 
 
 

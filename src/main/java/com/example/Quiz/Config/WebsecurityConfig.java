@@ -46,7 +46,7 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception{ // tam thoi tat csrf de server respone
             http.cors().and().csrf().disable()
-                    .authorizeRequests().antMatchers("/auth/login","/auth/register","/loginFacebook","/auth/Authenticate_email","/auth/mail").permitAll().
+                    .authorizeRequests().antMatchers("/auth/login","/auth/register","/loginFacebook","/auth/Authenticate_email","/users/{userId}/reset_password").permitAll().
                     antMatchers("/users").hasAuthority("Admin"). // phai co role admin moi dc vao
                     // all other requests need to be authenticated
                             anyRequest().authenticated().and().
