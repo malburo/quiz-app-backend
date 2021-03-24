@@ -47,6 +47,7 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception{ // tam thoi tat csrf de server respone
             http.cors().and().csrf().disable()
                     .authorizeRequests().antMatchers("/auth/login","/auth/register","/loginFacebook","/auth/Authenticate_email","/auth/mail").permitAll().
+                    antMatchers("/users").hasAuthority("Admin"). // phai co role admin moi dc vao
                     // all other requests need to be authenticated
                             anyRequest().authenticated().and().
                     // make sure we use stateless session; session won't be used to

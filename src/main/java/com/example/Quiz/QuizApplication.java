@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -32,6 +33,8 @@ public class QuizApplication {
 
 	@Autowired
 	TopicRepository topicRepository;
+	@Autowired
+	BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Bean
 	public CommandLineRunner deme(){
@@ -40,11 +43,11 @@ public class QuizApplication {
 //			Topic topic = new Topic();
 //			Topic topic1 = new Topic();
 			Account account = new Account();
-			account.setUserName("username");
-			account.setPassword("password");
+			account.setUserName("username1");
+			account.setPassword(bCryptPasswordEncoder.encode("password"));
 			//user.setFullName("Test user");
 			//account.setUser();
-			account.setRole("user");
+			account.setRole("Admin");
 			account.setBlocked(false);
 
 			//topic.setTopicName("topictest");
