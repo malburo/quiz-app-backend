@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -29,7 +30,7 @@ public class UserService {
         return repository.saveAndFlush(user);
     }
 
-    public HttpEntity update(User user){ // cap nhap thong tin nguoi dung
+    public HttpEntity update(User user) throws EntityNotFoundException { // cap nhap thong tin nguoi dung
         try {
 
             repository.saveAndFlush(user);
@@ -41,10 +42,10 @@ public class UserService {
         }
 //        return repository.saveAndFlush(user);
     }
-    public void delete(int id){
-        repository.deleteById((long) id);
+    public void delete(long id) throws EntityNotFoundException{
+        repository.deleteById((long) id) ;
     }
-    public  User Getuser (String userName)
+    public  User Getuser (String userName) throws EntityNotFoundException
     {
     return  repository.GetUserByUserName(userName); // lay thong tin nguoi dung
 
