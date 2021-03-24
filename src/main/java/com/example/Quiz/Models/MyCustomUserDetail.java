@@ -35,7 +35,7 @@ public class MyCustomUserDetail implements UserDetails {
 
     @Override
     public String getUsername() {
-        return account.getUserName();
+        return account.getUsername();
     }
 
     @Override

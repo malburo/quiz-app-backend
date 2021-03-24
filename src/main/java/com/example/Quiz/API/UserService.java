@@ -5,6 +5,7 @@ import com.example.Quiz.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -17,7 +18,7 @@ public class UserService {
     }
 
     public User findByID(Long id){
-        return repository.getOne(id);
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("No such user with id:" + id));
     }
 
     public User create(User user){

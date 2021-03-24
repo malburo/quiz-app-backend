@@ -26,8 +26,8 @@ public class Quiz {
    private List<UserQuiz> participantQuizzes;
 
    @ManyToOne
-   @JoinColumn(name = "sub_topic_id",referencedColumnName = "sub_topic_id",foreignKey = @ForeignKey(name = "sub_topic_id"))
-   private SubTopic subTopic;
+   @JoinColumn(name = "topic_id",referencedColumnName = "topic_id",foreignKey = @ForeignKey(name = "topic_id"))
+   private Topic topic;
 
    public Long getQuizId() {
       return quizId;
@@ -61,13 +61,6 @@ public class Quiz {
       this.questions = questions;
    }
 
-   public SubTopic getSubTopic() {
-      return subTopic;
-   }
-
-   public void setSubTopic(SubTopic subTopic) {
-      this.subTopic = subTopic;
-   }
 
    public List<UserQuiz> getParticipantQuizzes() {
       return participantQuizzes;
