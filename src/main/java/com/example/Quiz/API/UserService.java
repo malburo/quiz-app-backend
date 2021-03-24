@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -22,18 +23,18 @@ public class UserService {
     }
 
     public User findByID(Long id){
-        return repository.getOne(id);
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("No User with id:" + id));
     }
 
     public User create(User user){
         return repository.saveAndFlush(user);
     }
 
-    public HttpEntity update(User user){ // cap nhap thong tin nguoi dung
+    public HttpEntity update(User user)  { // cap nhap thong tin nguoi dung
         try {
 
             repository.saveAndFlush(user);
-            return new ResponseEntity(new Message("Update completed"), HttpStatus.OK);
+            return new ResponseEntity(new Message("Update completed",""), HttpStatus.OK);
         }
         catch (Exception ex)
         {
@@ -41,14 +42,15 @@ public class UserService {
         }
 //        return repository.saveAndFlush(user);
     }
-    public void delete(int id){
-        repository.deleteById((long) id);
-    }
     public  User Getuser (String userName)
     {
-    return  repository.GetUserByUserName(userName); // lay thong tin nguoi dung
+        return  repository.GetUserByUserName(userName); // lay thong tin nguoi dung
 
     }
+    public void delete(long id) {
+        repository.deleteById((long) id) ;
+    }
+
 
 
 

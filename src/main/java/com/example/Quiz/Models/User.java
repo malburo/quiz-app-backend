@@ -40,7 +40,7 @@ public class User {
     // Swaped , user  hold account
     @OneToOne
 
-    @JoinColumn(name = "user_name",referencedColumnName = "user_name",foreignKey = @ForeignKey(name = "user_name_fk"))
+    @JoinColumn(name = "account_id",referencedColumnName = "account_id",foreignKey = @ForeignKey(name = "account_id_fk"))
     @JsonIgnoreProperties({"user"}) // oh my lord tranh infinite loop
 
     private Account account ;
