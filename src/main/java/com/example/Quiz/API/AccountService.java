@@ -9,7 +9,9 @@ import com.example.Quiz.Repository.AccountRepository;
 import com.example.Quiz.Quick_Pojo_Class.changePassword;
 import com.example.Quiz.Repository.UserRepository;
 import com.example.Quiz.Ultility.JWTUtility;
+import com.example.Quiz.Ultility.JavaMailUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +19,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import org.springframework.stereotype.Service;
+
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -31,6 +36,8 @@ public class AccountService {
     JWTUtility jwtUtility;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    JavaMailUtility javaMailUtility;
 
 
     public List<Account> findAll(){
@@ -74,7 +81,7 @@ public class AccountService {
             user_DB.setLevel(0);
             user_DB.setAccount(account);
             userRepository.save(user_DB);
-            UserDetails user = userDetailsService.loadUserByUsername(account.getUserName());
+            UserDetails user = userDetailsService.loadUserByUsername(accountregister.getUsername());
             JwtResponse jwtResponse = new JwtResponse(jwtUtility.generateToken(user));
             return new ResponseEntity(jwtResponse,HttpStatus.OK); // RESPONE STATUS
         }
@@ -95,10 +102,16 @@ public class AccountService {
     }
 
 
-    public Account GenerateMail (String email) // tao gmail va gui
+    public ResponseEntity GenerateMail (String email) throws IOException, MessagingException
+    // tao gmail va gui
     {
         Account account = accountRepository.GetAccountByEmail(email);
-       return account;
+        if (account==null)
+            return new ResponseEntity( new Message("Email error"," tài khoản chưa đăng ký email"),HttpStatus.FORBIDDEN);
+        else
+            javaMailUtility.sendmail(email,account.getUserName());
+
+
     }
 
 //    protected ResponseEntity<String> Exceptionregister ()

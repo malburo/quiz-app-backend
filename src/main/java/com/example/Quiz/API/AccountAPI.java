@@ -7,6 +7,7 @@ import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Ultility.JWTUtility;
 import com.example.Quiz.Ultility.JavaMailUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Map;
 
 
 @RestController
@@ -89,21 +91,29 @@ public class AccountAPI {
         return  userService_2.Getuser(principal.getName());
     }
 
-    @GetMapping ("/{userId}/reset_password")
-    public Object sendEmail( @RequestParam long userId ,@RequestBody   String Jsonrequest) {
-       String email=Jsonrequest.substring(10,Jsonrequest.length()-2); // lay email
-       Account account = accountService.GenerateMail(email);
-        if (account==null)
-        {
-            // gui loi neu khong co user or email loi
-            return  new   ResponseEntity( new Message("Nếu chuỗi này không dư ký tự thì email ko tồn tại: "+email,
-                    "Email or Json lenght did'nt correct"), HttpStatus.OK);
+    @PostMapping ("/forgot_password")
+   public ResponseEntity Forgotpassword (@RequestParam(required = false) String jwttoken,@RequestBody(required = false) Map<String,String> Jsonrequest )
+   throws  MessagingException,IOException
+    {
+
+        Map<String,String> EmailorNewpassword = Jsonrequest;
+        String key =EmailorNewpassword.keySet().toString();
+        String entity= EmailorNewpassword.get(key.substring(1,key.length()-1));
+        try {
+            String username = jwtUtility.getUsernameFromToken(jwttoken);
+
+
+
         }
-        else {//do stuff
-            return  null;}
+        catch (Exception ex)
+        {
+
+
+              accountService.GenerateMail(entity);
 
 
 
+        }
 
     }
     @PostMapping("/mail")
