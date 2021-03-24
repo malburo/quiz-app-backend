@@ -1,26 +1,21 @@
 package com.example.Quiz.API;
-import com.example.Quiz.Models.User;
-import  com.example.Quiz.Quick_Pojo_Class.changePassword;
 import com.example.Quiz.JWT.JwtRequest;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
-import com.example.Quiz.Repository.AccountRepository;
-import com.example.Quiz.Repository.UserRepository;
 import com.example.Quiz.Ultility.JWTUtility;
+import com.example.Quiz.Ultility.JavaMailUtility;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.time.chrono.JapaneseChronology;
 
 
 @RestController
@@ -43,11 +38,11 @@ public class AccountAPI {
         return accountService.register(account);
         // regiser
     }
-    @GetMapping ("/test2")
-    public String test ()
-    {
-        return "hello";
-    }
+//    @GetMapping ("/test2")
+//    public String test ()
+//    {
+//        return "hello";
+//    }
     @GetMapping("/loginFacebook")
     public void  facebooklogin(Object object)
     {
@@ -81,11 +76,13 @@ public class AccountAPI {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
-    @GetMapping("/user")
-    public Principal userhome (Principal principal)
-    {
-        return principal;
+    @GetMapping("/Authenticate_email")
+    public String sendEmail() throws IOException, MessagingException {
+        JavaMailUtility javaMailUtility = new JavaMailUtility();
+        javaMailUtility.sendmail();
+        return "Email sent successfully";
     }
+
 
 
 }

@@ -14,6 +14,7 @@ public class QuizApplication {
  	static final Logger log = LoggerFactory.getLogger(QuizApplication.class);
 	public static void main(String[] args) {
 		SpringApplication.run(QuizApplication.class, args);
+
 	}
 	/*
 	@Autowired

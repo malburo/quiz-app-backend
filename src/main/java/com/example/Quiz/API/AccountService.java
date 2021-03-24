@@ -90,11 +90,16 @@ public class AccountService {
            else {
            return  new ResponseEntity(new Message("password doesn't match"),HttpStatus.BAD_REQUEST); }
     }
-
-    protected ResponseEntity<String> Exceptionregister ()
+    public String GenerateMail (String gmail) // tao gmail va gui
     {
-        return new ResponseEntity(HttpStatus.FORBIDDEN);
+        return  jwtUtility.generateToken10min(gmail);
+
     }
+
+//    protected ResponseEntity<String> Exceptionregister ()
+//    {
+//        return new ResponseEntity(HttpStatus.FORBIDDEN);
+//    }
     public void delete(int id){
         accountRepository.deleteById((long) id);
     }
