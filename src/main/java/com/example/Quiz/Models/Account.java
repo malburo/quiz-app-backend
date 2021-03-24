@@ -13,9 +13,12 @@ public class Account {
 
 
 
-    //@Column(name = "account_id")
-    //private long accountId; // bo id vi no ngu vai lon du ma
-    @Id
+    @Id // 2 khoa chinh cho de quan ly
+    @Column(name = "account_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long accountId;
+
+
     @Column(name = "user_name")
     private String userName;
 
@@ -42,13 +45,13 @@ public class Account {
         this.role = role;
     }
 
-//    public long getAccountId() {
-//        return accountId;
-//    }
+    public long getAccountId() {
+        return accountId;
+    }
 
-//    public void setAccountId(long accountId) {
-//        this.accountId = accountId;
-//    }
+    public void setAccountId(long accountId) {
+        this.accountId = accountId;
+    }
 
     public String getUserName() {
         return userName;

@@ -16,36 +16,28 @@ public class UserAPI {
     UserService userService;
     @Autowired
     AccountService accountService;
-
+// admin arena
     @GetMapping
     public List getallusers ()
     {
         return  userService.findAll();
     }
 
-
-    @RequestMapping(value="/user", method = {RequestMethod.GET}) // lay thong tin nguoi dung theo jwt
-    public Object UserAPI_controler_GET (Principal principal )
+ // user get user info by using jwt
+    @RequestMapping(value="/getme", method = {RequestMethod.GET}) // lay thong tin nguoi dung theo jwt
+    public Object UserinfoByJwt_GET (Principal principal )
     {
         return  userService.Getuser(principal.getName());
     }
 
 
-    @PutMapping("/user")
-    public Object UserAPI_controler_POST ( @RequestBody User user) // doi thong tin nguoi dung
+    @PutMapping("/getme")
+    public Object UserinfoByJwt_POST ( @RequestBody User user) // doi thong tin nguoi dung
     {
         return  userService.update(user);
     }
 
-
-    @RequestMapping(value="/user", method = {RequestMethod.DELETE}) // tam thoi de method phong ho`
-    public Object UserAPI_controler_DELETE (Principal principal )
-    {
-        return  null;
-    }
-
-
-    @PostMapping("/user/change_password") // doi mat khau
+    @PostMapping("/Getme/change_password") // doi mat khau
     public ResponseEntity changepassword(@RequestBody changePassword change, Principal principal ) {
         return accountService.changepassword(change,principal.getName());
 

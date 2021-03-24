@@ -2,12 +2,11 @@ package com.example.Quiz.API;
 import com.example.Quiz.JWT.JwtRequest;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
-import com.example.Quiz.Models.User;
+import com.example.Quiz.Quick_Pojo_Class.Accountregister;
 import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Ultility.JWTUtility;
 import com.example.Quiz.Ultility.JavaMailUtility;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,10 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.time.chrono.JapaneseChronology;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 
 
 @RestController
@@ -41,9 +37,9 @@ public class AccountAPI {
     AuthenticationManager authenticationManager;
 
     @PostMapping("/register") //
-    public ResponseEntity Register (@RequestBody Account account )
+    public ResponseEntity Register (@RequestBody Accountregister accountregister)
     {
-        return accountService.register(account);
+        return accountService.register(accountregister);
         // regiser
     }
 //    @GetMapping ("/test2")
@@ -99,6 +95,16 @@ public class AccountAPI {
             return  null;}
 
 
+
+
+    }
+    @GetMapping("/mail")
+    public Object mail( ) throws IOException,MessagingException
+
+    {
+        JavaMailUtility javaMailUtility = new JavaMailUtility();
+        javaMailUtility.sendmail("quizapphutech@gmail.com","tan");
+        return null;
 
 
     }
