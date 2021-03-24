@@ -29,12 +29,12 @@ public class UserAPI {
         return  userService.findAll();
     }
     @GetMapping("/users/{userId}")
-    public User GetuserByuserId (@RequestParam long userId)
+    public User GetuserByuserId (@PathVariable("userId") long userId)
     {
         return  userService.findByID(userId);
     }
     @DeleteMapping("/users/{userId}")
-    public ResponseEntity DeleteuserByuserId (@RequestParam int userId)
+    public ResponseEntity DeleteuserByuserId (@PathVariable("userId") long userId)
 
     {
         userService.delete(userId);
@@ -43,7 +43,7 @@ public class UserAPI {
 
     }
  @PutMapping("/users/{userId}")
- public HttpEntity PutuserByuserId (@RequestParam long userId, User user)
+ public HttpEntity PutuserByuserId (@PathVariable("userId") long userId, User user)
  {
      if (userId==user.getUserId())
     return userService.update(user);
@@ -61,9 +61,9 @@ public class UserAPI {
 
 
 
-    @PostMapping("/getme/change_password") // doi mat khau
-    public ResponseEntity changepassword(@RequestBody changePassword change, Principal principal ) {
-        return accountService.changepassword(change,principal.getName());
+    @GetMapping("/{userId}/change_password") // doi mat khau
+    public HttpEntity changepassword(@PathVariable("userId") long userId, @RequestBody changePassword password ) {
+       return accountService.changepassword(password,userId);
 
     }
 

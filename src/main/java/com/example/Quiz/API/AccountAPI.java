@@ -90,7 +90,7 @@ public class AccountAPI {
     }
 
     @GetMapping("/users/{userId}/reset_password")
-    public Object sendEmail( @RequestBody   String Jsonrequest) {
+    public Object sendEmail( @RequestParam long userId ,@RequestBody   String Jsonrequest) {
        String email=Jsonrequest.substring(10,Jsonrequest.length()-2); // lay email
        Account account = accountService.GenerateMail(email);
         if (account==null)

@@ -40,29 +40,29 @@ public class QuizApplication {
 	public CommandLineRunner deme(){
 		return (args) -> {
 //
-//			Topic topic = new Topic();
-//			Topic topic1 = new Topic();
-			Account account = new Account();
-			account.setUserName("username1");
-			account.setPassword(bCryptPasswordEncoder.encode("password"));
-			//user.setFullName("Test user");
-			//account.setUser();
-			account.setRole("Admin");
-			account.setBlocked(false);
-
-			//topic.setTopicName("topictest");
-			//topic.setUser(user);
-			//topic.setTopicDescription("desc of topic ");
-			//topic1.setTopicName("topictest1");
-			//topic1.setUser(user);
-			//topic1.setTopicDescription("desc of topic1");
-
-
-			//userRepository.saveAndFlush(user);
-			repository.saveAndFlush(account);
-			//topicRepository.saveAndFlush(topic);
-			//topicRepository.saveAndFlush(topic1);
-			// tam thoi an may cai kia de test register
+////			Topic topic = new Topic();
+////			Topic topic1 = new Topic();
+//			Account account = new Account();
+//			account.setUserName("username1");
+//			account.setPassword(bCryptPasswordEncoder.encode("password"));
+//			//user.setFullName("Test user");
+//			//account.setUser();
+//			account.setRole("Admin");
+//			account.setBlocked(false);
+//
+//			//topic.setTopicName("topictest");
+//			//topic.setUser(user);
+//			//topic.setTopicDescription("desc of topic ");
+//			//topic1.setTopicName("topictest1");
+//			//topic1.setUser(user);
+//			//topic1.setTopicDescription("desc of topic1");
+//
+//
+//			//userRepository.saveAndFlush(user);
+//			repository.saveAndFlush(account);
+//			//topicRepository.saveAndFlush(topic);
+//			//topicRepository.saveAndFlush(topic1);
+//			// tam thoi an may cai kia de test register
 
 
 		};

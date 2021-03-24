@@ -81,9 +81,9 @@ public class AccountService {
     }
 
 
-    public ResponseEntity  changepassword (changePassword changePassword, String Username)
+    public ResponseEntity  changepassword (changePassword changePassword, long userId)
     {
-              Account account = accountRepository.findByUserName(Username);
+              Account account = accountRepository.findById(userId);
               if( bCryptPasswordEncoder.matches(changePassword.getOldpassword(),account.getPassword()))
            {
                account.setPassword(bCryptPasswordEncoder.encode(changePassword.getNewpassword())); //
@@ -105,7 +105,7 @@ public class AccountService {
 //    {
 //        return new ResponseEntity(HttpStatus.FORBIDDEN);
 //    }
-    public void delete(int id){
+    public void delete(long id){
         accountRepository.deleteById((long) id);
     }
 }
