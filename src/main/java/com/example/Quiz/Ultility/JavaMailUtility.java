@@ -9,11 +9,17 @@ import java.util.Date;
 import java.util.Properties;
 
 public class JavaMailUtility {
-    public void sendmail() throws AddressException, MessagingException, IOException {
+    private final  String subject ="Khôi phục tài khoản QuizApp_Hutech";
+    private final String hello = "Chào bạn ";
+    private final String content ="Nhấn vào link để lấy lại mật khẩu: ";
+    private final String end= "địt mẹ mày có cái mật khẩu mà cũng quên";
+
+
+    public void sendmail(String to, String username) throws AddressException, MessagingException, IOException {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.host", "smtp.gmail.com"); // just config ahhi do ngok
         props.put("mail.smtp.port", "587");
 
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
@@ -23,9 +29,9 @@ public class JavaMailUtility {
         });
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress("quizapphutech@gmail.com", false));
-        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("quizapphutech@gmail.com"));
-        msg.setSubject("Tutorials point email");
-        msg.setContent("Tutorials point email", "text/html");
+        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+        msg.setSubject(subject);
+        msg.setText(hello+username+" ,\n"+content+"\n"+end);
         msg.setSentDate(new Date());
 
 //        MimeBodyPart messageBodyPart = new MimeBodyPart();

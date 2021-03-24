@@ -31,6 +31,7 @@ public class AccountService {
     @Autowired
     UserRepository userRepository;
 
+
     public List<Account> findAll(){
         return accountRepository.findAll();
     }
@@ -50,6 +51,7 @@ public class AccountService {
     public Account update(Account user){
         return accountRepository.saveAndFlush(user);
     }
+
 
     public ResponseEntity register(Account account) // dang ky tai khoan
     {
@@ -75,25 +77,26 @@ public class AccountService {
             return new ResponseEntity(jwtResponse,HttpStatus.OK); // RESPONE STATUS
         }
     }
+
+
     public ResponseEntity  changepassword (changePassword changePassword, String Username)
     {
               Account account = accountRepository.findByUserName(Username);
-
               if( bCryptPasswordEncoder.matches(changePassword.getOldpassword(),account.getPassword()))
-
            {
                account.setPassword(bCryptPasswordEncoder.encode(changePassword.getNewpassword())); //
                accountRepository.save(account);
                 return  new   ResponseEntity( new Message("change password successed",""),HttpStatus.OK);
-
             }
            else {
            return  new ResponseEntity(new Message("password doesn't match"),HttpStatus.BAD_REQUEST); }
     }
-    public String GenerateMail (String gmail) // tao gmail va gui
-    {
-        return  jwtUtility.generateToken10min(gmail);
 
+
+    public Account GenerateMail (String email) // tao gmail va gui
+    {
+        Account account = accountRepository.GetAccountByEmail(email);
+       return account;
     }
 
 //    protected ResponseEntity<String> Exceptionregister ()

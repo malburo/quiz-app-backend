@@ -2,9 +2,13 @@ package com.example.Quiz.API;
 import com.example.Quiz.JWT.JwtRequest;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
+import com.example.Quiz.Models.User;
+import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Ultility.JWTUtility;
 import com.example.Quiz.Ultility.JavaMailUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,9 +17,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
+
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.time.chrono.JapaneseChronology;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -76,12 +84,26 @@ public class AccountAPI {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
+
     @GetMapping("/Authenticate_email")
-    public String sendEmail() throws IOException, MessagingException {
-        JavaMailUtility javaMailUtility = new JavaMailUtility();
-        javaMailUtility.sendmail();
-        return "Email sent successfully";
+    public Object sendEmail( @RequestBody   String Jsonrequest) {
+       String email=Jsonrequest.substring(10,Jsonrequest.length()-2); // lay email
+       Account account = accountService.GenerateMail(email);
+        if (account==null)
+        {
+            // gui loi neu khong co user or email loi
+            return  new   ResponseEntity( new Message("Nếu chuỗi này không dư ký tự thì email ko tồn tại: "+email,
+                    "Email or Json lenght did'nt correct"), HttpStatus.OK);
+        }
+        else {//do stuff
+            return  null;}
+
+
+
+
     }
+//    @PostMapping("/Reset_password")
+
 
 
 

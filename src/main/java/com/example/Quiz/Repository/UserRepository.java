@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query (value = "select * from user_info u where u.user_name = ?1", nativeQuery = true)
     User GetUserByUserName (String userName); // kiem tra co ton tai account thoa man request ko
+
 }
