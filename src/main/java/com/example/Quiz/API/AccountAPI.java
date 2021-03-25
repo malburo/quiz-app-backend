@@ -2,7 +2,6 @@ package com.example.Quiz.API;
 import com.example.Quiz.JWT.JwtRequest;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
-import com.example.Quiz.Quick_Pojo_Class.Accountregister;
 import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Ultility.JWTUtility;
 import com.example.Quiz.Ultility.JavaMailUtility;
