@@ -6,9 +6,11 @@ import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Quick_Pojo_Class.changePassword;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -24,26 +26,32 @@ public class UserAPI {
     @Autowired
     AccountService accountService;
 // admin arena
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
-    public List getallusers ()
+    public List<User> getallusers ()
     {
         return  userService.findAll();
     }
-    @GetMapping("/users/{userId}")
-    public User GetuserByuserId (@PathVariable("userId") long userId)
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @GetMapping("/{userId}")
+    public User GetuserByuserId (@PathVariable("userId") int userId)
     {
-        return  userService.findByID(userId);
+        return  userService.findByID((long)userId);
     }
-    @DeleteMapping("/users/{userId}")
-    public ResponseEntity DeleteuserByuserId (@PathVariable("userId") long userId)
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @DeleteMapping("/{userId}")
+
+    public ResponseEntity DeleteuserByuserId (@PathVariable("userId") int userId)
 
     {
         userService.delete(userId);
         accountService.delete(userId);
-        return  new ResponseEntity(new Message("Delete completed"), HttpStatus.OK);
+        return  new ResponseEntity(new Message("","Delete completed"), HttpStatus.OK);
 
     }
- @PutMapping("/users/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PutMapping("/{userId}")
  public HttpEntity PutuserByuserId (@PathVariable("userId") long userId, User user)
  {
      if (userId==user.getUserId())
@@ -51,7 +59,7 @@ public class UserAPI {
      return new ResponseEntity(new Message("Ids did'nt match",""), HttpStatus.BAD_REQUEST);
 
  }
-
+    @PreAuthorize("hasAnyRole('USER')")
     @PostMapping  ("/{userId}/change_password") // doi mat khau
     public HttpEntity changepassword(@PathVariable("userId") long userId ,@RequestBody changePassword password) {
        return accountService.changepassword(password,userId);

@@ -104,19 +104,21 @@ public class AccountAPI {
         if(key.equals("password")) {
             try {
                 String username = jwtUtility.getUsernameFromToken(jwttoken);
-                return accountService.Updatepassword(username);
+                return accountService.Updatepassword(username); // cap nhap mat khau
             }
             catch (Exception ex)
             {
+                // bat loi jwt ko hop le
                 return new ResponseEntity(new Message("jwt không hợp lệ hoặc quá hạn","Jwt error"),HttpStatus.BAD_REQUEST);
             }
         }
         if(key.equals("email"))
             return accountService.GenerateMail(entity);
+        // send gmail
 
         else
             return new ResponseEntity(new Message("key must be email or password","Key error"),HttpStatus.BAD_REQUEST);
-
+        // keyword loi
 
 
 

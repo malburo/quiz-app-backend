@@ -73,7 +73,7 @@ public class AccountService {
             Account account = new Account();
             account.setUserName(accountregister.getUsername());
             account.setPassword(passwordencoded);
-            account.setRole("User");
+            account.setRole("USER");
             account.setBlocked(false);
             accountRepository.saveAndFlush(account);
             User user_DB = new User();

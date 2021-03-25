@@ -23,7 +23,7 @@ public class UserService {
     }
 
     public User findByID(Long id){
-        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("No User with id:" + id));
+        return repository.getOne(id);
     }
 
     public User create(User user){
