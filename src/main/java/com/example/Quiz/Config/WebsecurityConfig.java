@@ -48,7 +48,7 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
             http.cors().and().csrf().disable()
 
 
-                    .authorizeRequests().antMatchers("/auth/login","/auth/register","/loginFacebook","/auth/Authenticate_email","/users/{userId}/reset_password").permitAll().
+                    .authorizeRequests().antMatchers("/auth/login","/auth/register","/loginFacebook","/auth/forgot_password","/users/{userId}/reset_password").permitAll().
                     antMatchers("/users").hasAuthority("Admin"). // phai co role admin moi dc vao
 
                     // all other requests need to be authenticated

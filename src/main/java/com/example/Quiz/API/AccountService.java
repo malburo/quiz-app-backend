@@ -74,8 +74,6 @@ public class AccountService {
 
             String Password_temp = account.getPassword();
             String passwordencoded = bCryptPasswordEncoder.encode(Password_temp);
-
-            account.setUserName(account.getUserName());
             account.setPassword(passwordencoded);
             account.setRole("USER");
             account.setBlocked(false);
@@ -113,14 +111,14 @@ public class AccountService {
         if (account == null)
             return new ResponseEntity(new Message("Email chưa được đăng ký", "Email error"), HttpStatus.FORBIDDEN);
         else
-            javaMailUtility.sendmail(email, account.getUserName(), jwtUtility.generateToken10min(account.getUserName()));
+            javaMailUtility.sendmail(email, account.getUsername(), jwtUtility.generateToken10min(account.getUsername()));
         return new ResponseEntity(new Message("", "Mail sended"), HttpStatus.OK);
 
 
     }
 
     public ResponseEntity Updatepassword(String username, String entity) {
-        Account account = accountRepository.findByUserName(username);
+        Account account = accountRepository.findByUsername(username);
         account.setPassword(bCryptPasswordEncoder.encode(entity));
         accountRepository.saveAndFlush(account);
         return new ResponseEntity(new Message("", "Password updated"), HttpStatus.OK);
