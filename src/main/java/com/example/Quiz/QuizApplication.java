@@ -8,7 +8,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 @SpringBootApplication
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(
+		prePostEnabled = true,
+		securedEnabled = true,
+		jsr250Enabled = true)
 @EnableJpaRepositories("com.example.Quiz.Repository")
 public class QuizApplication {
  	static final Logger log = LoggerFactory.getLogger(QuizApplication.class);
