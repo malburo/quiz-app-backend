@@ -1,11 +1,14 @@
 package com.example.Quiz.API;
 
+
 import com.example.Quiz.Models.User;
 import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
-import com.example.Quiz.Repository.AccountRepository;
+import com.example.Quiz.Models.User;
+import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Quick_Pojo_Class.changePassword;
+import com.example.Quiz.Repository.AccountRepository;
 import com.example.Quiz.Repository.UserRepository;
 import com.example.Quiz.Ultility.JWTUtility;
 import com.example.Quiz.Ultility.JavaMailUtility;
@@ -15,9 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import org.springframework.stereotype.Service;
-
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.List;
@@ -46,8 +47,10 @@ public class AccountService {
         return accountRepository.getOne(id);
     }
 
-    public Account findByUserName(String username) {
-        return accountRepository.findByUserName(username);
+
+    public Account findByUserName(String username ){
+        return  accountRepository.findByUsername(username);
+
     }
 
     public Account create(Account user) {
@@ -59,12 +62,16 @@ public class AccountService {
     }
 
 
-    public ResponseEntity register(Account account) // dang ky tai khoan
-    {
-        if (accountRepository.findByUserName(account.getUserName()) != null) {
 
-            return new ResponseEntity(new Message("Account exist"), HttpStatus.FORBIDDEN); // RESPONE STATUS
-        } else {
+
+    public ResponseEntity register(Account account) // dang ky tai khoan
+
+    {
+        if( accountRepository.findByUsername(account.getUsername()) !=null) {
+            return new ResponseEntity( new Message("Account exist"),HttpStatus.FORBIDDEN); // RESPONE STATUS
+        }
+        else {
+
             String Password_temp = account.getPassword();
             String passwordencoded = bCryptPasswordEncoder.encode(Password_temp);
 
@@ -78,11 +85,12 @@ public class AccountService {
             user_DB.setLevel(0);
             user_DB.setAccount(account);
             userRepository.save(user_DB);
-            UserDetails user = userDetailsService.loadUserByUsername(account.getUserName());
+            UserDetails user = userDetailsService.loadUserByUsername(account.getUsername());
             JwtResponse jwtResponse = new JwtResponse(jwtUtility.generateToken(user));
             return new ResponseEntity(jwtResponse, HttpStatus.OK); // RESPONE STATUS
         }
     }
+
 
 
     public ResponseEntity changepassword(changePassword changePassword, long userId) {
@@ -94,6 +102,7 @@ public class AccountService {
         } else {
             return new ResponseEntity(new Message("password doesn't match"), HttpStatus.BAD_REQUEST);
         }
+
     }
 
 

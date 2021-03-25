@@ -26,7 +26,9 @@ public class UserService {
     }
 
     public User findByID(Long id){
-        return repository.getOne(id);
+
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("No such user with id:" + id));
+
     }
 
     public User create(User user){

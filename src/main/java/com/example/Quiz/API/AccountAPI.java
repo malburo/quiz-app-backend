@@ -40,7 +40,11 @@ public class AccountAPI {
     @PostMapping("/register") //
     public ResponseEntity Register (@RequestBody Account account)
     {
-        return accountService.register( account);
+
+      
+
+        return accountService.register(account);
+
         // regiser
     }
 //    @GetMapping ("/test2")

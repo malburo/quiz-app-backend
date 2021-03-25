@@ -1,6 +1,7 @@
 package com.example.Quiz.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,14 +21,17 @@ public class Topic {
     @Column(name = "topic_description")
     private  String topicDescription;
 
+    @Column(name = "cover_image_url")
+    private String CoverImageUrl;
+
+
+    @JsonProperty("author")
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id",foreignKey = @ForeignKey(name = "user_id_fk"))
     private User user;
 
-
-    @OneToMany(mappedBy = "topic",cascade = CascadeType.ALL)
-    private List<SubTopic> subTopics;
-
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
+    private List<Quiz>  quizzes ;
 
     public Long getTopicId() {
         return topicId;
@@ -61,11 +65,6 @@ public class Topic {
         this.user = user;
     }
 
-    public List<SubTopic> getSubTopics() {
-        return subTopics;
-    }
+ }
 
-    public void setSubTopics(List<SubTopic> subTopics) {
-        this.subTopics = subTopics;
-    }
-}
+
