@@ -15,11 +15,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private long userId;
-    @Column(name = "user_full_name",nullable = true)// cho phep null
+    @Column(name = "user_full_name")// cho phep null
     private String fullName;
-    @Column(name = "user_email",nullable = true)// cho phep null
+    @Column(name = "user_email")// cho phep null
     private String email;
-    @Column(name = "phone_number",nullable = true) // cho phep null
+    @Column(name = "phone_number") // cho phep null
     private String phoneNumber;
     @Column(name = "user_level", nullable = false)
      //finnal level
@@ -28,10 +28,12 @@ public class User {
     @Column(name = "user_point", nullable = false)
     @JsonProperty (access = JsonProperty.Access.READ_ONLY)
     private double point;
+
     @Column(name = "user_image_url",nullable =true)
     @JsonProperty (access = JsonProperty.Access.READ_ONLY)
+
     private String imageUrl;
-    @Column(name = "learning_streaks",nullable = true)
+    @Column(name = "learning_streaks")
     @JsonIgnore
     private int learningStreaks;
 
@@ -39,7 +41,6 @@ public class User {
 
     // Swaped , user  hold account
     @OneToOne
-
     @JoinColumn(name = "account_id",referencedColumnName = "account_id",foreignKey = @ForeignKey(name = "account_id_fk"))
     @JsonIgnoreProperties({"user"}) // oh my lord tranh infinite loop
 

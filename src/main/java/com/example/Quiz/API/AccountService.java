@@ -42,7 +42,7 @@ public class AccountService {
     }
 
     public Account findByUserName(String username ){
-        return  accountRepository.findByUserName(username);
+        return  accountRepository.findByUsername(username);
     }
 
     public Account create(Account user){
@@ -56,8 +56,7 @@ public class AccountService {
 
     public ResponseEntity register(Accountregister accountregister) // dang ky tai khoan
     {
-        if( accountRepository.findByUserName(accountregister.getUsername()) !=null) {
-
+        if( accountRepository.findByUsername(account.getUsername()) !=null) {
             return new ResponseEntity( new Message("Account exist"),HttpStatus.FORBIDDEN); // RESPONE STATUS
         }
         else {
@@ -74,7 +73,7 @@ public class AccountService {
             user_DB.setLevel(0);
             user_DB.setAccount(account);
             userRepository.save(user_DB);
-            UserDetails user = userDetailsService.loadUserByUsername(account.getUserName());
+            UserDetails user = userDetailsService.loadUserByUsername(account.getUsername());
             JwtResponse jwtResponse = new JwtResponse(jwtUtility.generateToken(user));
             return new ResponseEntity(jwtResponse,HttpStatus.OK); // RESPONE STATUS
         }
@@ -83,7 +82,8 @@ public class AccountService {
 
     public ResponseEntity  changepassword (changePassword changePassword, String Username)
     {
-              Account account = accountRepository.findByUserName(Username);
+
+              Account account = accountRepository.findByUsername(Username);
               if( bCryptPasswordEncoder.matches(changePassword.getOldpassword(),account.getPassword()))
            {
                account.setPassword(bCryptPasswordEncoder.encode(changePassword.getNewpassword())); //

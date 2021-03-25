@@ -5,6 +5,7 @@ import com.example.Quiz.Repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -18,19 +19,19 @@ public class TopicService {
     }
 
     public Topic findByID(Long id){
-        return  repository.getOne(id);
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("No such topic with id:" + id));
     }
 
-    public Topic create(Topic user){
-        return repository.saveAndFlush(user);
+    public Topic create(Topic topic){
+        return repository.saveAndFlush(topic);
     }
 
-    public Topic update(Topic user){
-        return repository.saveAndFlush(user);
+    public Topic update(Topic topic){
+        return repository.saveAndFlush(topic);
     }
 
-    public void delete(int id){
-        repository.deleteById((long) id);
+    public void deleteById(Long id){
+        repository.delete(findByID(id));
     }
 
 }

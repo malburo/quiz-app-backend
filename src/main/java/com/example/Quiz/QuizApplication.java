@@ -16,7 +16,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(
+		prePostEnabled = true,
+		securedEnabled = true,
+		jsr250Enabled = true)
 @EnableJpaRepositories("com.example.Quiz.Repository")
 public class QuizApplication {
  	static final Logger log = LoggerFactory.getLogger(QuizApplication.class);

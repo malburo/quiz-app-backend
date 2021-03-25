@@ -34,13 +34,13 @@ public class AccountTest {
     @Test
     public void testCreateFindDelete() throws  Exception {
         Account account = new Account();
-        account.setUserName("abc");
+        account.setUsername("abc");
         account.setPassword("abc");
         account.setRole("admin");
         accountService.create(account);
 
         //Account account1 = accountService.findByID((long)account.getAccountId());
-        assertEquals("abc",account.getUserName());
+        assertEquals("abc",account.getUsername());
 
       //  accountService.delete((int) account1.getAccountId());
     }
