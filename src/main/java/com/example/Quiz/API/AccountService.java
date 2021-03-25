@@ -61,17 +61,17 @@ public class AccountService {
     }
 
 
-    public ResponseEntity register(Accountregister accountregister) // dang ky tai khoan
+    public ResponseEntity register(Account account) // dang ky tai khoan
     {
-        if( accountRepository.findByUserName(accountregister.getUsername()) !=null) {
+        if( accountRepository.findByUserName(account.getUserName()) !=null) {
 
             return new ResponseEntity( new Message("Account exist"),HttpStatus.FORBIDDEN); // RESPONE STATUS
         }
         else {
-            String Password_temp = accountregister.getPassword();
+            String Password_temp = account.getPassword();
             String passwordencoded = bCryptPasswordEncoder.encode(Password_temp);
-            Account account = new Account();
-            account.setUserName(accountregister.getUsername());
+
+            account.setUserName(account.getUserName());
             account.setPassword(passwordencoded);
             account.setRole("USER");
             account.setBlocked(false);
@@ -81,7 +81,7 @@ public class AccountService {
             user_DB.setLevel(0);
             user_DB.setAccount(account);
             userRepository.save(user_DB);
-            UserDetails user = userDetailsService.loadUserByUsername(accountregister.getUsername());
+            UserDetails user = userDetailsService.loadUserByUsername(account.getUserName());
             JwtResponse jwtResponse = new JwtResponse(jwtUtility.generateToken(user));
             return new ResponseEntity(jwtResponse,HttpStatus.OK); // RESPONE STATUS
         }

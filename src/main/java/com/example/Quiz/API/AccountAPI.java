@@ -42,9 +42,9 @@ public class AccountAPI {
     AuthenticationManager authenticationManager;
 
     @PostMapping("/register") //
-    public ResponseEntity Register (@RequestBody Accountregister accountregister)
+    public ResponseEntity Register (@RequestBody Account account)
     {
-        return accountService.register(accountregister);
+        return accountService.register( account);
         // regiser
     }
 //    @GetMapping ("/test2")
