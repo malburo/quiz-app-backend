@@ -1,7 +1,6 @@
 package com.example.Quiz.API;
 
 import com.example.Quiz.Models.User;
-import com.example.Quiz.Quick_Pojo_Class.Accountregister;
 import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
@@ -11,7 +10,6 @@ import com.example.Quiz.Repository.UserRepository;
 import com.example.Quiz.Ultility.JWTUtility;
 import com.example.Quiz.Ultility.JavaMailUtility;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,34 +38,33 @@ public class AccountService {
     JavaMailUtility javaMailUtility;
 
 
-    public List<Account> findAll(){
+    public List<Account> findAll() {
         return accountRepository.findAll();
     }
 
-    public Account findByID(Long id){
-        return  accountRepository.getOne(id);
+    public Account findByID(Long id) {
+        return accountRepository.getOne(id);
     }
 
-    public Account findByUserName(String username ){
-        return  accountRepository.findByUserName(username);
+    public Account findByUserName(String username) {
+        return accountRepository.findByUserName(username);
     }
 
-    public Account create(Account user){
+    public Account create(Account user) {
         return accountRepository.saveAndFlush(user);
     }
 
-    public Account update(Account user){
+    public Account update(Account user) {
         return accountRepository.saveAndFlush(user);
     }
 
 
     public ResponseEntity register(Account account) // dang ky tai khoan
     {
-        if( accountRepository.findByUserName(account.getUserName()) !=null) {
+        if (accountRepository.findByUserName(account.getUserName()) != null) {
 
-            return new ResponseEntity( new Message("Account exist"),HttpStatus.FORBIDDEN); // RESPONE STATUS
-        }
-        else {
+            return new ResponseEntity(new Message("Account exist"), HttpStatus.FORBIDDEN); // RESPONE STATUS
+        } else {
             String Password_temp = account.getPassword();
             String passwordencoded = bCryptPasswordEncoder.encode(Password_temp);
 
@@ -83,50 +80,48 @@ public class AccountService {
             userRepository.save(user_DB);
             UserDetails user = userDetailsService.loadUserByUsername(account.getUserName());
             JwtResponse jwtResponse = new JwtResponse(jwtUtility.generateToken(user));
-            return new ResponseEntity(jwtResponse,HttpStatus.OK); // RESPONE STATUS
+            return new ResponseEntity(jwtResponse, HttpStatus.OK); // RESPONE STATUS
         }
     }
 
 
-    public ResponseEntity  changepassword (changePassword changePassword, long userId)
-    {
-              Account account = accountRepository.findByUserId(userId);
-              if( bCryptPasswordEncoder.matches(changePassword.getOldpassword(),account.getPassword()))
-              {
-                  account.setPassword(bCryptPasswordEncoder.encode(changePassword.getNewpassword())); //
-               accountRepository.save(account);
-                return  new   ResponseEntity( new Message("change password successed",""),HttpStatus.OK);
-            }
-           else {
-           return  new ResponseEntity(new Message("password doesn't match"),HttpStatus.BAD_REQUEST); }
+    public ResponseEntity changepassword(changePassword changePassword, long userId) {
+        Account account = accountRepository.findByUserId(userId);
+        if (bCryptPasswordEncoder.matches(changePassword.getOldpassword(), account.getPassword())) {
+            account.setPassword(bCryptPasswordEncoder.encode(changePassword.getNewpassword())); //
+            accountRepository.save(account);
+            return new ResponseEntity(new Message("change password successed", ""), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(new Message("password doesn't match"), HttpStatus.BAD_REQUEST);
+        }
     }
 
 
-    public ResponseEntity GenerateMail (String email) throws IOException, MessagingException
+    public ResponseEntity GenerateMail(String email) throws IOException, MessagingException
     // tao gmail va gui
     {
         Account account = accountRepository.GetAccountByEmail(email);
-        if (account==null)
-            return new ResponseEntity( new Message("Email chưa được đăng ký","Email error"),HttpStatus.FORBIDDEN);
+        if (account == null)
+            return new ResponseEntity(new Message("Email chưa được đăng ký", "Email error"), HttpStatus.FORBIDDEN);
         else
-            javaMailUtility.sendmail(email,account.getUserName(),jwtUtility.generateToken10min(account.getUserName()));
-        return new ResponseEntity( new Message("","Mail sended"),HttpStatus.OK);
+            javaMailUtility.sendmail(email, account.getUserName(), jwtUtility.generateToken10min(account.getUserName()));
+        return new ResponseEntity(new Message("", "Mail sended"), HttpStatus.OK);
 
 
     }
-    public ResponseEntity Updatepassword (String username,String entity)
-    {
+
+    public ResponseEntity Updatepassword(String username, String entity) {
         Account account = accountRepository.findByUserName(username);
         account.setPassword(bCryptPasswordEncoder.encode(entity));
         accountRepository.saveAndFlush(account);
-        return new ResponseEntity( new Message("","Password updated"),HttpStatus.OK);
+        return new ResponseEntity(new Message("", "Password updated"), HttpStatus.OK);
     }
 
-//    protected ResponseEntity<String> Exceptionregister ()
+    //    protected ResponseEntity<String> Exceptionregister ()
 //    {
 //        return new ResponseEntity(HttpStatus.FORBIDDEN);
 //    }
-    public void delete(long id){
+    public void delete(long id) {
 
         accountRepository.deleteById((long) id);
     }
