@@ -2,6 +2,7 @@ package com.example.Quiz.API;
 import com.example.Quiz.JWT.JwtRequest;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
+import com.example.Quiz.Models.User;
 import com.example.Quiz.Quick_Pojo_Class.Accountregister;
 import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Ultility.JWTUtility;
@@ -92,40 +93,39 @@ public class AccountAPI {
     }
 
     @PostMapping ("/forgot_password")
-   public ResponseEntity Forgotpassword (@RequestParam(required = false) String jwttoken,@RequestBody(required = false) Map<String,String> Jsonrequest )
+   public  ResponseEntity Forgotpassword (@RequestParam(required = false) String jwttoken, @RequestBody(required = false) Map<String,String> Jsonrequest )
    throws  MessagingException,IOException
     {
 
         Map<String,String> EmailorNewpassword = Jsonrequest;
         String key =EmailorNewpassword.keySet().toString();
-        String entity= EmailorNewpassword.get(key.substring(1,key.length()-1));
-        try {
-            String username = jwtUtility.getUsernameFromToken(jwttoken);
-
-
-
+        key =key.substring(1,key.length()-1);
+        String entity= EmailorNewpassword.get(key);
+        if(key.equals("password")) {
+            try {
+                String username = jwtUtility.getUsernameFromToken(jwttoken);
+                return accountService.Updatepassword(username);
+            }
+            catch (Exception ex)
+            {
+                return new ResponseEntity(new Message("jwt không hợp lệ hoặc quá hạn","Jwt error"),HttpStatus.BAD_REQUEST);
+            }
         }
-        catch (Exception ex)
-        {
+        if(key.equals("email"))
+            return accountService.GenerateMail(entity);
+
+        else
+            return new ResponseEntity(new Message("key must be email or password","Key error"),HttpStatus.BAD_REQUEST);
 
 
-              accountService.GenerateMail(entity);
 
 
 
-        }
 
-    }
-    @PostMapping("/mail")
-    public Object mail( ) throws IOException,MessagingException
-
-    {
-        JavaMailUtility javaMailUtility = new JavaMailUtility();
-        javaMailUtility.sendmail("quizapphutech@gmail.com","tan");
-        return null;
 
 
     }
+
 //    @PostMapping("/Reset_password")
 
 

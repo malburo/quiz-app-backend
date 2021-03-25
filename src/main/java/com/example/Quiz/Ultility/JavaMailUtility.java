@@ -1,5 +1,7 @@
 package com.example.Quiz.Ultility;
 
+import org.springframework.stereotype.Component;
+
 import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -8,15 +10,18 @@ import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
-
+@Component
 public class JavaMailUtility {
     private final  String subject ="Khôi phục tài khoản QuizApp_Hutech";
     private final String hello = "Chào bạn ";
-    private final String content ="Click vào đường link dưới đây để lấy lại mật khẩu của bạn.";
+    private final String hello2 ="! Bạn đã yêu cầu đổi mật khẩu";
+    private final String content ="Click vào đường link dưới đây để lấy lại mật khẩu của bạn";
+    private String link = "http://localhost:9090/auth/forgot_password?jwttoken=" ;
+    private final String logo ="@QuizApp_Hutech";
 
 
 
-    public void sendmail(String to, String username) throws AddressException, MessagingException, IOException {
+    public void sendmail(String to, String username,String jwt) throws AddressException, MessagingException, IOException {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -71,13 +76,13 @@ public class JavaMailUtility {
                 "                                </tr>\n" +
                 "                                <tr>\n" +
                 "                                    <td style=\"padding:0 35px;\">\n" +
-                "                                        <h1 style=\"color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family: 'Roboto', sans-serif;\">! Bạn đã yêu cầu đổi mật khẩu</h1>\n" +
+                "                                        <h1 style=\"color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family: 'Roboto', sans-serif;\"<h1>"+hello +username +hello2+"</h1>\n" +
                 "                                        <span\n" +
                 "                                            style=\"display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;\"></span>\n" +
                 "                                        <p style=\"color:#455056; font-size:15px;line-height:24px; margin:0; font-family: 'Roboto', sans-serif;\">\n" +
-                "                                            Click vào đường link dưới đây để lấy lại mật khẩu của bạn.\n" +
+                "                                            "+content+"\n" +
                 "                                        </p>\n" +
-                "                                        <a href=\"https://www.facebook.com/;\"\n" +
+                "                                        <a href=\""+link+jwt+"\"\n" +
                 "                                            style=\"background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;\">Reset\n" +
                 "                                            Password</a>\n" +
                 "                                    </td>\n" +
@@ -92,7 +97,7 @@ public class JavaMailUtility {
                 "                    </tr>\n" +
                 "                    <tr>\n" +
                 "                        <td style=\"text-align:center;\">\n" +
-                "                            <p style=\"font-size:14px; color:rgba(69, 80, 86, 0.7411764705882353); line-height:18px; margin:0 0 0;\">&copy; <strong>@QuizApp_Hutech</strong></p>\n" +
+                "                            <p style=\"font-size:14px; color:rgba(69, 80, 86, 0.7411764705882353); line-height:18px; margin:0 0 0;\">&copy; <strong>"+logo+"</strong></p>\n" +
                 "                        </td>\n" +
                 "                    </tr>\n" +
                 "                    <tr>\n" +

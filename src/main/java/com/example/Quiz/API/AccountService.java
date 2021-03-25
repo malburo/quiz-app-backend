@@ -107,11 +107,19 @@ public class AccountService {
     {
         Account account = accountRepository.GetAccountByEmail(email);
         if (account==null)
-            return new ResponseEntity( new Message("Email error"," tài khoản chưa đăng ký email"),HttpStatus.FORBIDDEN);
+            return new ResponseEntity( new Message("Email chưa được đăng ký","Email error"),HttpStatus.FORBIDDEN);
         else
-            javaMailUtility.sendmail(email,account.getUserName());
+            javaMailUtility.sendmail(email,account.getUserName(),jwtUtility.generateToken10min(account.getUserName()));
+        return new ResponseEntity( new Message("","Mail sended"),HttpStatus.OK);
 
 
+    }
+    public ResponseEntity Updatepassword (String username)
+    {
+        Account account = accountRepository.findByUserName(username);
+        account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
+        accountRepository.saveAndFlush(account);
+        return new ResponseEntity( new Message("","Password updated"),HttpStatus.OK);
     }
 
 //    protected ResponseEntity<String> Exceptionregister ()
