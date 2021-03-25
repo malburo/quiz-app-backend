@@ -65,8 +65,6 @@ public class Topic {
         this.user = user;
     }
 
-
-
-    }
+ }
 
 

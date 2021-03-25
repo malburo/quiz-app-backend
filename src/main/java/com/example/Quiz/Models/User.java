@@ -43,7 +43,7 @@ public class User {
     @OneToOne
     @JoinColumn(name = "account_id",referencedColumnName = "account_id",foreignKey = @ForeignKey(name = "account_id_fk"))
     @JsonIgnoreProperties({"user"}) // oh my lord tranh infinite loop
-    @JsonIgnore
+
     private Account account ;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

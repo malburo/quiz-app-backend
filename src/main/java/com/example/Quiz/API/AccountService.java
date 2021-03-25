@@ -1,5 +1,6 @@
 package com.example.Quiz.API;
 
+
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
 import com.example.Quiz.Models.User;
@@ -53,7 +54,9 @@ public class AccountService {
     }
 
 
+
     public ResponseEntity register(Account account) // dang ky tai khoan
+
     {
         if( accountRepository.findByUsername(account.getUsername()) !=null) {
             return new ResponseEntity( new Message("Account exist"),HttpStatus.FORBIDDEN); // RESPONE STATUS
@@ -61,6 +64,8 @@ public class AccountService {
         else {
             String Password_temp = account.getPassword();
             String passwordencoded = bCryptPasswordEncoder.encode(Password_temp);
+            Account account = new Account();
+            account.setUserName(accountregister.getUsername());
             account.setPassword(passwordencoded);
             account.setRole("User");
             account.setBlocked(false);
