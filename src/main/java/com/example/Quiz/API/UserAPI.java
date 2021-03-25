@@ -1,13 +1,17 @@
 package com.example.Quiz.API;
 
+import com.example.Quiz.Models.Account;
 import com.example.Quiz.Models.User;
 import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Quick_Pojo_Class.changePassword;
+import com.example.Quiz.Repository.AccountRepository;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
@@ -22,52 +26,47 @@ public class UserAPI {
     UserService userService;
     @Autowired
     AccountService accountService;
+
 // admin arena
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
-    public List getallusers ()
+    public List<User> getallusers ()
     {
         return  userService.findAll();
     }
-    @GetMapping("/users/{userId}")
-    public User GetuserByuserId (@RequestParam long userId)
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @GetMapping("/{userId}")
+    public User GetuserByuserId (@PathVariable("userId") int userId)
     {
-        return  userService.findByID(userId);
+        return  userService.findByID((long)userId);
     }
-    @DeleteMapping("/users/{userId}")
-    public ResponseEntity DeleteuserByuserId (@RequestParam int userId)
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @DeleteMapping("/{userId}")
+
+    public ResponseEntity DeleteuserByuserId (@PathVariable("userId") int userId)
 
     {
+
+        // tao account thi ben kia cung phai co user
         userService.delete(userId);
-        accountService.delete(userId);
-        return  new ResponseEntity(new Message("Delete completed"), HttpStatus.OK);
+        return  new ResponseEntity(new Message("","Delete completed"), HttpStatus.OK);
 
     }
- @PutMapping("/users/{userId}")
- public HttpEntity PutuserByuserId (@RequestParam long userId, User user)
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PutMapping("/{userId}")
+ public ResponseEntity PutuserByuserId (@PathVariable("userId") long userId,@RequestBody User user)
  {
      if (userId==user.getUserId())
     return userService.update(user);
      return new ResponseEntity(new Message("Ids did'nt match",""), HttpStatus.BAD_REQUEST);
 
+
  }
-
-
-
-
-
-
-
-
-
-
-
-    @PostMapping("/getme/change_password") // doi mat khau
-    public ResponseEntity changepassword(@RequestBody changePassword change, Principal principal ) {
-        return accountService.changepassword(change,principal.getName());
+    @PreAuthorize("hasAnyRole('USER')")
+    @PostMapping  ("/{userId}/change_password") // doi mat khau
+    public HttpEntity changepassword(@PathVariable("userId") long userId ,@RequestBody changePassword password) {
+       return accountService.changepassword(password,userId);
 
     }
-
-
-
-
 }

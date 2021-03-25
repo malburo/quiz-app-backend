@@ -42,6 +42,7 @@ public class QuizApplication {
 	@Bean
 	public CommandLineRunner deme(){
 		return (args) -> {
+
 			if(repository.findAll().isEmpty()){
 				Account account = new Account();
 				account.setUsername("username1");
@@ -50,6 +51,7 @@ public class QuizApplication {
 				account.setBlocked(false);
 				repository.saveAndFlush(account);
 			}
+
 
 
 		};

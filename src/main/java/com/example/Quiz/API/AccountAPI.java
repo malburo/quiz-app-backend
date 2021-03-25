@@ -4,7 +4,6 @@ import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
 import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Ultility.JWTUtility;
-import com.example.Quiz.Ultility.JavaMailUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Map;
 
 
 @RestController
@@ -40,7 +40,11 @@ public class AccountAPI {
     @PostMapping("/register") //
     public ResponseEntity Register (@RequestBody Account account)
     {
+
+      
+
         return accountService.register(account);
+
         // regiser
     }
 //    @GetMapping ("/test2")
@@ -88,33 +92,42 @@ public class AccountAPI {
         return  userService_2.Getuser(principal.getName());
     }
 
-    @GetMapping("/users/{userId}/reset_password")
-    public Object sendEmail( @RequestBody   String Jsonrequest) {
-       String email=Jsonrequest.substring(10,Jsonrequest.length()-2); // lay email
-       Account account = accountService.GenerateMail(email);
-        if (account==null)
-        {
-            // gui loi neu khong co user or email loi
-            return  new   ResponseEntity( new Message("Nếu chuỗi này không dư ký tự thì email ko tồn tại: "+email,
-                    "Email or Json lenght did'nt correct"), HttpStatus.OK);
-        }
-        else {//do stuff
-            return  null;}
-
-
-
-
-    }
-    @GetMapping("/mail")
-    public Object mail( ) throws IOException,MessagingException
-
+    @PostMapping ("/forgot_password")
+   public  ResponseEntity Forgotpassword (@RequestParam(required = false) String jwttoken, @RequestBody(required = false) Map<String,String> Jsonrequest )
+   throws  MessagingException,IOException
     {
-        JavaMailUtility javaMailUtility = new JavaMailUtility();
-        javaMailUtility.sendmail("quizapphutech@gmail.com","tan");
-        return null;
+
+        Map<String,String> EmailorNewpassword = Jsonrequest;
+        String key =EmailorNewpassword.keySet().toString();
+        key =key.substring(1,key.length()-1);
+        String entity= EmailorNewpassword.get(key);
+        if(key.equals("password")) {
+            try {
+                String username = jwtUtility.getUsernameFromToken(jwttoken);
+                return accountService.Updatepassword(username,entity); // cap nhap mat khau
+            }
+            catch (Exception ex)
+            {
+                // bat loi jwt ko hop le
+                return new ResponseEntity(new Message("jwt không hợp lệ hoặc quá hạn","Jwt error"),HttpStatus.BAD_REQUEST);
+            }
+        }
+        if(key.equals("email"))
+            return accountService.GenerateMail(entity);
+        // send gmail
+
+        else
+            return new ResponseEntity(new Message("key must be email or password","Key error"),HttpStatus.BAD_REQUEST);
+        // keyword loi
+
+
+
+
+
 
 
     }
+
 //    @PostMapping("/Reset_password")
 
 
