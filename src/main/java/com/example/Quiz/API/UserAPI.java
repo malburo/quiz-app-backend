@@ -1,39 +1,73 @@
 package com.example.Quiz.API;
 
 import com.example.Quiz.Models.User;
-import com.example.Quiz.Repository.UserRepository;
+import com.example.Quiz.Quick_Pojo_Class.Message;
+import com.example.Quiz.Quick_Pojo_Class.changePassword;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-
+import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
-
-@RequestMapping("/users")
+@RequestMapping("/users") // endpoint nay de get all
 public class UserAPI {
     @Autowired
     UserService userService;
     @Autowired
-    UserRepository userRepository;
-    @RequestMapping(value="/user", method = {RequestMethod.GET,RequestMethod.DELETE,RequestMethod.POST,RequestMethod.PUT})
-    public Object UserAPI_controler_vippro (Principal principal , HttpServletRequest httpServletRequest)
+    AccountService accountService;
+// admin arena
+    @GetMapping
+    public List getallusers ()
     {
+        return  userService.findAll();
+    }
+    @GetMapping("/users/{userId}")
+    public User GetuserByuserId (@RequestParam long userId)
+    {
+        return  userService.findByID(userId);
+    }
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity DeleteuserByuserId (@RequestParam int userId)
 
-        String method = httpServletRequest.getMethod();
-        if (method.equals("GET"))
-        {
-            return  userService.Getuser(principal.getName());
-        }
-        return  null;
-
-
-
+    {
+        userService.delete(userId);
+        accountService.delete(userId);
+        return  new ResponseEntity(new Message("Delete completed"), HttpStatus.OK);
 
     }
+ @PutMapping("/users/{userId}")
+ public HttpEntity PutuserByuserId (@RequestParam long userId, User user)
+ {
+     if (userId==user.getUserId())
+    return userService.update(user);
+     return new ResponseEntity(new Message("Ids did'nt match",""), HttpStatus.BAD_REQUEST);
+
+ }
+
+
+
+
+
+
+
+
+
+
+
+    @PostMapping("/getme/change_password") // doi mat khau
+    public ResponseEntity changepassword(@RequestBody changePassword change, Principal principal ) {
+        return accountService.changepassword(change,principal.getName());
+
+    }
+
+
 
 
 }

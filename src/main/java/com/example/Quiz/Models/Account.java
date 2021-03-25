@@ -1,6 +1,8 @@
 package com.example.Quiz.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -11,13 +13,17 @@ public class Account {
 
 
 
-    //@Column(name = "account_id")
-    //private long accountId; // bo id vi no ngu vai lon du ma
-    @Id
+    @Id // 2 khoa chinh cho de quan ly
+    @Column(name = "account_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long accountId;
+
+
     @Column(name = "user_name")
     private String username;
 
-    @Column(name = "password")
+    @Column()
+
     private String password;
 
     @OneToOne(mappedBy = "account",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
@@ -39,13 +45,13 @@ public class Account {
         this.role = role;
     }
 
-//    public long getAccountId() {
-//        return accountId;
-//    }
+    public long getAccountId() {
+        return accountId;
+    }
 
-//    public void setAccountId(long accountId) {
-//        this.accountId = accountId;
-//    }
+    public void setAccountId(long accountId) {
+        this.accountId = accountId;
+    }
 
     public String getUsername() {
         return username;
@@ -54,8 +60,10 @@ public class Account {
     public void setUsername(String username) {
         this.username = username;
     }
+    @JsonProperty (access = JsonProperty.Access.WRITE_ONLY) // khong hien password khi respone
 
     public String getPassword() {
+
         return password;
     }
 

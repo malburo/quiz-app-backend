@@ -20,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/topics")
 public class TopicApi {
+
     @Autowired
     private TopicService topicService;
     @Autowired
@@ -54,13 +55,13 @@ public class TopicApi {
         topic.setUser(user);
         return topicService.create(topic);
     }
-
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity<String> delete(@PathVariable Long id){
             topicService.deleteById(id);
             return new ResponseEntity<>("Successfully deleted topic with id:"+id,HttpStatus.OK);
     }
-
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public ResponseEntity<Topic> update(@PathVariable Long id, @RequestBody Topic topic) throws ValidationException {
         Topic existTopic  = topicService.findByID(id);
