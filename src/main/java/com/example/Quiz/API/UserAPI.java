@@ -4,6 +4,7 @@ import com.example.Quiz.Models.Account;
 import com.example.Quiz.Models.User;
 import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Quick_Pojo_Class.changePassword;
+import com.example.Quiz.Repository.AccountRepository;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Role;
@@ -25,6 +26,7 @@ public class UserAPI {
     UserService userService;
     @Autowired
     AccountService accountService;
+
 // admin arena
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
@@ -45,8 +47,9 @@ public class UserAPI {
     public ResponseEntity DeleteuserByuserId (@PathVariable("userId") int userId)
 
     {
+
+        // tao account thi ben kia cung phai co user
         userService.delete(userId);
-        accountService.delete(userId);
         return  new ResponseEntity(new Message("","Delete completed"), HttpStatus.OK);
 
     }

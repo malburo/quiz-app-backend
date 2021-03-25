@@ -42,14 +42,14 @@ public class QuizApplication {
 //
 ////			Topic topic = new Topic();
 ////			Topic topic1 = new Topic();
-//			Account account = new Account();
-//			account.setUserName("username1");
-//			account.setPassword(bCryptPasswordEncoder.encode("password"));
-//			//user.setFullName("Test user");
-//			//account.setUser();
-//			account.setRole("ADMIN");
-//			account.setBlocked(false);
-//			repository.save(account);
+			Account account = new Account();
+			account.setUserName("username1");
+			account.setPassword(bCryptPasswordEncoder.encode("password"));
+			//user.setFullName("Test user");
+			//account.setUser();
+			account.setRole("ADMIN");
+			account.setBlocked(false);
+			repository.save(account);
 //
 //			//topic.setTopicName("topictest");
 //			//topic.setUser(user);

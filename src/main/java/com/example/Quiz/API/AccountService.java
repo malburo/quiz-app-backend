@@ -127,6 +127,7 @@ public class AccountService {
 //        return new ResponseEntity(HttpStatus.FORBIDDEN);
 //    }
     public void delete(long id){
+
         accountRepository.deleteById((long) id);
     }
 }
