@@ -33,10 +33,10 @@ public class UserService {
         return repository.saveAndFlush(user);
     }
 
-    public HttpEntity update(User user)  { // cap nhap thong tin nguoi dung
+    public ResponseEntity update(User user)  { // cap nhap thong tin nguoi dung
         try {
 
-            repository.saveAndFlush(user);
+            repository.save(user);
             return new ResponseEntity(new Message("Update completed",""), HttpStatus.OK);
         }
         catch (Exception ex)

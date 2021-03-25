@@ -55,11 +55,12 @@ public class UserAPI {
     }
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping("/{userId}")
- public HttpEntity PutuserByuserId (@PathVariable("userId") long userId, User user)
+ public ResponseEntity PutuserByuserId (@PathVariable("userId") long userId,@RequestBody User user)
  {
      if (userId==user.getUserId())
     return userService.update(user);
      return new ResponseEntity(new Message("Ids did'nt match",""), HttpStatus.BAD_REQUEST);
+
 
  }
     @PreAuthorize("hasAnyRole('USER')")
