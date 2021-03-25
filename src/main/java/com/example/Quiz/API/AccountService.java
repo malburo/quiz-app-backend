@@ -1,11 +1,11 @@
 package com.example.Quiz.API;
 
-import com.example.Quiz.Models.User;
-import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
-import com.example.Quiz.Repository.AccountRepository;
+import com.example.Quiz.Models.User;
+import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Quick_Pojo_Class.changePassword;
+import com.example.Quiz.Repository.AccountRepository;
 import com.example.Quiz.Repository.UserRepository;
 import com.example.Quiz.Ultility.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -31,6 +31,7 @@ public class AccountService {
     @Autowired
     UserRepository userRepository;
 
+
     public List<Account> findAll(){
         return accountRepository.findAll();
     }
@@ -40,7 +41,7 @@ public class AccountService {
     }
 
     public Account findByUserName(String username ){
-        return  accountRepository.findByUserName(username);
+        return  accountRepository.findByUsername(username);
     }
 
     public Account create(Account user){
@@ -51,14 +52,13 @@ public class AccountService {
         return accountRepository.saveAndFlush(user);
     }
 
+
     public ResponseEntity register(Account account) // dang ky tai khoan
     {
-        if( accountRepository.findByUserName(account.getUserName()) !=null) {
-
+        if( accountRepository.findByUsername(account.getUsername()) !=null) {
             return new ResponseEntity( new Message("Account exist"),HttpStatus.FORBIDDEN); // RESPONE STATUS
         }
         else {
-
             String Password_temp = account.getPassword();
             String passwordencoded = bCryptPasswordEncoder.encode(Password_temp);
             account.setPassword(passwordencoded);
@@ -70,31 +70,38 @@ public class AccountService {
             user_DB.setLevel(0);
             user_DB.setAccount(account);
             userRepository.save(user_DB);
-            UserDetails user = userDetailsService.loadUserByUsername(account.getUserName());
+            UserDetails user = userDetailsService.loadUserByUsername(account.getUsername());
             JwtResponse jwtResponse = new JwtResponse(jwtUtility.generateToken(user));
             return new ResponseEntity(jwtResponse,HttpStatus.OK); // RESPONE STATUS
         }
     }
+
+
     public ResponseEntity  changepassword (changePassword changePassword, String Username)
     {
-              Account account = accountRepository.findByUserName(Username);
 
+              Account account = accountRepository.findByUsername(Username);
               if( bCryptPasswordEncoder.matches(changePassword.getOldpassword(),account.getPassword()))
-
            {
                account.setPassword(bCryptPasswordEncoder.encode(changePassword.getNewpassword())); //
                accountRepository.save(account);
-                return  new   ResponseEntity( new Message("change password successed"),HttpStatus.OK);
-
+                return  new   ResponseEntity( new Message("change password successed",""),HttpStatus.OK);
             }
            else {
            return  new ResponseEntity(new Message("password doesn't match"),HttpStatus.BAD_REQUEST); }
     }
 
-    protected ResponseEntity<String> Exceptionregister ()
+
+    public Account GenerateMail (String email) // tao gmail va gui
     {
-        return new ResponseEntity(HttpStatus.FORBIDDEN);
+        Account account = accountRepository.GetAccountByEmail(email);
+       return account;
     }
+
+//    protected ResponseEntity<String> Exceptionregister ()
+//    {
+//        return new ResponseEntity(HttpStatus.FORBIDDEN);
+//    }
     public void delete(int id){
         accountRepository.deleteById((long) id);
     }
