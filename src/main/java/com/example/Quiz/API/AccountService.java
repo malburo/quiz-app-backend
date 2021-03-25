@@ -92,8 +92,8 @@ public class AccountService {
     {
               Account account = accountRepository.findByUserId(userId);
               if( bCryptPasswordEncoder.matches(changePassword.getOldpassword(),account.getPassword()))
-           {
-               account.setPassword(bCryptPasswordEncoder.encode(changePassword.getNewpassword())); //
+              {
+                  account.setPassword(bCryptPasswordEncoder.encode(changePassword.getNewpassword())); //
                accountRepository.save(account);
                 return  new   ResponseEntity( new Message("change password successed",""),HttpStatus.OK);
             }
