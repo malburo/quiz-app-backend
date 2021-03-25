@@ -1,12 +1,12 @@
 package com.example.Quiz.API;
 
-import com.example.Quiz.Models.User;
-import com.example.Quiz.Quick_Pojo_Class.Accountregister;
-import com.example.Quiz.Quick_Pojo_Class.Message;
+
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
-import com.example.Quiz.Repository.AccountRepository;
+import com.example.Quiz.Models.User;
+import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Quick_Pojo_Class.changePassword;
+import com.example.Quiz.Repository.AccountRepository;
 import com.example.Quiz.Repository.UserRepository;
 import com.example.Quiz.Ultility.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -54,13 +54,15 @@ public class AccountService {
     }
 
 
-    public ResponseEntity register(Accountregister accountregister) // dang ky tai khoan
+
+    public ResponseEntity register(Account account) // dang ky tai khoan
+
     {
         if( accountRepository.findByUsername(account.getUsername()) !=null) {
             return new ResponseEntity( new Message("Account exist"),HttpStatus.FORBIDDEN); // RESPONE STATUS
         }
         else {
-            String Password_temp = accountregister.getPassword();
+            String Password_temp = account.getPassword();
             String passwordencoded = bCryptPasswordEncoder.encode(Password_temp);
             Account account = new Account();
             account.setUserName(accountregister.getUsername());

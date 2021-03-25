@@ -2,7 +2,9 @@ package com.example.Quiz.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import net.minidev.json.annotate.JsonIgnore;
+
 
 import javax.persistence.*;
 
@@ -11,19 +13,16 @@ import javax.persistence.*;
 @Table(name = "account")
 public class Account {
 
+    @Id
 
-
-    @Id // 2 khoa chinh cho de quan ly
     @Column(name = "account_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long accountId;
 
-
     @Column(name = "user_name")
     private String username;
 
-    @Column()
-
+    @Column(name = "password")
     private String password;
 
     @OneToOne(mappedBy = "account",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
