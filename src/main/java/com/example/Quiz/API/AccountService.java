@@ -114,10 +114,10 @@ public class AccountService {
 
 
     }
-    public ResponseEntity Updatepassword (String username)
+    public ResponseEntity Updatepassword (String username,String entity)
     {
         Account account = accountRepository.findByUserName(username);
-        account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
+        account.setPassword(bCryptPasswordEncoder.encode(entity));
         accountRepository.saveAndFlush(account);
         return new ResponseEntity( new Message("","Password updated"),HttpStatus.OK);
     }

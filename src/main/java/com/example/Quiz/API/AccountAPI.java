@@ -104,7 +104,7 @@ public class AccountAPI {
         if(key.equals("password")) {
             try {
                 String username = jwtUtility.getUsernameFromToken(jwttoken);
-                return accountService.Updatepassword(username); // cap nhap mat khau
+                return accountService.Updatepassword(username,entity); // cap nhap mat khau
             }
             catch (Exception ex)
             {
