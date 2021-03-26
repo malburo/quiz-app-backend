@@ -23,7 +23,7 @@ public class Question {
     @Column(name = "question_Answer_A")
     private String questionAnswerA;
     @Column(name = "question_Answer_B")
-    private String questionAnswerB;
+        private String questionAnswerB;
     @Column(name = "question_Answer_C")
     private String questionAnswerC;
     @Column(name = "questionAnswerD")
