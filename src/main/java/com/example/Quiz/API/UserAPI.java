@@ -25,7 +25,7 @@ public class UserAPI {
 // admin arena
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
-    public Object getallusers (Principal principal) throws  ValidationException
+    public List<User> getallusers () throws  Exception
     {
             return  userService.findAll();
 
