@@ -1,13 +1,10 @@
 package com.example.Quiz.API;
 
-import com.example.Quiz.Models.Account;
 import com.example.Quiz.Models.User;
 import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
-import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Repository.AccountRepository;
 import com.example.Quiz.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
