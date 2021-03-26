@@ -33,4 +33,6 @@ public class APIExceptionHandler {
     ErrorMessage exceptionHandler(EntityNotFoundException e){
         return new ErrorMessage("404",e.getMessage());
     }
+
+
 }

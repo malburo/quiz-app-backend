@@ -2,6 +2,7 @@ package com.example.Quiz.API;
 
 import com.example.Quiz.Models.Account;
 import com.example.Quiz.Models.User;
+import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Quick_Pojo_Class.changePassword;
 import com.example.Quiz.Repository.AccountRepository;
@@ -50,7 +51,7 @@ public class UserAPI {
 
         // tao account thi ben kia cung phai co user
         userService.delete(userId);
-        return  new ResponseEntity(new Message("","Delete completed"), HttpStatus.OK);
+        return  new ResponseEntity("delete succcessed" +userId, HttpStatus.OK);
 
     }
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
@@ -59,7 +60,7 @@ public class UserAPI {
  {
      if (userId==user.getUserId())
     return userService.update(user);
-     return new ResponseEntity(new Message("Ids did'nt match",""), HttpStatus.BAD_REQUEST);
+     return new ResponseEntity(new ErrorMessage("400","Ids did'nt match"), HttpStatus.BAD_REQUEST);
 
 
  }

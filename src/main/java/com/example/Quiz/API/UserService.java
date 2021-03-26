@@ -2,6 +2,7 @@ package com.example.Quiz.API;
 
 import com.example.Quiz.Models.Account;
 import com.example.Quiz.Models.User;
+import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.Repository.AccountRepository;
 import com.example.Quiz.Repository.UserRepository;
@@ -39,11 +40,11 @@ public class UserService {
         try {
 
             repository.save(user);
-            return new ResponseEntity(new Message("Update completed",""), HttpStatus.OK);
+            return new ResponseEntity("update completed", HttpStatus.OK);
         }
         catch (Exception ex)
         {
-            return new ResponseEntity(new Message("Update Error"), HttpStatus.OK);
+            return new ResponseEntity( new ErrorMessage("400","update fail for some reason"), HttpStatus.BAD_REQUEST);
         }
 //        return repository.saveAndFlush(user);
     }

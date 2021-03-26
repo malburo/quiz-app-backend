@@ -2,6 +2,7 @@ package com.example.Quiz.API;
 
 
 import com.example.Quiz.Models.User;
+import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import com.example.Quiz.Quick_Pojo_Class.Message;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
@@ -68,7 +69,7 @@ public class AccountService {
 
     {
         if( accountRepository.findByUsername(account.getUsername()) !=null) {
-            return new ResponseEntity( new Message("Account exist"),HttpStatus.FORBIDDEN); // RESPONE STATUS
+            return new ResponseEntity( new ErrorMessage("403","account exist"),HttpStatus.FORBIDDEN); // RESPONE STATUS
         }
         else {
 
@@ -96,9 +97,9 @@ public class AccountService {
         if (bCryptPasswordEncoder.matches(changePassword.getOldpassword(), account.getPassword())) {
             account.setPassword(bCryptPasswordEncoder.encode(changePassword.getNewpassword())); //
             accountRepository.save(account);
-            return new ResponseEntity(new Message("change password successed", ""), HttpStatus.OK);
+            return new ResponseEntity("change password successed", HttpStatus.OK);
         } else {
-            return new ResponseEntity(new Message("password doesn't match"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new ErrorMessage("404","password did'nt correct"), HttpStatus.NOT_FOUND);
         }
 
     }
@@ -109,10 +110,10 @@ public class AccountService {
     {
         Account account = accountRepository.GetAccountByEmail(email);
         if (account == null)
-            return new ResponseEntity(new Message("Email chưa được đăng ký", "Email error"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity(new ErrorMessage("404","Email is not registered "), HttpStatus.NOT_FOUND);
         else
             javaMailUtility.sendmail(email, account.getUsername(), jwtUtility.generateToken10min(account.getUsername()));
-        return new ResponseEntity(new Message("", "Mail sended"), HttpStatus.OK);
+        return new ResponseEntity("eMail was sended", HttpStatus.OK);
 
 
     }
@@ -121,7 +122,7 @@ public class AccountService {
         Account account = accountRepository.findByUsername(username);
         account.setPassword(bCryptPasswordEncoder.encode(entity));
         accountRepository.saveAndFlush(account);
-        return new ResponseEntity(new Message("", "Password updated"), HttpStatus.OK);
+        return new ResponseEntity("Password updated", HttpStatus.OK);
     }
 
     //    protected ResponseEntity<String> Exceptionregister ()
