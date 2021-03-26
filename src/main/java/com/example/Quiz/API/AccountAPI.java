@@ -69,7 +69,7 @@ public class AccountAPI {
         if (jwtRequest.getUsername() == null || jwtRequest.getPassword() == null)
             throw new ValidationException("Wrong keyword format | " + "valid format : username , password");
 
-
+        git remote set-url origin
         doAuthenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
 
 
