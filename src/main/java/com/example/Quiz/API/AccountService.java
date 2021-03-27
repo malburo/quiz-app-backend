@@ -47,10 +47,9 @@ public class AccountService {
     }
 
 
-    public Account findByUserName(String username ){
-        return  accountRepository.findByUsername(username);
-
-    }
+    public Account findByUserName(String username )
+    {
+        return  accountRepository.findByUsername(username); }
 
     public Account create(Account user) {
         return accountRepository.saveAndFlush(user);
@@ -64,7 +63,6 @@ public class AccountService {
 
 
     public ResponseEntity register(Registerinfo registerinfo) // dang ky tai khoan
-
     {
         if( accountRepository.findByUsername(registerinfo.getUsername()) !=null) {
             return new ResponseEntity( new ErrorMessage("403","account exist"),HttpStatus.FORBIDDEN); // RESPONE STATUS
@@ -90,9 +88,8 @@ public class AccountService {
         }
     }
 
-
-
-    public ResponseEntity changepassword(changePassword changePassword, long userId) {
+    public ResponseEntity changepassword(changePassword changePassword, long userId)
+    {
         Account account = accountRepository.findByUserId(userId);
         if (bCryptPasswordEncoder.matches(changePassword.getOldpassword(), account.getPassword())) {
             account.setPassword(bCryptPasswordEncoder.encode(changePassword.getNewpassword())); //
@@ -101,12 +98,9 @@ public class AccountService {
         } else {
             return new ResponseEntity(new ErrorMessage("404","password did'nt correct"), HttpStatus.NOT_FOUND);
         }
-
     }
 
-
-    public ResponseEntity GenerateMail(String email) throws IOException, MessagingException
-    // tao gmail va gui
+    public ResponseEntity GenerateMail(String email) throws IOException, MessagingException// tao gmail va gui
     {
         Account account = accountRepository.GetAccountByEmail(email);
         if (account == null)
@@ -124,7 +118,6 @@ public class AccountService {
         accountRepository.saveAndFlush(account);
         return new ResponseEntity("Password updated", HttpStatus.OK);
     }
-
     //    protected ResponseEntity<String> Exceptionregister ()
 //    {
 //        return new ResponseEntity(HttpStatus.FORBIDDEN);

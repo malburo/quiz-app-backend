@@ -1,5 +1,6 @@
 package com.example.Quiz.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -30,6 +31,8 @@ public class Question {
     private String questionAnswerD;
     @Column(name = "question_Answer_Correct")
     private String questionAnswerCorrect;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "quiz_id",referencedColumnName = "quiz_id",foreignKey = @ForeignKey(name ="quiz_id_fk"))
     public Quiz quiz;

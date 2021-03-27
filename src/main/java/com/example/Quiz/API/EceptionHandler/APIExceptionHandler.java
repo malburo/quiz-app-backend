@@ -1,4 +1,4 @@
-package com.example.Quiz.API;
+package com.example.Quiz.API.EceptionHandler;
 
 import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import org.springframework.http.HttpStatus;

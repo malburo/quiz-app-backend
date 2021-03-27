@@ -43,41 +43,23 @@ public class AccountAPI {
     AuthenticationManager authenticationManager;
 
     @PostMapping("/register") //
-    public ResponseEntity Register(@RequestBody Registerinfo registerinfo) throws Exception {
 
+    public ResponseEntity Register(@RequestBody Registerinfo registerinfo) throws Exception {
         if (registerinfo.getUsername() == null || registerinfo.getPassword() == null)
             throw new ValidationException("Wrong keyword format | " + "valid format : username , password");
-
         return accountService.register(registerinfo);
-
-        // regiser
     }
-
-    //    @GetMapping ("/test2")
-//    public String test ()
-//    {
-//        return "hello";
-//    }
     @GetMapping("/loginFacebook")
     public void facebooklogin(Object object) {
-
-        // info login client send to us
-
     }
-
     @PostMapping("/login")
     public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws Exception {
+
         if (jwtRequest.getUsername() == null || jwtRequest.getPassword() == null)
             throw new ValidationException("Wrong keyword format | " + "valid format : username , password");
-
-
         doAuthenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
-
-
         final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
-
         final String token = jwtUtility.generateToken(userDetails);
-
         return new JwtResponse(token);
 
     }
@@ -86,8 +68,6 @@ public class AccountAPI {
         try {
             authenticationManager.authenticate
                     (new UsernamePasswordAuthenticationToken(username, password));
-            //SecurityContextHolder.getContext().setAuthentication(authentication);
-
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
@@ -95,17 +75,14 @@ public class AccountAPI {
         }
 
     }
-
     // user get user info by using jwt
     @RequestMapping(value = "/getme", method = {RequestMethod.GET}) // lay thong tin nguoi dung theo jwt
     public Object UserinfoByJwt_GET(Principal principal) {
         return userService_2.Getuser(principal.getName());
     }
-
     @PostMapping("/forgot_password")
     public ResponseEntity Forgotpassword(@RequestParam(required = false) String jwttoken, @RequestBody(required = false) Map<String, String> Jsonrequest)
             throws MessagingException, IOException {
-
         Map<String, String> EmailorNewpassword = Jsonrequest;
         String key = EmailorNewpassword.keySet().toString();
         key = key.substring(1, key.length() - 1);
@@ -122,12 +99,9 @@ public class AccountAPI {
         if (key.equals("email"))
             return accountService.GenerateMail(entity);
             // send gmail
-
         else
             return new ResponseEntity(new ErrorMessage("400", "key must be email or password"), HttpStatus.BAD_REQUEST);
         // keyword loi
-
-
     }
 
 //    @PostMapping("/Reset_password")
