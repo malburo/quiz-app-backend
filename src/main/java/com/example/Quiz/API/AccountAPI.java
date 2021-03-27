@@ -1,4 +1,5 @@
 package com.example.Quiz.API;
+
 import com.example.Quiz.JWT.JwtRequest;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
@@ -31,53 +32,51 @@ public class AccountAPI {
     @Autowired
     JWTUtility jwtUtility;
     @Autowired
-    UserService userService_2 ;
+    UserService userService_2;
 
 
     @Autowired
     AuthenticationManager authenticationManager;
 
     @PostMapping("/register") //
-    public ResponseEntity Register (@RequestBody Account account)
-    {
+    public ResponseEntity Register(@RequestBody Account account) {
 
-      
 
         return accountService.register(account);
 
         // regiser
     }
-//    @GetMapping ("/test2")
+
+    //    @GetMapping ("/test2")
 //    public String test ()
 //    {
 //        return "hello";
 //    }
     @GetMapping("/loginFacebook")
-    public void  facebooklogin(Object object)
-    {
+    public void facebooklogin(Object object) {
 
-      // info login client send to us
+        // info login client send to us
 
     }
 
     @PostMapping("/login")
-    public JwtResponse authenticate (@RequestBody JwtRequest jwtRequest) throws Exception {
+    public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws Exception {
 
-            doAuthenticate(jwtRequest.getUsername(),jwtRequest.getPassword());
+        doAuthenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
 
-            final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
+        final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
 
-            final String token = jwtUtility.generateToken(userDetails);
+        final String token = jwtUtility.generateToken(userDetails);
 
-             return new JwtResponse(token);
+        return new JwtResponse(token);
 
     }
 
     private void doAuthenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate
-                    (new UsernamePasswordAuthenticationToken(username,password));
-             //SecurityContextHolder.getContext().setAuthentication(authentication);
+                    (new UsernamePasswordAuthenticationToken(username, password));
+            //SecurityContextHolder.getContext().setAuthentication(authentication);
 
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
@@ -85,52 +84,42 @@ public class AccountAPI {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
+
     // user get user info by using jwt
-    @RequestMapping(value="/getme", method = {RequestMethod.GET}) // lay thong tin nguoi dung theo jwt
-    public Object UserinfoByJwt_GET (Principal principal )
-    {
-        return  userService_2.Getuser(principal.getName());
+    @RequestMapping(value = "/getme", method = {RequestMethod.GET}) // lay thong tin nguoi dung theo jwt
+    public Object UserinfoByJwt_GET(Principal principal) {
+        return userService_2.Getuser(principal.getName());
     }
 
-    @PostMapping ("/forgot_password")
-   public  ResponseEntity Forgotpassword (@RequestParam(required = false) String jwttoken, @RequestBody(required = false) Map<String,String> Jsonrequest )
-   throws  MessagingException,IOException
-    {
+    @PostMapping("/forgot_password")
+    public ResponseEntity Forgotpassword(@RequestParam(required = false) String jwttoken, @RequestBody(required = false) Map<String, String> Jsonrequest)
+            throws MessagingException, IOException {
 
-        Map<String,String> EmailorNewpassword = Jsonrequest;
-        String key =EmailorNewpassword.keySet().toString();
-        key =key.substring(1,key.length()-1);
-        String entity= EmailorNewpassword.get(key);
-        if(key.equals("password")) {
+        Map<String, String> EmailorNewpassword = Jsonrequest;
+        String key = EmailorNewpassword.keySet().toString();
+        key = key.substring(1, key.length() - 1);
+        String entity = EmailorNewpassword.get(key);
+        if (key.equals("password")) {
             try {
                 String username = jwtUtility.getUsernameFromToken(jwttoken);
-                return accountService.Updatepassword(username,entity); // cap nhap mat khau
-            }
-            catch (Exception ex)
-            {
+                return accountService.Updatepassword(username, entity); // cap nhap mat khau
+            } catch (Exception ex) {
                 // bat loi jwt ko hop le
-                return new ResponseEntity(new Message("jwt không hợp lệ hoặc quá hạn","Jwt error"),HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(new Message("jwt không hợp lệ hoặc quá hạn", "Jwt error"), HttpStatus.BAD_REQUEST);
             }
         }
-        if(key.equals("email"))
+        if (key.equals("email"))
             return accountService.GenerateMail(entity);
-        // send gmail
+            // send gmail
 
         else
-            return new ResponseEntity(new Message("key must be email or password","Key error"),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Message("key must be email or password", "Key error"), HttpStatus.BAD_REQUEST);
         // keyword loi
-
-
-
-
-
 
 
     }
 
 //    @PostMapping("/Reset_password")
-
-
 
 
 }
