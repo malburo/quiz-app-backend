@@ -47,7 +47,7 @@ public class QuizApplication {
 				Account account = new Account();
 				account.setUsername("username1");
 				account.setPassword(bCryptPasswordEncoder.encode("password"));
-				account.setRole("Admin");
+				account.setRole("ADMIN");
 				account.setBlocked(false);
 				repository.saveAndFlush(account);
 			}

@@ -61,6 +61,7 @@ public class TopicApi {
             topicService.deleteById(id);
             return new ResponseEntity<>("Successfully deleted topic with id:"+id,HttpStatus.OK);
     }
+
     @Secured("ROLE_ADMIN")
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public ResponseEntity<Topic> update(@PathVariable Long id, @RequestBody Topic topic) throws ValidationException {

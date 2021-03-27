@@ -3,11 +3,13 @@ package com.example.Quiz.API;
 import com.example.Quiz.JWT.JwtRequest;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
-import com.example.Quiz.Quick_Pojo_Class.Message;
+import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import com.example.Quiz.Ultility.JWTUtility;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -17,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import javax.xml.bind.ValidationException;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Map;
@@ -39,11 +42,11 @@ public class AccountAPI {
     AuthenticationManager authenticationManager;
 
     @PostMapping("/register") //
-    public ResponseEntity Register(@RequestBody Account account) {
+    public ResponseEntity Register(@RequestBody Account account) throws Exception {
 
-
+        if (account.getUsername() == null || account.getPassword() == null)
+            throw new ValidationException("Wrong keyword format | " + "valid format : username , password");
         return accountService.register(account);
-
         // regiser
     }
 
@@ -61,7 +64,8 @@ public class AccountAPI {
 
     @PostMapping("/login")
     public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws Exception {
-
+        if (jwtRequest.getUsername() == null || jwtRequest.getPassword() == null)
+            throw new ValidationException("Wrong keyword format | " + "valid format : username , password");
         doAuthenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
 
         final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
@@ -83,6 +87,7 @@ public class AccountAPI {
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
+
     }
 
     // user get user info by using jwt
@@ -105,7 +110,8 @@ public class AccountAPI {
                 return accountService.Updatepassword(username, entity); // cap nhap mat khau
             } catch (Exception ex) {
                 // bat loi jwt ko hop le
-                return new ResponseEntity(new Message("jwt không hợp lệ hoặc quá hạn", "Jwt error"), HttpStatus.BAD_REQUEST);
+
+                return new ResponseEntity(new ErrorMessage("400", "jwt is invalid or expired"), HttpStatus.BAD_REQUEST);
             }
         }
         if (key.equals("email"))
@@ -113,7 +119,7 @@ public class AccountAPI {
             // send gmail
 
         else
-            return new ResponseEntity(new Message("key must be email or password", "Key error"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new ErrorMessage("400", "key must be email or password"), HttpStatus.BAD_REQUEST);
         // keyword loi
 
 
