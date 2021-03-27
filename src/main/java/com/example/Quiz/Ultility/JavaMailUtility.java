@@ -16,7 +16,7 @@ public class JavaMailUtility {
     private final String hello = "Chào bạn ";
     private final String hello2 ="! Bạn đã yêu cầu đổi mật khẩu";
     private final String content ="Click vào đường link dưới đây để lấy lại mật khẩu của bạn";
-    private String link = "http://localhost:9090/auth/forgot_password?jwttoken=" ;
+    private String link = "http://localhost:9090/auth/forgot_password?jwttoken=" ; // send jwt to client
     private final String logo ="@QuizApp_Hutech";
 
 

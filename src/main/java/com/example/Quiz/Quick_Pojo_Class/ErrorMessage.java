@@ -1,6 +1,9 @@
 package com.example.Quiz.Quick_Pojo_Class;
 
+import java.util.Date;
+
 public class ErrorMessage {
+    private final Date date_message = new Date();
     private String status;
     private String message;
 
@@ -25,4 +28,7 @@ public class ErrorMessage {
         this.message = message;
     }
 
+    public Date getDate_message() {
+        return date_message;
+    }
 }
