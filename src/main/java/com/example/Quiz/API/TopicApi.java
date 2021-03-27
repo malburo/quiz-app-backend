@@ -34,7 +34,8 @@ public class TopicApi {
     @Autowired
     private AccountService accountService;
     @Autowired
-    QuizRepository quizRepository;
+    QuizService quizService;
+
     @GetMapping
     public ResponseEntity<List<Topic>> list() {
         return new ResponseEntity<>(topicService.findAll(),HttpStatus.OK);
@@ -83,12 +84,12 @@ public class TopicApi {
     public ResponseEntity GetallQuizz (@PathVariable("topicId") long topicId)
     {
 
-        if(quizRepository.GetAllQuizByTopicId(topicId).isEmpty())
+        if(quizService.getQuizzesbytopicId(topicId).isEmpty())
         {
-            return new ResponseEntity(new ErrorMessage("404","no quizzes with topicId: "+topicId),HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new ErrorMessage("404","no quizzes with id: "+topicId),HttpStatus.NOT_FOUND);
 
         }
-        return new ResponseEntity<List<Quiz>>(quizRepository.GetAllQuizByTopicId(topicId),HttpStatus.OK);
+        return new ResponseEntity<List<Quiz>>(quizService.getQuizzesbytopicId(topicId),HttpStatus.OK);
 
     }
     @Secured("ROLE_ADMIN")
@@ -98,7 +99,7 @@ public class TopicApi {
         try {
 
             quiz.setTopic(topicService.findByID(topicId));
-            quizRepository.save(quiz);
+            quizService.SaveaQuiz(quiz);
             return new ResponseEntity("created Quizz ",HttpStatus.OK);
         }
         catch (Exception ex)

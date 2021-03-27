@@ -79,6 +79,7 @@ public class Quiz {
       return topic.getTopicId();
    }
 
+
    public void setTopic(Topic topic) {
       this.topic = topic;
    }
