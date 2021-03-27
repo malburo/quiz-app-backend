@@ -32,7 +32,7 @@ public class QuizAPI {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("{quizId}")
-    public Object postQuiz(@PathVariable("quizId") long quizId, @RequestBody Map<String,Object> mapList) throws  ValidationException {
+    public Object PutQuiz(@PathVariable("quizId") long quizId, @RequestBody Map<String,Object> mapList) throws  ValidationException {
 
             Quiz quiz = quizService.Getaquiz(quizId);
 
