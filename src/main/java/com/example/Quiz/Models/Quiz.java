@@ -2,6 +2,7 @@ package com.example.Quiz.Models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.List;
@@ -52,7 +53,7 @@ public class Quiz {
    public void setQizDescription(String qizDescription) {
       this.qizDescription = qizDescription;
    }
-
+   @JsonProperty (access = JsonProperty.Access.WRITE_ONLY) // hide luon question
    public List<Question> getQuestions() {
       return questions;
    }
@@ -61,12 +62,25 @@ public class Quiz {
       this.questions = questions;
    }
 
-
+   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) // hide quiz user da hoan thanh
    public List<UserQuiz> getParticipantQuizzes() {
       return participantQuizzes;
    }
 
    public void setParticipantQuizzes(List<UserQuiz> participantQuizzes) {
       this.participantQuizzes = participantQuizzes;
+   }
+   @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
+   public Topic getTopic() {
+      return topic;
+   }
+   public long gettopicId()
+   {
+      return topic.getTopicId();
+   }
+
+
+   public void setTopic(Topic topic) {
+      this.topic = topic;
    }
 }
