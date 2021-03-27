@@ -100,7 +100,7 @@ public class TopicApi {
 
             quiz.setTopic(topicService.findByID(topicId));
             quizService.SaveaQuiz(quiz);
-            return new ResponseEntity("created Quizz ",HttpStatus.OK);
+            return new ResponseEntity("created Quiz ",HttpStatus.OK);
         }
         catch (Exception ex)
         {
