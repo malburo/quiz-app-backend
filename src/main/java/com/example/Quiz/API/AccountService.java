@@ -5,6 +5,7 @@ import com.example.Quiz.Models.User;
 import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
+import com.example.Quiz.Quick_Pojo_Class.Registerinfo;
 import com.example.Quiz.Quick_Pojo_Class.changePassword;
 import com.example.Quiz.Repository.AccountRepository;
 import com.example.Quiz.Repository.UserRepository;
@@ -62,21 +63,23 @@ public class AccountService {
 
 
 
-    public ResponseEntity register(Account account) // dang ky tai khoan
+    public ResponseEntity register(Registerinfo registerinfo) // dang ky tai khoan
 
     {
-        if( accountRepository.findByUsername(account.getUsername()) !=null) {
+        if( accountRepository.findByUsername(registerinfo.getUsername()) !=null) {
             return new ResponseEntity( new ErrorMessage("403","account exist"),HttpStatus.FORBIDDEN); // RESPONE STATUS
         }
         else {
 
-            String Password_temp = account.getPassword();
-            String passwordencoded = bCryptPasswordEncoder.encode(Password_temp);
-            account.setPassword(passwordencoded);
+            Account account = new Account();
+            account.setUsername(registerinfo.getUsername());
+            account.setPassword(bCryptPasswordEncoder.encode(registerinfo.getPassword()));
             account.setRole("USER");
             account.setBlocked(false);
             accountRepository.saveAndFlush(account);
             User user_DB = new User();
+            user_DB.setEmail(registerinfo.getEmail());
+            user_DB.setFullName(registerinfo.getFullName());
             user_DB.setPoint(0);
             user_DB.setLevel(0);
             user_DB.setAccount(account);

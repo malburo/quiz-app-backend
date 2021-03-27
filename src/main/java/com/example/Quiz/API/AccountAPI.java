@@ -4,6 +4,7 @@ import com.example.Quiz.JWT.JwtRequest;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
 import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
+import com.example.Quiz.Quick_Pojo_Class.Registerinfo;
 import com.example.Quiz.Ultility.JWTUtility;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,12 +43,12 @@ public class AccountAPI {
     AuthenticationManager authenticationManager;
 
     @PostMapping("/register") //
-    public ResponseEntity Register(@RequestBody Account account) throws Exception {
+    public ResponseEntity Register(@RequestBody Registerinfo registerinfo) throws Exception {
 
-        if (account.getUsername() == null || account.getPassword() == null)
+        if (registerinfo.getUsername() == null || registerinfo.getPassword() == null)
             throw new ValidationException("Wrong keyword format | " + "valid format : username , password");
 
-        return accountService.register(account);
+        return accountService.register(registerinfo);
 
         // regiser
     }
