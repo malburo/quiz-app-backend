@@ -5,6 +5,7 @@ import com.example.Quiz.Models.User;
 import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
+import com.example.Quiz.Quick_Pojo_Class.Registerinfo;
 import com.example.Quiz.Quick_Pojo_Class.changePassword;
 import com.example.Quiz.Repository.AccountRepository;
 import com.example.Quiz.Repository.UserRepository;
@@ -46,10 +47,9 @@ public class AccountService {
     }
 
 
-    public Account findByUserName(String username ){
-        return  accountRepository.findByUsername(username);
-
-    }
+    public Account findByUserName(String username )
+    {
+        return  accountRepository.findByUsername(username); }
 
     public Account create(Account user) {
         return accountRepository.saveAndFlush(user);
@@ -62,21 +62,22 @@ public class AccountService {
 
 
 
-    public ResponseEntity register(Account account) // dang ky tai khoan
-
+    public ResponseEntity register(Registerinfo registerinfo) // dang ky tai khoan
     {
-        if( accountRepository.findByUsername(account.getUsername()) !=null) {
+        if( accountRepository.findByUsername(registerinfo.getUsername()) !=null) {
             return new ResponseEntity( new ErrorMessage("403","account exist"),HttpStatus.FORBIDDEN); // RESPONE STATUS
         }
         else {
 
-            String Password_temp = account.getPassword();
-            String passwordencoded = bCryptPasswordEncoder.encode(Password_temp);
-            account.setPassword(passwordencoded);
+            Account account = new Account();
+            account.setUsername(registerinfo.getUsername());
+            account.setPassword(bCryptPasswordEncoder.encode(registerinfo.getPassword()));
             account.setRole("USER");
             account.setBlocked(false);
             accountRepository.saveAndFlush(account);
             User user_DB = new User();
+            user_DB.setEmail(registerinfo.getEmail());
+            user_DB.setFullName(registerinfo.getFullName());
             user_DB.setPoint(0);
             user_DB.setLevel(0);
             user_DB.setAccount(account);
@@ -87,9 +88,8 @@ public class AccountService {
         }
     }
 
-
-
-    public ResponseEntity changepassword(changePassword changePassword, long userId) {
+    public ResponseEntity changepassword(changePassword changePassword, long userId)
+    {
         Account account = accountRepository.findByUserId(userId);
         if (bCryptPasswordEncoder.matches(changePassword.getOldpassword(), account.getPassword())) {
             account.setPassword(bCryptPasswordEncoder.encode(changePassword.getNewpassword())); //
@@ -98,12 +98,9 @@ public class AccountService {
         } else {
             return new ResponseEntity(new ErrorMessage("404","password did'nt correct"), HttpStatus.NOT_FOUND);
         }
-
     }
 
-
-    public ResponseEntity GenerateMail(String email) throws IOException, MessagingException
-    // tao gmail va gui
+    public ResponseEntity GenerateMail(String email) throws IOException, MessagingException// tao gmail va gui
     {
         Account account = accountRepository.GetAccountByEmail(email);
         if (account == null)
@@ -121,7 +118,6 @@ public class AccountService {
         accountRepository.saveAndFlush(account);
         return new ResponseEntity("Password updated", HttpStatus.OK);
     }
-
     //    protected ResponseEntity<String> Exceptionregister ()
 //    {
 //        return new ResponseEntity(HttpStatus.FORBIDDEN);

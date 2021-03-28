@@ -24,7 +24,7 @@ public class APIExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
     ErrorMessage exceptionHandler(HttpMessageNotReadableException e){
-        return new ErrorMessage("400","User input is in wrong format:");
+        return new ErrorMessage("400","Wrong format");
     }
 
     @ResponseBody
