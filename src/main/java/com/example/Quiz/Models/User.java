@@ -25,8 +25,9 @@ public class User {
      //finnal level
     @JsonProperty (access = JsonProperty.Access.READ_ONLY)
     private int level;
+    // hello chinh json tu point sang totalPoint
     @Column(name = "user_point", nullable = false)
-    @JsonProperty (access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty (access = JsonProperty.Access.READ_ONLY,value = "totalPoint")
     private double point;
 
     @Column(name = "user_image_url",nullable =true)
@@ -43,7 +44,7 @@ public class User {
     @OneToOne
     @JoinColumn(name = "account_id",referencedColumnName = "account_id",foreignKey = @ForeignKey(name = "account_id_fk"))
     @JsonIgnoreProperties({"user"}) // oh my lord tranh infinite loop
-
+    @JsonIgnore
     private Account account ;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
