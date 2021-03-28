@@ -21,7 +21,7 @@ public class Topic {
     @Column(name = "topic_description")
     private  String topicDescription;
 
-    @Column(name = "cover_image_url")
+    @Column(name = "cover_image_url",nullable = true)
     private String CoverImageUrl;
 
 
