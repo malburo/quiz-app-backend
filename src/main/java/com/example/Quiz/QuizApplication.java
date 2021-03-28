@@ -44,7 +44,7 @@ public class QuizApplication {
 	public CommandLineRunner deme(){
 		return (args) -> {
 
-			if(repository.findByUsername("username1")!=null){
+			if(repository.findByUsername("username1")==null){
 				Account account = new Account();
 				account.setUsername("username1");
 				account.setPassword(bCryptPasswordEncoder.encode("password"));
