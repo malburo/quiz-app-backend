@@ -23,6 +23,7 @@ public class QuestionService {
     }
 
     public Question create(Question question){
+        question.setQuestionPoint(10);
         return repository.saveAndFlush(question);
     }
 

@@ -1,29 +1,18 @@
 package com.example.Quiz.API;
 
 
-import com.example.Quiz.Models.Quiz;
-import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
-import com.example.Quiz.Repository.QuizRepository;
-import com.example.Quiz.Repository.TopicRepository;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-import javax.xml.bind.ValidationException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import com.example.Quiz.Models.Question;
 import com.example.Quiz.Models.Quiz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.bind.ValidationException;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -71,7 +60,8 @@ public class QuizAPI {
             }
         }
         quizService.SaveaQuiz(quiz);
-        return new ResponseEntity<>("quiz "+quizId+" updated",HttpStatus.OK);
+        return new ResponseEntity<>(quiz,HttpStatus.OK);
+
 
     }
 

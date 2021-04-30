@@ -41,16 +41,22 @@ public class QuizApplication {
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Bean
-	public CommandLineRunner deme(){
+	public CommandLineRunner deme() {
 		return (args) -> {
 
 			if(repository.findByUsername("username1")==null){
 				Account account = new Account();
-				account.setUsername("username1");
+				account.setUsername("username10");
 				account.setPassword(bCryptPasswordEncoder.encode("password"));
 				account.setRole("ADMIN");
 				account.setBlocked(false);
+				User user = new User();
+				user.setFullName("abc");
+				user.setAccount(account);
+				user.setLevel(1);
+				user.setPoint(100);
 				repository.saveAndFlush(account);
+
 				User user = new User();
 				user.setFullName("admin");
 				user.setLevel(10000000);
@@ -59,11 +65,8 @@ public class QuizApplication {
 				userRepository.saveAndFlush(user);
 			}
 
-
-
+			}
 		};
-
 	}
-
 
 }

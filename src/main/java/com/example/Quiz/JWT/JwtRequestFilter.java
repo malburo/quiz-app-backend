@@ -28,7 +28,7 @@ public class JwtRequestFilter extends OncePerRequestFilter { // lop servlet filt
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-                                throws ServletException, IOException {
+                                throws ServletException, IOException, ExpiredJwtException {
 
         final String requestTokenHeader = request.getHeader("Authorization");
 
@@ -37,13 +37,16 @@ public class JwtRequestFilter extends OncePerRequestFilter { // lop servlet filt
         // JWT Token is in the form "Bearer xxxxxxxxxxxx". Remove Bearer word and get
         // only the Token
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            jwtToken = requestTokenHeader.substring(7);
-            try {
-                username = jwtTokenUtil.getUsernameFromToken(jwtToken);
 
-            } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
-            }
+               try {
+                   jwtToken = requestTokenHeader.substring(7);
+                   username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+
+               }catch (ExpiredJwtException ex){
+                   request.setAttribute("expired", "Token-expired");
+               }
+
+
         } else {
             logger.warn("JWT Token does not begin with Bearer String");
         }
@@ -63,8 +66,11 @@ public class JwtRequestFilter extends OncePerRequestFilter { // lop servlet filt
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 // add objects này vào authetication của spring security
             }
+
         }
         filterChain.doFilter(request, response);
 
+
     }
+
 }

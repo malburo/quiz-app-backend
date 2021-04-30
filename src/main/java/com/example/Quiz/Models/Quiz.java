@@ -18,7 +18,7 @@ public class Quiz {
    @Column(name = "quiz_name")
    private String quizName;
    @Column(name = "quiz_description")
-   private String qizDescription;
+   private String quizDescription;
 
    @OneToMany(mappedBy = "quiz",cascade = CascadeType.ALL)
    private List<Question> questions;
@@ -47,11 +47,11 @@ public class Quiz {
    }
 
    public String getQizDescription() {
-      return qizDescription;
+      return quizDescription;
    }
 
    public void setQizDescription(String qizDescription) {
-      this.qizDescription = qizDescription;
+      this.quizDescription = qizDescription;
    }
    @JsonProperty (access = JsonProperty.Access.WRITE_ONLY) // hide luon question
    public List<Question> getQuestions() {
