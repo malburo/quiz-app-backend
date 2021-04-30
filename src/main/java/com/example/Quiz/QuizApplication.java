@@ -1,6 +1,7 @@
 package com.example.Quiz;
 
 import com.example.Quiz.Models.Account;
+import com.example.Quiz.Models.User;
 import com.example.Quiz.Repository.AccountRepository;
 import com.example.Quiz.Repository.TopicRepository;
 import com.example.Quiz.Repository.UserRepository;
@@ -40,23 +41,24 @@ public class QuizApplication {
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Bean
-	public CommandLineRunner deme(){
+	public CommandLineRunner deme() {
 		return (args) -> {
-
-			if(repository.findAll().isEmpty()){
+			if (repository.findByUsername("admin") == null) {
 				Account account = new Account();
-				account.setUsername("username1");
+				account.setUsername("username10");
 				account.setPassword(bCryptPasswordEncoder.encode("password"));
 				account.setRole("ADMIN");
 				account.setBlocked(false);
+				User user = new User();
+				user.setFullName("abc");
+				user.setAccount(account);
+				user.setLevel(1);
+				user.setPoint(100);
 				repository.saveAndFlush(account);
+				userRepository.saveAndFlush(user);
+
 			}
-
-
-
 		};
-
 	}
-
 
 }

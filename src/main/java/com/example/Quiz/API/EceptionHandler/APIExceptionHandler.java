@@ -3,6 +3,8 @@ package com.example.Quiz.API.EceptionHandler;
 import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,6 +35,16 @@ public class APIExceptionHandler {
     ErrorMessage exceptionHandler(EntityNotFoundException e){
         return new ErrorMessage("404",e.getMessage());
     }
-
-
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler
+    ErrorMessage exceptionHandler(BadCredentialsException e){
+        return new ErrorMessage("401",e.getMessage());
+    }
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler
+    ErrorMessage exceptionHandler(UsernameNotFoundException e){
+       return new ErrorMessage("401",e.getMessage());
+    }
 }

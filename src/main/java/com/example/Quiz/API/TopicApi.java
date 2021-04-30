@@ -4,14 +4,14 @@ import com.example.Quiz.Models.Quiz;
 import com.example.Quiz.Models.Topic;
 import com.example.Quiz.Models.User;
 import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
-import com.example.Quiz.Repository.QuizRepository;
 import com.example.Quiz.Ultility.JWTUtility;
+import com.example.Quiz.Ultility.TopicResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/topics")
-public class TopicApi {
+public class TopicApi{
 
     @Autowired
     private TopicService topicService;
@@ -37,11 +37,9 @@ public class TopicApi {
     QuizService quizService;
 
     @GetMapping
-    public ResponseEntity<List<Topic>> list() {
+    public ResponseEntity<List<TopicResponse>> list() throws ExpiredJwtException {
         return new ResponseEntity<>(topicService.findAll(),HttpStatus.OK);
     }
-
-
 
     @GetMapping
     @RequestMapping("{id}")
@@ -49,6 +47,7 @@ public class TopicApi {
         Topic topic = topicService.findByID(id);
         return new ResponseEntity<>(topic,HttpStatus.OK);
     }
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -79,7 +78,7 @@ public class TopicApi {
         BeanUtils.copyProperties(topic,existTopic,"topicId","user");
         return new ResponseEntity<>(topicService.update(existTopic),HttpStatus.OK);
     }
-    @Secured("ROLE_ADMIN")
+
     @GetMapping ("/{topicId}/quizzes") // lay quizzes cua 1 topic
     public ResponseEntity GetallQuizz (@PathVariable("topicId") long topicId)
     {
@@ -100,7 +99,7 @@ public class TopicApi {
 
             quiz.setTopic(topicService.findByID(topicId));
             quizService.SaveaQuiz(quiz);
-            return new ResponseEntity("created Quiz ",HttpStatus.OK);
+            return new ResponseEntity(quiz,HttpStatus.OK);
         }
         catch (Exception ex)
         {

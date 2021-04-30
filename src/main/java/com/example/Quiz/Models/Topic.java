@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "topic")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Topic {
+public class Topic  {
 
     @Id()
     @GeneratedValue(strategy =GenerationType.IDENTITY)
@@ -21,6 +21,8 @@ public class Topic {
     @Column(name = "topic_description")
     private  String topicDescription;
 
+
+    @JsonProperty("topicImageUrl")
     @Column(name = "cover_image_url")
     private String CoverImageUrl;
 
@@ -35,6 +37,22 @@ public class Topic {
 
     public Long getTopicId() {
         return topicId;
+    }
+
+    public String getCoverImageUrl() {
+        return CoverImageUrl;
+    }
+
+    public void setCoverImageUrl(String coverImageUrl) {
+        CoverImageUrl = coverImageUrl;
+    }
+
+    public List<Quiz> getQuizzes() {
+        return quizzes;
+    }
+
+    public void setQuizzes(List<Quiz> quizzes) {
+        this.quizzes = quizzes;
     }
 
     public void setTopicId(Long topicId) {

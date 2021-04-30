@@ -2,6 +2,7 @@ package com.example.Quiz.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -13,24 +14,28 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_id")
     private Long questionId;
+    @JsonProperty("questionTitle")
     @Column(name = "question_name")
     private String questionName;
+    @JsonProperty("questionCode")
     @Column(name = "question_description")
     private String questionDescription;
+    @JsonProperty("questionProgramingLanguage")
+    @Column(name ="programingLanguage")
+    private String programingLanguage;
     @Column(name = "question_point")
-    private String questionPoint;
-    @Column(name = "question_image_url")
-    private String questionImageUrl;
+    private int  questionPoint;
     @Column(name = "question_Answer_A")
     private String questionAnswerA;
     @Column(name = "question_Answer_B")
-        private String questionAnswerB;
+    private String questionAnswerB;
     @Column(name = "question_Answer_C")
     private String questionAnswerC;
-    @Column(name = "questionAnswerD")
+    @Column(name = "questionAnswer_D")
     private String questionAnswerD;
-    @Column(name = "question_Answer_Correct")
-    private String questionAnswerCorrect;
+
+    @Column(name = "questionCorrectAnswer")
+    private String questionCorrectAnswer;
 
     @JsonIgnore
     @ManyToOne
@@ -44,6 +49,7 @@ public class Question {
     public void setQuestionId(Long questionId) {
         this.questionId = questionId;
     }
+
 
     public String getQuestionName() {
         return questionName;
@@ -61,21 +67,14 @@ public class Question {
         this.questionDescription = questionDescription;
     }
 
-    public String getQuestionPoint() {
+    public int getQuestionPoint() {
         return questionPoint;
     }
 
-    public void setQuestionPoint(String questionPoint) {
+    public void setQuestionPoint(int questionPoint) {
         this.questionPoint = questionPoint;
     }
 
-    public String getQuestionImageUrl() {
-        return questionImageUrl;
-    }
-
-    public void setQuestionImageUrl(String questionImageUrl) {
-        this.questionImageUrl = questionImageUrl;
-    }
 
     public String getQuestionAnswerA() {
         return questionAnswerA;
@@ -109,12 +108,12 @@ public class Question {
         this.questionAnswerD = questionAnswerD;
     }
 
-    public String getQuestionAnswerCorrect() {
-        return questionAnswerCorrect;
+    public String getQuestionCorrectAnswer() {
+        return questionCorrectAnswer;
     }
 
-    public void setQuestionAnswerCorrect(String questionAnswerCorrect) {
-        this.questionAnswerCorrect = questionAnswerCorrect;
+    public void setQuestionCorrectAnswer(String questionCorrectAnswer) {
+        this.questionCorrectAnswer = questionCorrectAnswer;
     }
 
     public Quiz getQuiz() {
@@ -125,6 +124,13 @@ public class Question {
         this.quiz = quiz;
     }
 
+    public String getProgramingLanguage() {
+        return programingLanguage;
+    }
+
+    public void setProgramingLanguage(String programingLanguage) {
+        this.programingLanguage = programingLanguage;
+    }
 
 
 }
