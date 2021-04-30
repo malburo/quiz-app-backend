@@ -29,6 +29,7 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(myCustomUserDetailService).passwordEncoder(passwordEncoder()); // them custom userdetail service
@@ -57,5 +58,6 @@ public class WebsecurityConfig extends WebSecurityConfigurerAdapter {
             // Add a filter to validate the tokens with every request
             http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // config filter cua rieng minh
         } // lop servlet filter xu ly token
+
 
 }
