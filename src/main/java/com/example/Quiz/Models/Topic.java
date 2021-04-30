@@ -24,6 +24,7 @@ public class Topic  {
 
     @JsonProperty("topicImageUrl")
     @Column(name = "cover_image_url")
+
     private String CoverImageUrl;
 
 

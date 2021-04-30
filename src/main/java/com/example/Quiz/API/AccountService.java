@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -64,29 +65,56 @@ public class AccountService {
 
     public ResponseEntity register(Registerinfo registerinfo) // dang ky tai khoan
     {
-        if( accountRepository.findByUsername(registerinfo.getUsername()) !=null) {
-            return new ResponseEntity( new ErrorMessage("403","account exist"),HttpStatus.FORBIDDEN); // RESPONE STATUS
+
+        String error = " existed";
+        boolean HasU_E = false;
+        if (registerinfo.getPassword() ==null || registerinfo.getFullName()== null || registerinfo.getUsername() ==null
+                || registerinfo.getEmail() ==null
+        )
+        {
+            error="wrong format, valid format : username, password, email, fullName";
+            return new ResponseEntity(new ErrorMessage("400",error), HttpStatus.NOT_FOUND);
         }
         else {
 
-            Account account = new Account();
-            account.setUsername(registerinfo.getUsername());
-            account.setPassword(bCryptPasswordEncoder.encode(registerinfo.getPassword()));
-            account.setRole("USER");
-            account.setBlocked(false);
-            accountRepository.saveAndFlush(account);
-            User user_DB = new User();
-            user_DB.setEmail(registerinfo.getEmail());
-            user_DB.setFullName(registerinfo.getFullName());
-            user_DB.setPoint(0);
-            user_DB.setLevel(0);
-            user_DB.setAccount(account);
-            userRepository.save(user_DB);
-            UserDetails user = userDetailsService.loadUserByUsername(account.getUsername());
-            JwtResponse jwtResponse = new JwtResponse(jwtUtility.generateToken(user));
-            return new ResponseEntity(jwtResponse, HttpStatus.OK); // RESPONE STATUS
+            if (accountRepository.findByUsername(registerinfo.getUsername()) != null) {
+
+                error = "username " + error;
+                HasU_E = true;
+            }
+            if (accountRepository.GetAccountByEmail(registerinfo.getEmail()) != null) {
+
+                error = "email " + error;
+                HasU_E = true;
+            }
+
+            if (HasU_E == true)
+                return new ResponseEntity(new ErrorMessage("403", error), HttpStatus.NOT_FOUND);
+            else {
+
+                Account account = new Account();
+                account.setUsername(registerinfo.getUsername());
+                account.setPassword(bCryptPasswordEncoder.encode(registerinfo.getPassword()));
+                account.setRole("USER");
+                account.setBlocked(false);
+                accountRepository.saveAndFlush(account);
+                User user_DB = new User();
+                user_DB.setEmail(registerinfo.getEmail());
+                user_DB.setFullName(registerinfo.getFullName());
+                user_DB.setPoint(0);
+                user_DB.setLevel(0);
+                user_DB.setAccount(account);
+                userRepository.save(user_DB);
+                UserDetails user = userDetailsService.loadUserByUsername(account.getUsername());
+                JwtResponse jwtResponse = new JwtResponse(jwtUtility.generateToken(user));
+                return new ResponseEntity(jwtResponse, HttpStatus.OK); // RESPONE STATUS
+            }
         }
+
+
+
     }
+
 
     public ResponseEntity changepassword(changePassword changePassword, long userId)
     {
@@ -126,4 +154,24 @@ public class AccountService {
 
         accountRepository.deleteById((long) id);
     }
+    public String login (String username ,String password)
+
+    {
+        String error = "error :";
+        Account account = accountRepository.findByUsername(username);
+        if (account==null)
+            return error+"username not found";
+        else
+        {
+           if( bCryptPasswordEncoder.matches(password,account.getPassword()) )
+               return "successed";
+           return error+ "password invalid";
+
+
+
+        }
+
+
+    }
+
 }

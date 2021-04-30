@@ -43,7 +43,8 @@ public class QuizApplication {
 	@Bean
 	public CommandLineRunner deme() {
 		return (args) -> {
-			if (repository.findByUsername("admin") == null) {
+
+			if(repository.findByUsername("username1")==null){
 				Account account = new Account();
 				account.setUsername("username10");
 				account.setPassword(bCryptPasswordEncoder.encode("password"));
@@ -55,7 +56,14 @@ public class QuizApplication {
 				user.setLevel(1);
 				user.setPoint(100);
 				repository.saveAndFlush(account);
+
+				User user = new User();
+				user.setFullName("admin");
+				user.setLevel(10000000);
+				user.setPoint(0);
+				user.setAccount(account);
 				userRepository.saveAndFlush(user);
+			}
 
 			}
 		};

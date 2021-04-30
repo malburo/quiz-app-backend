@@ -14,6 +14,7 @@ import javax.xml.bind.ValidationException;
 
 @RestController
 @RequestMapping("/questions")
+@CrossOrigin
 public class QuestionAPI {
     @Autowired
     QuestionService questionService;

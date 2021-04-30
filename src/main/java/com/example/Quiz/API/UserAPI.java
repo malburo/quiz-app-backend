@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users") // endpoint nay de get all
+@CrossOrigin
 public class UserAPI {
     @Autowired
     UserService userService;
