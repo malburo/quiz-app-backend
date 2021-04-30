@@ -6,7 +6,6 @@ import com.example.Quiz.Models.Account;
 import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import com.example.Quiz.Quick_Pojo_Class.Registerinfo;
 import com.example.Quiz.Ultility.JWTUtility;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +14,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,7 @@ public class AccountAPI {
     @Autowired
     AuthenticationManager authenticationManager;
 
+
     @PostMapping("/register") //
 
     public ResponseEntity Register(@RequestBody Registerinfo registerinfo) throws Exception {
@@ -50,37 +52,49 @@ public class AccountAPI {
             throw new ValidationException("Wrong keyword format | " + "valid format : username , password");
         return accountService.register(registerinfo);
     }
+
     @GetMapping("/loginFacebook")
     public void facebooklogin(Object object) {
     }
+
     @PostMapping("/login")
-    public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws Exception {
+    public ResponseEntity authenticate(@RequestBody JwtRequest jwtRequest) throws Exception {
 
         if (jwtRequest.getUsername() == null || jwtRequest.getPassword() == null)
             throw new ValidationException("Wrong keyword format | " + "valid format : username , password");
-        doAuthenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
-        final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
-        final String token = jwtUtility.generateToken(userDetails);
-        return new JwtResponse(token);
 
-    }
 
-    private void doAuthenticate(String username, String password) throws Exception {
-        try {
-            authenticationManager.authenticate
-                    (new UsernamePasswordAuthenticationToken(username, password));
-        } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+//       doAuthenticate(jwtRequest.getUsername(),jwtRequest.getPassword());
+
+
+        String message_login = accountService.login(jwtRequest.getUsername(), jwtRequest.getPassword());
+        if (message_login.equals("successed")) {
+            final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
+            final String token = jwtUtility.generateToken(userDetails);
+            return new ResponseEntity(new JwtResponse(token), HttpStatus.OK);
         }
-
+        return new ResponseEntity(new ErrorMessage("400", message_login), HttpStatus.FORBIDDEN);
     }
+
+    //    private void   doAuthenticate(String username, String password) throws Exception {
+//        try {
+//          authenticationManager.authenticate
+//                    (new UsernamePasswordAuthenticationToken(username, password));
+//
+//        } catch (DisabledException e) {
+//            throw new Exception("USER_DISABLED", e);
+//        } catch (BadCredentialsException e) {
+//            throw new Exception("INVALID_CREDENTIALS", e);
+//        }
+//
+//
+//    }
     // user get user info by using jwt
     @RequestMapping(value = "/getme", method = {RequestMethod.GET}) // lay thong tin nguoi dung theo jwt
     public Object UserinfoByJwt_GET(Principal principal) {
         return userService_2.Getuser(principal.getName());
     }
+
     @PostMapping("/forgot_password")
     public ResponseEntity Forgotpassword(@RequestParam(required = false) String jwttoken, @RequestBody(required = false) Map<String, String> Jsonrequest)
             throws MessagingException, IOException {

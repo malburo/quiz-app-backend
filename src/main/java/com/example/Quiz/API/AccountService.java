@@ -72,7 +72,7 @@ public class AccountService {
                 || registerinfo.getEmail() ==null
         )
         {
-            error="wrong keys \n use these keys : username, password, email, fullName";
+            error="wrong format, valid format : username, password, email, fullName";
             return new ResponseEntity(new ErrorMessage("400",error), HttpStatus.NOT_FOUND);
         }
         else {
@@ -154,4 +154,24 @@ public class AccountService {
 
         accountRepository.deleteById((long) id);
     }
+    public String login (String username ,String password)
+
+    {
+        String error = "error :";
+        Account account = accountRepository.findByUsername(username);
+        if (account==null)
+            return error+"username not found";
+        else
+        {
+           if( bCryptPasswordEncoder.matches(password,account.getPassword()) )
+               return "successed";
+           return error+ "password invalid";
+
+
+
+        }
+
+
+    }
+
 }
