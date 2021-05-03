@@ -1,8 +1,10 @@
 package com.example.Quiz.Models;
 
+import com.example.Quiz.Config.viewdataconfig;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,28 +15,40 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(viewdataconfig.Public.class)
     @Column(name = "user_id")
     private long userId;
+
     @Column(name = "user_full_name")// cho phep null
+    @JsonView(viewdataconfig.Public.class)
     private String fullName;
+
     @Column(name = "user_email")// cho phep null
+    @JsonView(viewdataconfig.Public.class)
     private String email;
+
+    @JsonView(viewdataconfig.Public.class)
     @Column(name = "phone_number") // cho phep null
     private String phoneNumber;
+
     @Column(name = "user_level", nullable = false)
+    @JsonView(viewdataconfig.Public.class)
      //finnal level
     @JsonProperty (access = JsonProperty.Access.READ_ONLY)
     private int level;
     // hello chinh json tu point sang totalPoint
     @Column(name = "user_point", nullable = false)
-    @JsonProperty (access = JsonProperty.Access.READ_ONLY,value = "totalPoint")
+    @JsonView(viewdataconfig.Public.class)
+    @JsonProperty (access = JsonProperty.Access.READ_ONLY)
     private double point;
 
     @Column(name = "user_image_url",nullable =true)
+    @JsonView(viewdataconfig.Public.class)
     @JsonProperty (access = JsonProperty.Access.READ_ONLY)
-
     private String imageUrl;
+
     @Column(name = "learning_streaks")
+    @JsonView(viewdataconfig.Public.class)
     @JsonIgnore
     private int learningStreaks;
 
@@ -44,7 +58,7 @@ public class User {
     @OneToOne
     @JoinColumn(name = "account_id",referencedColumnName = "account_id",foreignKey = @ForeignKey(name = "account_id_fk"))
     @JsonIgnoreProperties({"user"}) // oh my lord tranh infinite loop
-    @JsonIgnore
+
     private Account account ;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

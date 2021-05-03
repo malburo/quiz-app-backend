@@ -135,7 +135,7 @@ public class AccountService {
             return new ResponseEntity(new ErrorMessage("404","Email is not registered "), HttpStatus.NOT_FOUND);
         else
             javaMailUtility.sendmail(email, account.getUsername(), jwtUtility.generateToken10min(account.getUsername()));
-        return new ResponseEntity("eMail was sended", HttpStatus.OK);
+        return new ResponseEntity("email was sended", HttpStatus.OK);
 
 
     }

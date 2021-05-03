@@ -57,15 +57,10 @@ public class QuizApplication {
 				user.setPoint(100);
 				repository.saveAndFlush(account);
 
-				User user = new User();
-				user.setFullName("admin");
-				user.setLevel(10000000);
-				user.setPoint(0);
-				user.setAccount(account);
-				userRepository.saveAndFlush(user);
-			}
 
 			}
+
+
 		};
 	}
 

@@ -1,8 +1,9 @@
 package com.example.Quiz.API;
 
 import com.example.Quiz.Models.User;
-import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
+import com.example.Quiz.Config.viewdataconfig;
 import com.example.Quiz.Quick_Pojo_Class.changePassword;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.xml.bind.ValidationException;
 import java.security.Principal;
-import java.util.List;
 
 @RestController
 @RequestMapping("/users") // endpoint nay de get all
@@ -31,6 +31,7 @@ public class UserAPI {
             return  userService.findAll();
 
     }
+    @JsonView(viewdataconfig.Public.class)
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/{userId}")
     public User GetuserByuserId  (@PathVariable("userId") int userId) throws  Exception
@@ -58,10 +59,7 @@ public class UserAPI {
     @PutMapping("/{userId}")
  public ResponseEntity PutuserByuserId (@PathVariable("userId") long userId,@RequestBody User user)
  {
-     if (userId==user.getUserId())
-    return userService.update(user);
-     return new ResponseEntity(new ErrorMessage("400","Ids did'nt match"), HttpStatus.BAD_REQUEST);
-
+    return userService.update(user,userId);
 
  }
     @PreAuthorize("hasAnyRole('USER')")
