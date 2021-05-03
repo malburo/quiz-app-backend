@@ -4,6 +4,8 @@ import com.example.Quiz.Models.User;
 import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import com.example.Quiz.Repository.AccountRepository;
 import com.example.Quiz.Repository.UserRepository;
+import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ public class UserService {
 
     public User findByID(Long id) {
 
+
         return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("No such user with id:" + id));
 
     }
@@ -33,10 +36,14 @@ public class UserService {
         return repository.saveAndFlush(user);
     }
 
-    public ResponseEntity update(User user) { // cap nhap thong tin nguoi dung
+    public ResponseEntity update(User user,long userId) { // cap nhap thong tin nguoi dung
+        User existuser = repository.getOne(userId);
+        if (existuser==null)
+            return new ResponseEntity(new ErrorMessage("400", "no user with id: "+ userId), HttpStatus.CONFLICT);
         try {
 
-            repository.save(user);
+            BeanUtils.copyProperties(user,existuser,"userId","account");
+            repository.save(existuser);
             return new ResponseEntity("update completed", HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(new ErrorMessage("409", "update fail for some reason"), HttpStatus.CONFLICT);
