@@ -38,6 +38,9 @@ public class UserService {
 
     public ResponseEntity update(User user,long userId) { // cap nhap thong tin nguoi dung
         User existuser = repository.findById(userId).orElseThrow(() -> new EntityNotFoundException("No such user with id:" + userId));
+            if (accountRepository.GetAccountByEmail(user.getEmail())!=null)
+                return new ResponseEntity(new ErrorMessage("400", "email exited"),HttpStatus.BAD_REQUEST);
+
 
             BeanUtils.copyProperties(user,existuser,"userId","account");
             repository.save(existuser);
