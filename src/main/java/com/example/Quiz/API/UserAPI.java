@@ -57,12 +57,9 @@ public class UserAPI {
     }
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping("/{userId}")
- public Object PutuserByuserId (@PathVariable("userId") long userId,@RequestBody User user)
+ public ResponseEntity PutuserByuserId (@PathVariable("userId") long userId,@RequestBody User user)
  {
     return userService.update(user,userId);
-
-
-
 
  }
     @PreAuthorize("hasAnyRole('USER')")

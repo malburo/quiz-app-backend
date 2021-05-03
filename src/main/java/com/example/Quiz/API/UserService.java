@@ -37,18 +37,11 @@ public class UserService {
     }
 
     public ResponseEntity update(User user,long userId) { // cap nhap thong tin nguoi dung
-        User existuser = repository.getOne(userId);
-        if (existuser==null)
-            return new ResponseEntity(new ErrorMessage("400", "no user with id: "+ userId), HttpStatus.CONFLICT);
-        try {
+        User existuser = repository.findById(userId).orElseThrow(() -> new EntityNotFoundException("No such user with id:" + userId));
 
             BeanUtils.copyProperties(user,existuser,"userId","account");
             repository.save(existuser);
             return new ResponseEntity("update completed", HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity(new ErrorMessage("409", "update fail for some reason"), HttpStatus.CONFLICT);
-        }
-//        return repository.saveAndFlush(user);
     }
 
     public User Getuser(String userName) {
