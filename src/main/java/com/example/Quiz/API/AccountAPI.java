@@ -62,11 +62,7 @@ public class AccountAPI {
 
         if (jwtRequest.getUsername() == null || jwtRequest.getPassword() == null)
             throw new ValidationException("Wrong keyword format | " + "valid format : username , password");
-
-
 //       doAuthenticate(jwtRequest.getUsername(),jwtRequest.getPassword());
-
-
         String message_login = accountService.login(jwtRequest.getUsername(), jwtRequest.getPassword());
         if (message_login.equals("successed")) {
             final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());

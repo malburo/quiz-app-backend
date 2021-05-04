@@ -102,7 +102,7 @@ public class AccountService {
                 user_DB.setEmail(registerinfo.getEmail());
                 user_DB.setFullName(registerinfo.getFullName());
                 user_DB.setPoint(0);
-                user_DB.setLevel(0);
+//                user_DB.setLevel(0);
                 user_DB.setAccount(account);
                 userRepository.save(user_DB);
                 UserDetails user = userDetailsService.loadUserByUsername(account.getUsername());
@@ -159,6 +159,8 @@ public class AccountService {
     {
         String error = "error :";
         Account account = accountRepository.findByUsername(username);
+        if (account.isBlocked())
+            return error+"account is blocked";
         if (account==null)
             return error+"username not found";
         else
