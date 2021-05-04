@@ -1,5 +1,6 @@
 package com.example.Quiz.API;
 
+import com.example.Quiz.Models.Account;
 import com.example.Quiz.Models.User;
 import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import com.example.Quiz.Repository.AccountRepository;
@@ -48,11 +49,13 @@ public class UserService {
 
             BeanUtils.copyProperties(user,existuser,"userId","account");
             repository.save(existuser);
-            return new ResponseEntity("update completed", HttpStatus.OK);
+            return new ResponseEntity(existuser, HttpStatus.OK);
     }
-    public ResponseEntity Blockuser (long userId)
+    public ResponseEntity Blockuser (long userId,boolean blocked)
     {
-        accountRepository.findByUserId(userId).setBlocked(true);
+       Account account = accountRepository.findByUserId(userId);
+       account.setBlocked(blocked);
+       accountRepository.save(account);
         return new ResponseEntity("account was blocked", HttpStatus.OK);
     }
     public ResponseEntity changeurlImange(long userId,String urlImange,String username)

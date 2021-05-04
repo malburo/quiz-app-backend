@@ -56,12 +56,11 @@ public class UserAPI {
     //******************************************************************//
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping("/{userId}")
- public ResponseEntity PutuserByuserId (@PathVariable("userId") long userId,@RequestParam(required = false) boolean blocked,@RequestBody User user,
+ public ResponseEntity PutuserByuserId (@PathVariable("userId") long userId,@RequestBody User user,
                                         HttpServletRequest request,Principal principal)
  {
 
-     if (blocked && request.isUserInRole("ROLE_ADMIN") )
-         return userService.Blockuser(userId);
+
 
     return userService.update(user,userId,principal.getName());
 
@@ -69,8 +68,18 @@ public class UserAPI {
  }
 
     //******************************************************************//
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping("/{userId}/blocked")
+    public  ResponseEntity blockuser (@PathVariable("userId") long userId,@RequestBody Map<String, Boolean> Jsonrequest)
+    {
+        String key = Jsonrequest.keySet().toString();
+        key = key.substring(1, key.length() - 1);
+        if (key.equals("blocked"))
+            return userService.Blockuser(userId,Jsonrequest.get(key));
+        return new ResponseEntity(new ErrorMessage("400", "key : blocked"),HttpStatus.BAD_REQUEST);
 
 
+    }
 
     //******************************************************************//
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
