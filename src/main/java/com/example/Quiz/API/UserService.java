@@ -36,9 +36,12 @@ public class UserService {
         return repository.saveAndFlush(user);
     }
 // cho phep sdt trung
-    public ResponseEntity update(User user,long userId) { // cap nhap thong tin nguoi dung
-        User existuser = repository.findById(userId).orElseThrow(() -> new EntityNotFoundException("No such user with id:" + userId));
+    public ResponseEntity update(User user,long userId, String username) { // cap nhap thong tin nguoi dung
 
+        if (checkpermission(username,userId))
+            return new ResponseEntity(new ErrorMessage("400", "user don't have permission to change info"),HttpStatus.BAD_REQUEST);
+
+        User existuser = repository.findById(userId).orElseThrow(() -> new EntityNotFoundException("No such user with id:" + userId));
         if (accountRepository.GetAccountByEmail(user.getEmail())!=null)
                 return new ResponseEntity(new ErrorMessage("400", "email exited"),HttpStatus.BAD_REQUEST);
 
@@ -51,6 +54,21 @@ public class UserService {
     {
         accountRepository.findByUserId(userId).setBlocked(true);
         return new ResponseEntity("account was blocked", HttpStatus.OK);
+    }
+    public ResponseEntity changeurlImange(long userId,String urlImange,String username)
+    {
+        if (checkpermission(username,userId))
+            return new ResponseEntity(new ErrorMessage("400", "user don't have permission to change info"),HttpStatus.BAD_REQUEST);
+        repository.getOne(userId).setImageUrl(urlImange);
+        return new ResponseEntity("changed urlImage", HttpStatus.OK);
+
+
+    }
+    public boolean  checkpermission (String username,long userId)
+    {
+        if (!accountRepository.findByUserId(userId).getUsername().equals(username))
+            return  false;
+        return true;
     }
 
 

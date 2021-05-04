@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.ValidationException;
 import java.security.Principal;
 
@@ -53,15 +54,29 @@ public class UserAPI {
     //******************************************************************//
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping("/{userId}")
- public ResponseEntity PutuserByuserId (@PathVariable("userId") long userId,@RequestParam(required = false) boolean blocked,@RequestBody User user)
+ public ResponseEntity PutuserByuserId (@PathVariable("userId") long userId,@RequestParam(required = false) boolean blocked,@RequestBody User user,
+                                        HttpServletRequest request,Principal principal)
  {
 
-     if (blocked)
-         return  userService.Blockuser(userId);
-    return userService.update(user,userId);
+     if (blocked && request.isUserInRole("ROLE_ADMIN") )
+         return userService.Blockuser(userId);
+
+    return userService.update(user,userId,principal.getName());
 
 
  }
+
+    //******************************************************************//
+
+
+
+    //******************************************************************//
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @PutMapping("/{userId}/changeAvatar ")
+    public ResponseEntity updateurlimage (@PathVariable("userId") long userId,@RequestParam String urlImage, Principal principal)
+    {
+    return  userService.changeurlImange(userId,urlImage,principal.getName());
+    }
     //******************************************************************//
     @PreAuthorize("hasAnyRole('USER')")
     @PostMapping  ("/{userId}/change_password") // doi mat khau
