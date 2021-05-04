@@ -34,8 +34,8 @@ public class User {
     @Column(name = "user_level", nullable = false)
     @JsonView(viewdataconfig.Public.class)
      //finnal level
-    @JsonProperty (access = JsonProperty.Access.READ_ONLY)
-    private int level;
+//    @JsonProperty (access = JsonProperty.Access.READ_ONLY)
+//    private int level;
     // hello chinh json tu point sang totalPoint
     @Column(name = "user_point", nullable = false)
     @JsonView(viewdataconfig.Public.class)
