@@ -1,5 +1,6 @@
 package com.example.Quiz.API;
 
+import com.example.Quiz.Models.Account;
 import com.example.Quiz.Models.User;
 import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import com.example.Quiz.Repository.AccountRepository;
@@ -48,19 +49,23 @@ public class UserService {
 
             BeanUtils.copyProperties(user,existuser,"userId","account");
             repository.save(existuser);
-            return new ResponseEntity("update completed", HttpStatus.OK);
+            return new ResponseEntity(existuser, HttpStatus.OK);
     }
-    public ResponseEntity Blockuser (long userId)
+    public ResponseEntity Blockuser (long userId,boolean blocked)
     {
-        accountRepository.findByUserId(userId).setBlocked(true);
+       Account account = accountRepository.findByUserId(userId);
+       account.setBlocked(blocked);
+       accountRepository.save(account);
         return new ResponseEntity("account was blocked", HttpStatus.OK);
     }
     public ResponseEntity changeurlImange(long userId,String urlImange,String username)
     {
         if (checkpermission(username,userId))
             return new ResponseEntity(new ErrorMessage("400", "user don't have permission to change info"),HttpStatus.BAD_REQUEST);
-        repository.getOne(userId).setImageUrl(urlImange);
-        return new ResponseEntity("changed urlImage", HttpStatus.OK);
+        User user = repository.getOne(userId);
+        user.setImageUrl(urlImange);
+        repository.save(user);
+        return new ResponseEntity(user, HttpStatus.OK);
 
 
     }
