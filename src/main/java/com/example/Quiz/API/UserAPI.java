@@ -2,6 +2,7 @@ package com.example.Quiz.API;
 
 import com.example.Quiz.Models.User;
 import com.example.Quiz.Config.viewdataconfig;
+import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import com.example.Quiz.Quick_Pojo_Class.changePassword;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.ValidationException;
 import java.security.Principal;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users") // endpoint nay de get all
@@ -73,9 +75,13 @@ public class UserAPI {
     //******************************************************************//
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping("/{userId}/changeAvatar")
-    public ResponseEntity updateurlimage (@PathVariable("userId") long userId,@RequestParam String urlImage, Principal principal)
+    public ResponseEntity updateurlimage (@PathVariable("userId") long userId, @RequestBody Map<String, String> Jsonrequest, Principal principal)
     {
-    return  userService.changeurlImange(userId,urlImage,principal.getName());
+        String key = Jsonrequest.keySet().toString();
+        key = key.substring(1, key.length() - 1);
+        if (key.equals("imgUrl"))
+    return  userService.changeurlImange(userId,Jsonrequest.get(key),principal.getName());
+        return new ResponseEntity(new ErrorMessage("400", "key : imgUrl"),HttpStatus.BAD_REQUEST);
     }
     //******************************************************************//
     @PreAuthorize("hasAnyRole('USER')")

@@ -62,7 +62,7 @@ public class UserService {
         User user = repository.getOne(userId);
         user.setImageUrl(urlImange);
         repository.save(user);
-        return new ResponseEntity("changed urlImage", HttpStatus.OK);
+        return new ResponseEntity(user, HttpStatus.OK);
 
 
     }
