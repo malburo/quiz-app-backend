@@ -35,7 +35,7 @@ public class UserService {
     public User create(User user) {
         return repository.saveAndFlush(user);
     }
-
+// cho phep sdt trung
     public ResponseEntity update(User user,long userId) { // cap nhap thong tin nguoi dung
         User existuser = repository.findById(userId).orElseThrow(() -> new EntityNotFoundException("No such user with id:" + userId));
             if (accountRepository.GetAccountByEmail(user.getEmail())!=null)

@@ -159,6 +159,8 @@ public class AccountService {
     {
         String error = "error :";
         Account account = accountRepository.findByUsername(username);
+        if (account.isBlocked())
+            return error+"account is blocked";
         if (account==null)
             return error+"username not found";
         else
