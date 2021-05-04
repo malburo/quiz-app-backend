@@ -23,6 +23,7 @@ public class UserAPI {
     @Autowired
     AccountService accountService;
 
+    //******************************************************************//
 // admin arena
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
@@ -31,37 +32,37 @@ public class UserAPI {
             return  userService.findAll();
 
     }
+
+    //******************************************************************//
     @JsonView(viewdataconfig.Public.class)
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/{userId}")
     public User GetuserByuserId  (@PathVariable("userId") int userId) throws  Exception
-    {
+    { return  userService.findByID((long)userId); }
 
-            return  userService.findByID((long)userId);
-
-
-    }
-
+    //******************************************************************//
     @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{userId}")
-
     public ResponseEntity DeleteuserByuserId (@PathVariable("userId") int userId)
-
     {
-
         // tao account thi ben kia cung phai co user
-
         userService.delete(userId);
         return  new ResponseEntity("delete succcessed" +userId, HttpStatus.OK);
-
     }
+
+    //******************************************************************//
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping("/{userId}")
- public ResponseEntity PutuserByuserId (@PathVariable("userId") long userId,@RequestBody User user)
+ public ResponseEntity PutuserByuserId (@PathVariable("userId") long userId,@RequestParam(required = false) boolean blocked,@RequestBody User user)
  {
+
+     if (blocked)
+         return  userService.Blockuser(userId);
     return userService.update(user,userId);
 
+
  }
+    //******************************************************************//
     @PreAuthorize("hasAnyRole('USER')")
     @PostMapping  ("/{userId}/change_password") // doi mat khau
     public HttpEntity changepassword(@PathVariable("userId") long userId ,@RequestBody changePassword password) {

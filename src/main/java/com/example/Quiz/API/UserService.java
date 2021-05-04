@@ -38,7 +38,8 @@ public class UserService {
 // cho phep sdt trung
     public ResponseEntity update(User user,long userId) { // cap nhap thong tin nguoi dung
         User existuser = repository.findById(userId).orElseThrow(() -> new EntityNotFoundException("No such user with id:" + userId));
-            if (accountRepository.GetAccountByEmail(user.getEmail())!=null)
+
+        if (accountRepository.GetAccountByEmail(user.getEmail())!=null)
                 return new ResponseEntity(new ErrorMessage("400", "email exited"),HttpStatus.BAD_REQUEST);
 
 
@@ -46,6 +47,12 @@ public class UserService {
             repository.save(existuser);
             return new ResponseEntity("update completed", HttpStatus.OK);
     }
+    public ResponseEntity Blockuser (long userId)
+    {
+        accountRepository.findByUserId(userId).setBlocked(true);
+        return new ResponseEntity("account was blocked", HttpStatus.OK);
+    }
+
 
     public User Getuser(String userName) {
         return repository.GetUserByUserName(userName); // lay thong tin nguoi dung

@@ -53,7 +53,7 @@ public class QuizApplication {
 				User user = new User();
 				user.setFullName("abc");
 				user.setAccount(account);
-				user.setLevel(1);
+//				user.setLevel(1);
 				user.setPoint(100);
 				repository.saveAndFlush(account);
 
