@@ -59,7 +59,9 @@ public class UserService {
     {
         if (checkpermission(username,userId))
             return new ResponseEntity(new ErrorMessage("400", "user don't have permission to change info"),HttpStatus.BAD_REQUEST);
-        repository.getOne(userId).setImageUrl(urlImange);
+        User user = repository.getOne(userId);
+        user.setImageUrl(urlImange);
+        repository.save(user);
         return new ResponseEntity("changed urlImage", HttpStatus.OK);
 
 
