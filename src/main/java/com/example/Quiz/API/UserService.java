@@ -72,8 +72,8 @@ public class UserService {
     public boolean  checkpermission (String username,long userId)
     {
         if (!accountRepository.findByUserId(userId).getUsername().equals(username))
-            return  false;
-        return true;
+            return  true;
+        return false;
     }
 
 

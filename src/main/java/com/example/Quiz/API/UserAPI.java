@@ -84,7 +84,9 @@ public class UserAPI {
     //******************************************************************//
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping("/{userId}/changeAvatar")
+
     public ResponseEntity updateurlimage (@PathVariable("userId") long userId, @RequestBody Map<String, String> Jsonrequest, Principal principal)
+
     {
         String key = Jsonrequest.keySet().toString();
         key = key.substring(1, key.length() - 1);
