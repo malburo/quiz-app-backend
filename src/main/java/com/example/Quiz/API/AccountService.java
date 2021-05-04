@@ -102,7 +102,7 @@ public class AccountService {
                 user_DB.setEmail(registerinfo.getEmail());
                 user_DB.setFullName(registerinfo.getFullName());
                 user_DB.setPoint(0);
-                user_DB.setLevel(0);
+//                user_DB.setLevel(0);
                 user_DB.setAccount(account);
                 userRepository.save(user_DB);
                 UserDetails user = userDetailsService.loadUserByUsername(account.getUsername());

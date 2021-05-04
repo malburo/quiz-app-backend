@@ -31,9 +31,9 @@ public class User {
     @Column(name = "phone_number") // cho phep null
     private String phoneNumber;
 
-    @Column(name = "user_level", nullable = false)
-    @JsonView(viewdataconfig.Public.class)
-     //finnal level
+//    @Column(name = "user_level", nullable = false)
+//    @JsonView(viewdataconfig.Public.class)
+
 //    @JsonProperty (access = JsonProperty.Access.READ_ONLY)
 //    private int level;
     // hello chinh json tu point sang totalPoint
@@ -120,13 +120,13 @@ public class User {
     }
 
 
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
+//    public int getLevel() {
+//        return level;
+//    }
+//
+//    public void setLevel(int level) {
+//        this.level = level;
+//    }
 
     public double getPoint() {
         return point;

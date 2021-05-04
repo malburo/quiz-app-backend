@@ -46,7 +46,7 @@ public class QuizApplication {
 
 			if(repository.findByUsername("username1")==null){
 				Account account = new Account();
-				account.setUsername("username10");
+				account.setUsername("username1");
 				account.setPassword(bCryptPasswordEncoder.encode("password"));
 				account.setRole("ADMIN");
 				account.setBlocked(false);
