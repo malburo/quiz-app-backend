@@ -72,7 +72,7 @@ public class UserAPI {
 
     //******************************************************************//
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    @PutMapping("/{userId}/changeAvatar ")
+    @PutMapping("/{userId}/changeAvatar")
     public ResponseEntity updateurlimage (@PathVariable("userId") long userId,@RequestParam String urlImage, Principal principal)
     {
     return  userService.changeurlImange(userId,urlImage,principal.getName());
