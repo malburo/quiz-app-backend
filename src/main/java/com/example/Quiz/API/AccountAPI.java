@@ -61,7 +61,7 @@ public class AccountAPI {
     public ResponseEntity authenticate(@RequestBody JwtRequest jwtRequest) throws Exception {
 
         if (jwtRequest.getUsername() == null || jwtRequest.getPassword() == null)
-            throw new ValidationException("Wrong keyword format | " + "valid format : username , password");
+            return new ResponseEntity(new ErrorMessage("400", "no infomation to login"), HttpStatus.FORBIDDEN);
 //       doAuthenticate(jwtRequest.getUsername(),jwtRequest.getPassword());
         String message_login = accountService.login(jwtRequest.getUsername(), jwtRequest.getPassword());
         if (message_login.equals("successed")) {
