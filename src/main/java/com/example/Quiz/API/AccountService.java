@@ -157,17 +157,18 @@ public class AccountService {
     public String login (String username ,String password)
 
     {
-        String error = "error :";
+
         Account account = accountRepository.findByUsername(username);
-        if (account.isBlocked())
-            return error+"account is blocked";
+
         if (account==null)
-            return error+"username not found";
+            return "username not found";
+        if (account.isBlocked())
+            return "account is blocked";
         else
         {
            if( bCryptPasswordEncoder.matches(password,account.getPassword()) )
                return "successed";
-           return error+ "password invalid";
+           return  "Wrong password";
 
 
 
