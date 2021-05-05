@@ -67,7 +67,7 @@ public class AccountService {
     {
 
         String error = " existed";
-        boolean HasU_E = false;
+
         if (registerinfo.getPassword() ==null || registerinfo.getFullName()== null || registerinfo.getUsername() ==null
                 || registerinfo.getEmail() ==null
         )
@@ -79,17 +79,15 @@ public class AccountService {
 
             if (accountRepository.findByUsername(registerinfo.getUsername()) != null) {
 
-                error = "username " + error;
-                HasU_E = true;
+                return new ResponseEntity(new ErrorMessage("403", "username"+ error), HttpStatus.NOT_FOUND);
+
             }
             if (accountRepository.GetAccountByEmail(registerinfo.getEmail()) != null) {
 
-                error = "email " + error;
-                HasU_E = true;
+                return new ResponseEntity(new ErrorMessage("403", "email"+ error), HttpStatus.NOT_FOUND);
+
             }
 
-            if (HasU_E == true)
-                return new ResponseEntity(new ErrorMessage("403", error), HttpStatus.NOT_FOUND);
             else {
 
                 Account account = new Account();
