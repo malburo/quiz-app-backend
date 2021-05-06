@@ -108,7 +108,7 @@ public class AccountAPI {
             }
         }
         if (key.equals("email"))
-            return accountService.GenerateMail(entity);
+            return accountService.GenerateMail(entity.toLowerCase());
             // send gmail
         else
             return new ResponseEntity(new ErrorMessage("400", "key must be email or password"), HttpStatus.BAD_REQUEST);
