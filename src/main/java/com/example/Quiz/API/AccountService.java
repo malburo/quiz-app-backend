@@ -21,8 +21,11 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+
 import java.util.Calendar;
 import java.util.Date;
+import java.util.ArrayList;
+
 import java.util.List;
 import java.util.TimeZone;
 
@@ -68,30 +71,45 @@ public class AccountService {
 
     public ResponseEntity register(Registerinfo registerinfo) // dang ky tai khoan
     {
-        if( accountRepository.findByUsername(registerinfo.getUsername()) !=null) {
-            return new ResponseEntity( new ErrorMessage("403","account exist"),HttpStatus.FORBIDDEN); // RESPONE STATUS
-        }
-        else {
 
-            Account account = new Account();
-            account.setUsername(registerinfo.getUsername());
-            account.setPassword(bCryptPasswordEncoder.encode(registerinfo.getPassword()));
-            account.setRole("USER");
-            account.setBlocked(false);
-            accountRepository.saveAndFlush(account);
-            User user_DB = new User();
-            user_DB.setEmail(registerinfo.getEmail());
-            user_DB.setFullName(registerinfo.getFullName());
-            user_DB.setPoint(0);
-            user_DB.setLevel(0);
-            user_DB.setLearningStreaks(1);
-            user_DB.setAccount(account);
-            userRepository.save(user_DB);
-            UserDetails user = userDetailsService.loadUserByUsername(account.getUsername());
-            JwtResponse jwtResponse = new JwtResponse(jwtUtility.generateToken(user));
-            return new ResponseEntity(jwtResponse, HttpStatus.OK); // RESPONE STATUS
+        String error = " existed";
+            if (accountRepository.findByUsername(registerinfo.getUsername()) != null) {
+
+                return new ResponseEntity(new ErrorMessage("403", "username"+ error), HttpStatus.NOT_FOUND);
+
+            }
+            if (accountRepository.GetAccountByEmail(registerinfo.getEmail()) != null) {
+
+                return new ResponseEntity(new ErrorMessage("403", "email"+ error), HttpStatus.NOT_FOUND);
+
+            }
+
+            else {
+
+                Account account = new Account();
+                account.setUsername(registerinfo.getUsername());
+                account.setPassword(bCryptPasswordEncoder.encode(registerinfo.getPassword()));
+                account.setRole("USER");
+                account.setBlocked(false);
+                accountRepository.saveAndFlush(account);
+                User user_DB = new User();
+                user_DB.setEmail(registerinfo.getEmail());
+                user_DB.setFullName(registerinfo.getFullName());
+                user_DB.setPoint(0);
+                user_DB.setLearningStreaks(1);
+//                user_DB.setLevel(0);
+                user_DB.setAccount(account);
+                userRepository.save(user_DB);
+                UserDetails user = userDetailsService.loadUserByUsername(account.getUsername());
+                JwtResponse jwtResponse = new JwtResponse(jwtUtility.generateToken(user));
+                return new ResponseEntity(jwtResponse, HttpStatus.OK); // RESPONE STATUS
+            }
         }
+
+
+
     }
+
 
     public ResponseEntity changepassword(changePassword changePassword, long userId)
     {
@@ -112,7 +130,7 @@ public class AccountService {
             return new ResponseEntity(new ErrorMessage("404","Email is not registered "), HttpStatus.NOT_FOUND);
         else
             javaMailUtility.sendmail(email, account.getUsername(), jwtUtility.generateToken10min(account.getUsername()));
-        return new ResponseEntity("eMail was sended", HttpStatus.OK);
+        return new ResponseEntity("email was sended", HttpStatus.OK);
 
 
     }
@@ -131,7 +149,6 @@ public class AccountService {
 
         accountRepository.deleteById((long) id);
     }
-
 
     public void handleOnlineStreak(String username) {
         final Long MILISEC_OF_A_DAY =  86400000l;
@@ -164,4 +181,28 @@ public class AccountService {
         accountRepository.saveAndFlush(account);
         userRepository.saveAndFlush(account.getUser());
     }
+
+    public String login (String username ,String password)
+
+    {
+
+        Account account = accountRepository.findByUsername(username);
+
+        if (account==null)
+            return "username not found";
+        if (account.isBlocked())
+            return "account is blocked";
+        else
+        {
+           if( bCryptPasswordEncoder.matches(password,account.getPassword()) )
+               return "successed";
+           return  "Wrong password";
+
+
+
+        }
+
+
+    }
+
 }

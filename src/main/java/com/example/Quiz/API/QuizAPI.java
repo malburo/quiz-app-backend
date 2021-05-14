@@ -25,6 +25,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/quizzes")
+@CrossOrigin
 public class QuizAPI {
     @Autowired
     private UserService userService;

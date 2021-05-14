@@ -22,7 +22,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/topics")
-public class TopicApi{
+@CrossOrigin
+public class TopicApi {
+
 
     @Autowired
     private TopicService topicService;
