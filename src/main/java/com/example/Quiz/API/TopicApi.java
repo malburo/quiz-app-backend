@@ -6,7 +6,6 @@ import com.example.Quiz.Models.User;
 import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import com.example.Quiz.Ultility.JWTUtility;
 import com.example.Quiz.Ultility.TopicResponse;
-import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,7 +36,7 @@ public class TopicApi{
     QuizService quizService;
 
     @GetMapping
-    public ResponseEntity<List<TopicResponse>> list() throws ExpiredJwtException {
+    public ResponseEntity<List<TopicResponse>> list(){
         return new ResponseEntity<>(topicService.findAll(),HttpStatus.OK);
     }
 

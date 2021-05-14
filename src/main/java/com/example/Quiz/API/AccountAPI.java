@@ -6,15 +6,13 @@ import com.example.Quiz.Models.Account;
 import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import com.example.Quiz.Quick_Pojo_Class.Registerinfo;
 import com.example.Quiz.Ultility.JWTUtility;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +21,10 @@ import javax.mail.MessagingException;
 import javax.xml.bind.ValidationException;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Date;
 import java.util.Map;
 
-
+@EnableScheduling
 @RestController
 @RequestMapping("/auth")
 public class AccountAPI {
@@ -37,8 +36,6 @@ public class AccountAPI {
     JWTUtility jwtUtility;
     @Autowired
     UserService userService_2;
-
-
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -59,25 +56,22 @@ public class AccountAPI {
             throw new ValidationException("Wrong keyword format | " + "valid format : username , password");
         doAuthenticate(jwtRequest.getUsername(), jwtRequest.getPassword());
         final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
+        Account account =  accountService.findByUserName(userDetails.getUsername());
+        account.setLatestLogin(new Date());
+        accountService.update(account);
         final String token = jwtUtility.generateToken(userDetails);
         return new JwtResponse(token);
-
     }
 
-    private void doAuthenticate(String username, String password) throws Exception {
-        try {
+    private void doAuthenticate(String username, String password) throws AuthenticationException {
             authenticationManager.authenticate
                     (new UsernamePasswordAuthenticationToken(username, password));
-        } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
-        }
 
     }
     // user get user info by using jwt
     @RequestMapping(value = "/getme", method = {RequestMethod.GET}) // lay thong tin nguoi dung theo jwt
-    public Object UserinfoByJwt_GET(Principal principal) {
+    public Object UserinfoByJwt_GET(Principal principal) throws Throwable {
+        accountService.handleOnlineStreak(principal.getName());
         return userService_2.Getuser(principal.getName());
     }
     @PostMapping("/forgot_password")

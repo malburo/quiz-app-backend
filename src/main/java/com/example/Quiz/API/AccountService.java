@@ -1,10 +1,10 @@
 package com.example.Quiz.API;
 
 
-import com.example.Quiz.Models.User;
-import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import com.example.Quiz.JWT.JwtResponse;
 import com.example.Quiz.Models.Account;
+import com.example.Quiz.Models.User;
+import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import com.example.Quiz.Quick_Pojo_Class.Registerinfo;
 import com.example.Quiz.Quick_Pojo_Class.changePassword;
 import com.example.Quiz.Repository.AccountRepository;
@@ -18,9 +18,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 @Service
 public class AccountService {
@@ -80,6 +84,7 @@ public class AccountService {
             user_DB.setFullName(registerinfo.getFullName());
             user_DB.setPoint(0);
             user_DB.setLevel(0);
+            user_DB.setLearningStreaks(1);
             user_DB.setAccount(account);
             userRepository.save(user_DB);
             UserDetails user = userDetailsService.loadUserByUsername(account.getUsername());
@@ -125,5 +130,38 @@ public class AccountService {
     public void delete(long id) {
 
         accountRepository.deleteById((long) id);
+    }
+
+
+    public void handleOnlineStreak(String username) {
+        final Long MILISEC_OF_A_DAY =  86400000l;
+        Account account = findByUserName(username);
+        int streak = account.getUser().getLearningStreaks();
+        System.out.println("current streak:" + streak);
+        Date date = account.getLatestLogin();
+        Date currentTime = new Date();
+        Long currentTimeInMili = currentTime.getTime();
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+        calendar.setTime(date);
+        int year  = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DATE);
+        calendar.set(year,month,day,23,59,59);
+        Date END_OF_DAY = calendar.getTime();
+        Long end_of_day_in_mili = END_OF_DAY.getTime();
+        float calculate = (float) (currentTimeInMili-end_of_day_in_mili)/MILISEC_OF_A_DAY;
+        if(calculate >1){
+            System.out.println("the streak end");
+           streak=1;
+        }else if(calculate > 0){
+            System.out.println("the streak continue");
+            streak++;
+        }else
+            System.out.println("login in same day");
+        System.out.println("current streak:" + streak);
+        account.setLatestLogin(currentTime);
+        account.getUser().setLearningStreaks(streak);
+        accountRepository.saveAndFlush(account);
+        userRepository.saveAndFlush(account.getUser());
     }
 }

@@ -45,7 +45,7 @@ public class QuizApplication {
 		return (args) -> {
 			if (repository.findByUsername("admin") == null) {
 				Account account = new Account();
-				account.setUsername("username10");
+				account.setUsername("admin");
 				account.setPassword(bCryptPasswordEncoder.encode("password"));
 				account.setRole("ADMIN");
 				account.setBlocked(false);
@@ -60,5 +60,7 @@ public class QuizApplication {
 			}
 		};
 	}
+
+
 
 }

@@ -34,6 +34,14 @@ public class UserQuiz {
         this.userQuizId = userQuizId;
     }
 
+    public UserQuiz() {
+    }
+
+    public UserQuiz(Quiz quiz, User user) {
+        this.quiz = quiz;
+        this.user = user;
+    }
+
     public Quiz getQuiz() {
         return quiz;
     }

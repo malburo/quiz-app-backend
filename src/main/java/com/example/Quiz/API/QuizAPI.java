@@ -1,16 +1,24 @@
 package com.example.Quiz.API;
 
 
+import com.example.Quiz.MarkResolver.MarkResolverRequest;
+import com.example.Quiz.MarkResolver.MarkResolverResponse;
 import com.example.Quiz.Models.Question;
 import com.example.Quiz.Models.Quiz;
+import com.example.Quiz.Models.User;
+import com.example.Quiz.Models.UserQuiz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.bind.ValidationException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,13 +26,21 @@ import java.util.Map;
 @RestController
 @RequestMapping("/quizzes")
 public class QuizAPI {
-
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AccountService accountService;
     @Autowired
     QuizService quizService;
     @Autowired
     TopicService topicService;
     @Autowired
     QuestionService questionService;
+
+    @Autowired
+    UserQuizService userQuizService;
+
+
 
     @GetMapping("{quizId}")
     public Quiz getQuiz(@PathVariable("quizId") long quizId) {
@@ -91,5 +107,42 @@ public class QuizAPI {
         return question;
     }
 
+
+    @PostMapping("/{id}/submit")
+    public ResponseEntity<MarkResolverResponse> handleMarkCal(@PathVariable long id, @RequestBody MarkResolverRequest resolverRequest,
+                                                              @CurrentSecurityContext SecurityContext context){
+        Quiz currentQuiz  = quizService.findByID(id);
+        int numCorrect = 0;
+        int numFalse = 0;
+        int numUndone = currentQuiz.getQuestions().size();
+        int totalPoint=0;
+        HashMap<Long,String> userSubmission = resolverRequest.getUserSubmission();
+        System.out.println(userSubmission.isEmpty());
+        for (Long questionID:  userSubmission.keySet()) {
+            System.out.println(questionID);
+            String userAnswer = userSubmission.get(questionID).toString();
+            String correctAns = questionService.findByID(questionID).getQuestionCorrectAnswer();
+            System.out.println("User attempt:"+ userAnswer );
+            System.out.println("Correct ans:" + correctAns);
+            if(userAnswer == null){
+                System.out.println("player dont answer");
+                continue;
+            }
+            if (correctAns.equalsIgnoreCase(userAnswer)){
+                numCorrect ++;
+                totalPoint+= questionService.findByID(questionID).getQuestionPoint();
+            }
+            else
+                numFalse++;
+            numUndone--;
+        }
+       UserDetails currentUserDetails = (UserDetails)context.getAuthentication().getPrincipal();
+       User user = userService.findByID(accountService.findByUserName(currentUserDetails.getUsername()).getUser().getUserId());
+       UserQuiz userQuiz = new UserQuiz(currentQuiz,user);
+       userQuizService.create(userQuiz);
+
+        return new ResponseEntity<>(new MarkResolverResponse(numCorrect,numFalse,numUndone,totalPoint),HttpStatus.OK);
+
+    }
 
 }

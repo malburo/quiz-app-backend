@@ -35,7 +35,6 @@ public class User {
 
     private String imageUrl;
     @Column(name = "learning_streaks")
-    @JsonIgnore
     private int learningStreaks;
 
 
