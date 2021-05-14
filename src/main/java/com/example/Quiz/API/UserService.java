@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -77,8 +78,11 @@ public class UserService {
     }
 
 
-    public User Getuser(String userName) {
-        return repository.GetUserByUserName(userName); // lay thong tin nguoi dung
+    public Optional<User> Getuser(String username) throws Throwable {
+        Optional<User> user = Optional.ofNullable(repository.GetUserByUserName(username)
+                .orElseThrow(() -> new EntityNotFoundException("No such user with username:" + username)));
+
+        return user; // lay thong tin nguoi dung
 
     }
 

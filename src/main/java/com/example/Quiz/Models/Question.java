@@ -18,7 +18,7 @@ public class Question {
     @Column(name = "question_name")
     private String questionName;
     @JsonProperty("questionCode")
-    @Column(name = "question_description")
+    @Column(name = "question_description",length = 1000)
     private String questionDescription;
     @JsonProperty("questionProgramingLanguage")
     @Column(name ="programingLanguage")

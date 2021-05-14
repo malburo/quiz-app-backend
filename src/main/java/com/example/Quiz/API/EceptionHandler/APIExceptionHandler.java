@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
+import org.postgresql.util.PSQLException;
 import javax.persistence.EntityNotFoundException;
 import javax.xml.bind.ValidationException;
 
@@ -26,7 +26,7 @@ public class APIExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
     ErrorMessage exceptionHandler(HttpMessageNotReadableException e){
-        return new ErrorMessage("400","Wrong format");
+        return new ErrorMessage("400",e.getLocalizedMessage());
     }
 
     @ResponseBody
@@ -42,9 +42,15 @@ public class APIExceptionHandler {
         return new ErrorMessage("401",e.getMessage());
     }
     @ResponseBody
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler
     ErrorMessage exceptionHandler(UsernameNotFoundException e){
-       return new ErrorMessage("401",e.getMessage());
+       return new ErrorMessage("404",e.getMessage());
+    }
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler
+    ErrorMessage exceptionHandler(PSQLException e){
+        return new ErrorMessage("400",e.getMessage());
     }
 }

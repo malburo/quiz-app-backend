@@ -1,13 +1,10 @@
 package com.example.Quiz.API;
 
 import com.example.Quiz.Models.Quiz;
-
-import com.example.Quiz.Quick_Pojo_Class.ErrorMessage;
 import com.example.Quiz.Repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;

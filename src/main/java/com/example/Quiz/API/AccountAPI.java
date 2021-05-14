@@ -9,11 +9,10 @@ import com.example.Quiz.Ultility.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,9 +23,10 @@ import javax.mail.MessagingException;
 import javax.xml.bind.ValidationException;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Date;
 import java.util.Map;
 
-
+@EnableScheduling
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin
@@ -39,8 +39,6 @@ public class AccountAPI {
     JWTUtility jwtUtility;
     @Autowired
     UserService userService_2;
-
-
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -61,15 +59,6 @@ public class AccountAPI {
     public ResponseEntity authenticate(@RequestBody JwtRequest jwtRequest) throws Exception {
 
         if (jwtRequest.getUsername() == null || jwtRequest.getPassword() == null)
-            return new ResponseEntity(new ErrorMessage("400", "no infomation to login"), HttpStatus.FORBIDDEN);
-//       doAuthenticate(jwtRequest.getUsername(),jwtRequest.getPassword());
-        String message_login = accountService.login(jwtRequest.getUsername(), jwtRequest.getPassword());
-        if (message_login.equals("successed")) {
-            final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
-            final String token = jwtUtility.generateToken(userDetails);
-            return new ResponseEntity(new JwtResponse(token), HttpStatus.OK);
-        }
-        return new ResponseEntity(new ErrorMessage("400", message_login), HttpStatus.FORBIDDEN);
     }
 
     //    private void   doAuthenticate(String username, String password) throws Exception {
@@ -87,7 +76,8 @@ public class AccountAPI {
 //    }
     // user get user info by using jwt
     @RequestMapping(value = "/getme", method = {RequestMethod.GET}) // lay thong tin nguoi dung theo jwt
-    public Object UserinfoByJwt_GET(Principal principal) {
+    public Object UserinfoByJwt_GET(Principal principal) throws Throwable {
+        accountService.handleOnlineStreak(principal.getName());
         return userService_2.Getuser(principal.getName());
     }
 
