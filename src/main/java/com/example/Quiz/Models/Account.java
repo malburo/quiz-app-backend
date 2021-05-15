@@ -1,12 +1,11 @@
 package com.example.Quiz.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import net.minidev.json.annotate.JsonIgnore;
-
-
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity()
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -25,8 +24,11 @@ public class Account {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(mappedBy = "account",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JsonIgnore
+    @Column(name = "latest_login")
+    private Date latestLogin;
 
+    @OneToOne(mappedBy = "account",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private User user;
     //@JoinColumn(name = "user_id", referencedColumnName = "user_id", foreignKey = @ForeignKey(name = "user_id_fk"))
 
@@ -86,4 +88,11 @@ public class Account {
         this.blocked = blocked;
     }
 
+    public Date getLatestLogin() {
+        return latestLogin;
+    }
+
+    public void setLatestLogin(Date latestLogin) {
+        this.latestLogin = latestLogin;
+    }
 }

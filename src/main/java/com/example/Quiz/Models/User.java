@@ -48,8 +48,8 @@ public class User {
     private String imageUrl;
 
     @Column(name = "learning_streaks")
+
     @JsonView(viewdataconfig.Public.class)
-    @JsonIgnore
     private int learningStreaks;
 
 
