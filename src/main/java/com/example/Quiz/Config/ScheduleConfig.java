@@ -22,7 +22,7 @@ public class ScheduleConfig {
 
     @Autowired
     UserService userService;
-    @Scheduled(cron = "0 59 11 * * ?")
+    @Scheduled(cron = "0 59 23 * * ?")
     public void newDaySchedule(){
         Date current = new Date();
         for (Account account: accountService.findAll()) {
