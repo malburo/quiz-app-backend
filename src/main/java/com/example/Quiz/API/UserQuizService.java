@@ -1,5 +1,7 @@
 package com.example.Quiz.API;
 
+import com.example.Quiz.Models.Quiz;
+import com.example.Quiz.Models.User;
 import com.example.Quiz.Models.UserQuiz;
 import com.example.Quiz.Repository.UserQuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +33,11 @@ public class UserQuizService {
 
     public void deleteById(Long id){
         repository.delete(findByID(id));
+    }
+    public List<UserQuiz> findTopPointBy2ID(Long userID,Long quizID){
+        return repository.findByUserIdAndQuizId(userID,quizID);
+    }
+    public List<UserQuiz> findTopPointBy2ID(User user, Quiz quiz){
+        return repository.findByUserAndQuizOrderByPointDesc(user,quiz);
     }
 }

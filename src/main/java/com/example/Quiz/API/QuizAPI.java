@@ -18,7 +18,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.bind.ValidationException;
+import java.io.InvalidClassException;
 import java.util.HashMap;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Map;
 
@@ -111,8 +113,12 @@ public class QuizAPI {
 
     @PostMapping("/{id}/submit")
     public ResponseEntity<MarkResolverResponse> handleMarkCal(@PathVariable long id, @RequestBody MarkResolverRequest resolverRequest,
-                                                              @CurrentSecurityContext SecurityContext context){
+                                                              @CurrentSecurityContext SecurityContext context) throws InvalidClassException, InvalidPropertiesFormatException {
+        if(resolverRequest.getUserSubmission().isEmpty()){
+            throw new InvalidPropertiesFormatException("User submission is empty, Make sure you answer as least 1 question");
+        }
         Quiz currentQuiz  = quizService.findByID(id);
+
         int numCorrect = 0;
         int numFalse = 0;
         int numUndone = currentQuiz.getQuestions().size();
@@ -125,9 +131,8 @@ public class QuizAPI {
             String correctAns = questionService.findByID(questionID).getQuestionCorrectAnswer();
             System.out.println("User attempt:"+ userAnswer );
             System.out.println("Correct ans:" + correctAns);
-            if(userAnswer == null){
-                System.out.println("player dont answer");
-                continue;
+            if(userAnswer.isBlank()){
+                throw new InvalidPropertiesFormatException("User submission for questionID: " +questionID + " is blank" );
             }
             if (correctAns.equalsIgnoreCase(userAnswer)){
                 numCorrect ++;
@@ -139,9 +144,12 @@ public class QuizAPI {
         }
        UserDetails currentUserDetails = (UserDetails)context.getAuthentication().getPrincipal();
        User user = userService.findByID(accountService.findByUserName(currentUserDetails.getUsername()).getUser().getUserId());
-       UserQuiz userQuiz = new UserQuiz(currentQuiz,user);
-       userQuizService.create(userQuiz);
+       UserQuiz userQuiz = new UserQuiz(currentQuiz,user,totalPoint);
+           user.setPoint(user.getPoint()+totalPoint);
+           userService.update(user);
+           System.out.println("Update point : " + totalPoint);
 
+       userQuizService.create(userQuiz);
         return new ResponseEntity<>(new MarkResolverResponse(numCorrect,numFalse,numUndone,totalPoint),HttpStatus.OK);
 
     }
