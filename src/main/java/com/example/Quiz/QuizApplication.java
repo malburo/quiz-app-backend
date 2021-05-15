@@ -56,8 +56,11 @@ public class QuizApplication {
 				user.setAccount(account);
 //				user.setLevel(1);
 				user.setPoint(100);
+
 				repository.saveAndFlush(account);
+
         userRepository.saveAndFlush(user);
+
 			}
 
 

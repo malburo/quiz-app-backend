@@ -93,7 +93,7 @@ public class AccountService {
                 account.setBlocked(false);
                 accountRepository.saveAndFlush(account);
                 User user_DB = new User();
-                user_DB.setEmail(registerinfo.getEmail());
+                user_DB.setEmail(registerinfo.getEmail().toLowerCase());
                 user_DB.setFullName(registerinfo.getFullName());
                 user_DB.setPoint(0);
                 user_DB.setLearningStreaks(1);
