@@ -26,6 +26,8 @@ public class UserQuiz {
     @Column(name = "rating")
     private int rating;
 
+    @Column(name = "point")
+    private int point;
     public Long getUserQuizId() {
         return userQuizId;
     }
@@ -37,9 +39,10 @@ public class UserQuiz {
     public UserQuiz() {
     }
 
-    public UserQuiz(Quiz quiz, User user) {
+    public UserQuiz(Quiz quiz, User user,int point) {
         this.quiz = quiz;
         this.user = user;
+        this.point = point;
     }
 
     public Quiz getQuiz() {
@@ -64,5 +67,13 @@ public class UserQuiz {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
     }
 }

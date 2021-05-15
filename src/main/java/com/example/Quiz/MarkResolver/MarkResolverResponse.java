@@ -6,12 +6,11 @@ public class MarkResolverResponse {
     private int undone;
     private int totalPoint;
 
-    public MarkResolverResponse(int correctAnswer, int wrongAnswer, int notDone,int totalPoint) {
+    public MarkResolverResponse(int correctAnswer, int wrongAnswer, int notDone, int totalPoint) {
         this.correctAnswer = correctAnswer;
         this.wrongAnswer = wrongAnswer;
         this.undone = notDone;
         this.totalPoint = totalPoint;
-
     }
 
     public int getCorrectAnswer() {
@@ -45,4 +44,5 @@ public class MarkResolverResponse {
     public void setTotalPoint(int totalPoint) {
         this.totalPoint = totalPoint;
     }
+
 }
