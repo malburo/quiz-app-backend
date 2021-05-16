@@ -18,16 +18,18 @@ public class ScheduleConfig {
     @Autowired
     AccountService accountService;
     @Autowired
-    MyCustomUserDetailService myCustomUserDetailService;
+    UserRepository userRepository;
 
-    @Autowired
-    UserService userService;
-    @Scheduled(cron = "0 59 23 * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void newDaySchedule(){
-        Date current = new Date();
         for (Account account: accountService.findAll()) {
             System.out.println(account.getUsername());
-           accountService.handleOnlineStreak(account.getUsername());
+           float cal= accountService.doCalculate(account.getLatestLogin(),new Date());
+           if(cal > 1){
+              User user =  account.getUser();
+              user.setLearningStreaks(0);
+              userRepository.saveAndFlush(user);
+           }
         }
     }
 }
