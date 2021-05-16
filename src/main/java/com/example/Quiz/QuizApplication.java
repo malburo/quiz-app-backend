@@ -59,7 +59,7 @@ public class QuizApplication {
 
 				repository.saveAndFlush(account);
 
-        userRepository.saveAndFlush(user);
+      	  userRepository.saveAndFlush(user);
 
 			}
 
