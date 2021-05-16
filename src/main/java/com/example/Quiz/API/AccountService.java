@@ -91,6 +91,7 @@ public class AccountService {
                 account.setPassword(bCryptPasswordEncoder.encode(registerinfo.getPassword()));
                 account.setRole("USER");
                 account.setBlocked(false);
+                account.setLatestLogin(new Date());
                 accountRepository.saveAndFlush(account);
                 User user_DB = new User();
                 user_DB.setEmail(registerinfo.getEmail().toLowerCase());
