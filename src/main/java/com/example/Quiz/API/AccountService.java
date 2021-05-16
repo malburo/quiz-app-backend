@@ -150,22 +150,13 @@ public class AccountService {
     }
 
     public void handleOnlineStreak(String username) {
-        final Long MILISEC_OF_A_DAY =  86400000l;
+
         Account account = findByUserName(username);
         int streak = account.getUser().getLearningStreaks();
         System.out.println("current streak:" + streak);
         Date date = account.getLatestLogin();
         Date currentTime = new Date();
-        Long currentTimeInMili = currentTime.getTime();
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
-        calendar.setTime(date);
-        int year  = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DATE);
-        calendar.set(year,month,day,23,59,59);
-        Date END_OF_DAY = calendar.getTime();
-        Long end_of_day_in_mili = END_OF_DAY.getTime();
-        float calculate = (float) (currentTimeInMili-end_of_day_in_mili)/MILISEC_OF_A_DAY;
+        float calculate = doCalculate(date,currentTime);
         if(calculate >1){
             System.out.println("the streak end");
            streak=1;
@@ -180,7 +171,19 @@ public class AccountService {
         accountRepository.saveAndFlush(account);
         userRepository.saveAndFlush(account.getUser());
     }
-
+    public float doCalculate(Date date,Date currentTime){
+        final Long MILISEC_OF_A_DAY =  86400000l;
+        Long currentTimeInMili = currentTime.getTime();
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+        calendar.setTime(date);
+        int year  = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DATE);
+        calendar.set(year,month,day,23,59,59);
+        Date END_OF_DAY = calendar.getTime();
+        Long end_of_day_in_mili = END_OF_DAY.getTime();
+        return (float) (currentTimeInMili-end_of_day_in_mili)/MILISEC_OF_A_DAY;
+    }
     public String login (String username ,String password)
 
     {
