@@ -17,4 +17,5 @@ public interface UserQuizRepository extends JpaRepository<UserQuiz,Long> {
     List<UserQuiz> findByUserIdAndQuizId(@Param("userId") Long userId, @Param("quizId") Long quizId);
 
     List<UserQuiz> findByUserAndQuizOrderByPointDesc(User user, Quiz quiz);
+
 }
