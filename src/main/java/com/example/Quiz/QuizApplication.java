@@ -53,7 +53,9 @@ public class QuizApplication {
 				account.setBlocked(false);
 				User user = new User();
 				user.setFullName("abc");
+				user.setLearningStreaks(1);
 				user.setAccount(account);
+
 //				user.setLevel(1);
 				user.setPoint(100);
 
