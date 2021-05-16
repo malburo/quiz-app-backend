@@ -108,8 +108,6 @@ public class AccountService {
 
 
 
-    }
-
 
     public ResponseEntity changepassword(changePassword changePassword, long userId)
     {

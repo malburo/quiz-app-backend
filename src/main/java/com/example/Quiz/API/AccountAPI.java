@@ -57,8 +57,16 @@ public class AccountAPI {
 
     @PostMapping("/login")
     public ResponseEntity authenticate(@RequestBody JwtRequest jwtRequest) throws Exception {
-
-        if (jwtRequest.getUsername() == null || jwtRequest.getPassword() == null)
+            if (jwtRequest.getUsername() == null || jwtRequest.getPassword() == null)
+                return new ResponseEntity(new ErrorMessage("400", "no infomation to login"), HttpStatus.FORBIDDEN);
+//       doAuthenticate(jwtRequest.getUsername(),jwtRequest.getPassword());
+        String message_login = accountService.login(jwtRequest.getUsername(), jwtRequest.getPassword());
+        if (message_login.equals("successed")) {
+            final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
+            final String token = jwtUtility.generateToken(userDetails);
+            return new ResponseEntity(new JwtResponse(token), HttpStatus.OK);
+        }
+        return new ResponseEntity(new ErrorMessage("400", message_login), HttpStatus.FORBIDDEN);
     }
 
     //    private void   doAuthenticate(String username, String password) throws Exception {

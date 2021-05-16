@@ -146,7 +146,7 @@ public class QuizAPI {
        User user = userService.findByID(accountService.findByUserName(currentUserDetails.getUsername()).getUser().getUserId());
        UserQuiz userQuiz = new UserQuiz(currentQuiz,user,totalPoint);
            user.setPoint(user.getPoint()+totalPoint);
-           userService.update(user);
+           userService.update(user,user.getUserId(),user.getFullName());
            System.out.println("Update point : " + totalPoint);
 
        userQuizService.create(userQuiz);
