@@ -44,20 +44,20 @@ public class QuizApplication {
 	public CommandLineRunner deme() {
 		return (args) -> {
 
-			if(repository.findByUsername("username1")==null){
+			if(repository.findByUsername("admin")==null){
 				Account account = new Account();
 
-				account.setUsername("username1");
+				account.setUsername("admin");
 				account.setPassword(bCryptPasswordEncoder.encode("password"));
 				account.setRole("ADMIN");
 				account.setBlocked(false);
+				account.setLatestLogin(new Date());
 				User user = new User();
 				user.setFullName("abc");
 				user.setLearningStreaks(1);
 				user.setAccount(account);
-
 //				user.setLevel(1);
-				user.setPoint(100);
+				user.setPoint(0);
 
 				repository.saveAndFlush(account);
 
