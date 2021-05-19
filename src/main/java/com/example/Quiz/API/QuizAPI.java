@@ -136,7 +136,8 @@ public class QuizAPI {
             }
             if (correctAns.equalsIgnoreCase(userAnswer)){
                 numCorrect ++;
-                totalPoint+= questionService.findByID(questionID).getQuestionPoint();
+                int point  = questionService.findByID(questionID).getQuestionPoint();
+                totalPoint+= Math.min(point, 10);
             }
             else
                 numFalse++;
