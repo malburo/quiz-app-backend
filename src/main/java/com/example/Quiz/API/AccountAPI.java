@@ -64,8 +64,7 @@ public class AccountAPI {
         if (message_login.equals("successed")) {
             final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
             Account account =  accountService.findByUserName(userDetails.getUsername());
-            account.setLatestLogin(new Date());
-            accountService.update(account);
+            accountService.handleOnlineStreak(account.getUsername());
             final String token = jwtUtility.generateToken(userDetails);
             return new ResponseEntity(new JwtResponse(token), HttpStatus.OK);
         }
