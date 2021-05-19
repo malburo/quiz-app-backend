@@ -31,7 +31,7 @@ public class QuestionAPI {
         Question existQuestion  = questionService.findByID(id);
         if (question.getQuestionName() == null || question.getQuestionDescription() == null )
             throw new ValidationException("Missing information for question");
-        BeanUtils.copyProperties(question,existQuestion,"questionId","quiz");
+        BeanUtils.copyProperties(question,existQuestion,"questionId","quiz","questionPoint");
         return new ResponseEntity<>(questionService.update(existQuestion),HttpStatus.OK);
     }
     @GetMapping
